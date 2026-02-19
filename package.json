@@ -1,0 +1,18 @@
+{
+  "name": "openinsights",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "cms"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev -w cms\" \"npm run dev -w frontend\"",
+    "dev:cms": "npm run dev -w cms",
+    "dev:frontend": "npm run dev -w frontend",
+    "build:cms": "npm run build -w cms",
+    "build:frontend": "npm run build -w frontend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}
