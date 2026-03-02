@@ -1,20 +1,22 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Public_Sans } from "next/font/google";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import "./globals.css";
 
-const inter = Inter({
+const publicSans = Public_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-public-sans",
+  weight: ["400", "500", "700", "900"],
 });
 
 export const metadata: Metadata = {
   title: {
-    default: "OpenInsights",
-    template: "%s | OpenInsights",
+    default: "Open Insights",
+    template: "%s | Open Insights",
   },
-  description: "Delivering insights that drive business growth.",
+  description:
+    "Independent, data-driven energy policy analysis. Transparent, non-partisan assessments for policy makers and the public.",
 };
 
 export default function RootLayout({
@@ -24,9 +26,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} font-sans antialiased`}>
+      <head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className={`${publicSans.variable} font-sans antialiased`}>
         <Header />
-        <main className="min-h-screen">{children}</main>
+        <main className="flex flex-1 flex-col">{children}</main>
         <Footer />
       </body>
     </html>

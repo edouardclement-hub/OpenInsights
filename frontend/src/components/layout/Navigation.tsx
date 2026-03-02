@@ -4,10 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const links = [
-  { href: "/", label: "Home" },
+  { href: "/assessments", label: "Assessments" },
+  { href: "/methodology", label: "Methodology" },
   { href: "/about", label: "About" },
-  { href: "/services", label: "Services" },
-  { href: "/blog", label: "Blog" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -29,10 +28,7 @@ export function Navigation({
       }
     >
       {links.map((link) => {
-        const isActive =
-          link.href === "/"
-            ? pathname === "/"
-            : pathname.startsWith(link.href);
+        const isActive = pathname.startsWith(link.href);
 
         return (
           <Link
@@ -41,9 +37,9 @@ export function Navigation({
             onClick={onLinkClick}
             className={`text-sm font-medium transition-colors ${
               isActive
-                ? "text-accent"
-                : "text-foreground/70 hover:text-foreground"
-            } ${mobile ? "py-2 px-4 rounded-lg hover:bg-secondary" : ""}`}
+                ? "text-primary"
+                : "text-foreground hover:text-primary"
+            } ${mobile ? "py-2 px-4 rounded-lg hover:bg-background-light" : ""}`}
           >
             {link.label}
           </Link>

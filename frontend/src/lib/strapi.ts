@@ -46,18 +46,11 @@ export async function getGlobal() {
 }
 
 export async function getHomepage() {
-  return fetchStrapi<StrapiHomepage>("/homepage", {
-    "populate[heroImage]": "*",
-    "populate[heroCta]": "*",
-    "populate[featuredServices][populate]": "*",
-    "populate[aboutImage]": "*",
-  });
+  return fetchStrapi<StrapiHomepage>("/homepage", { populate: "*" });
 }
 
 export async function getAboutPage() {
-  return fetchStrapi<StrapiAboutPage>("/about-page", {
-    populate: "*",
-  }, 3600);
+  return fetchStrapi<StrapiAboutPage>("/about-page", { populate: "*" }, 3600);
 }
 
 export async function getServices() {
@@ -69,8 +62,7 @@ export async function getServices() {
 
 export async function getBlogPosts(page = 1, pageSize = 9) {
   return fetchStrapi<StrapiBlogPost[]>("/blog-posts", {
-    "populate[coverImage]": "*",
-    "populate[author][populate]": "*",
+    populate: "*",
     "sort[0]": "publishedDate:desc",
     "pagination[page]": String(page),
     "pagination[pageSize]": String(pageSize),
@@ -80,8 +72,7 @@ export async function getBlogPosts(page = 1, pageSize = 9) {
 export async function getBlogPostBySlug(slug: string) {
   return fetchStrapi<StrapiBlogPost[]>("/blog-posts", {
     "filters[slug][$eq]": slug,
-    "populate[coverImage]": "*",
-    "populate[author][populate]": "*",
+    populate: "*",
   });
 }
 
