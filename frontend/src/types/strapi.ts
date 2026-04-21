@@ -18,13 +18,6 @@ export interface StrapiImageFormat {
   height: number;
 }
 
-export interface StrapiLink {
-  id: number;
-  text: string;
-  url: string;
-  isExternal: boolean;
-}
-
 export interface StrapiGlobal {
   id: number;
   documentId: string;
@@ -38,13 +31,20 @@ export interface StrapiGlobal {
 export interface StrapiHomepage {
   id: number;
   documentId: string;
+  eyebrow: string | null;
   heroTitle: string;
   heroSubtitle: string | null;
-  heroImage: StrapiImage | null;
-  heroCta: StrapiLink | null;
-  featuredServices: StrapiService[];
+  heroCtaPrimaryLabel: string | null;
+  heroCtaPrimaryHref: string | null;
+  heroCtaSecondaryLabel: string | null;
+  heroCtaSecondaryHref: string | null;
+  pillarEmissionsTitle: string | null;
+  pillarEmissionsClaim: string | null;
+  pillarInfrastructureTitle: string | null;
+  pillarInfrastructureClaim: string | null;
+  pillarEmploymentTitle: string | null;
+  pillarEmploymentClaim: string | null;
   aboutPreview: string | null;
-  aboutImage: StrapiImage | null;
 }
 
 export interface StrapiAboutPage {
@@ -53,20 +53,6 @@ export interface StrapiAboutPage {
   title: string;
   content: string | null;
   heroImage: StrapiImage | null;
-  seoTitle: string | null;
-  seoDescription: string | null;
-}
-
-export interface StrapiService {
-  id: number;
-  documentId: string;
-  title: string;
-  slug: string;
-  description: string | null;
-  excerpt: string | null;
-  icon: string | null;
-  image: StrapiImage | null;
-  order: number;
   seoTitle: string | null;
   seoDescription: string | null;
 }
@@ -83,21 +69,74 @@ export interface StrapiTeamMember {
   order: number;
 }
 
-export interface StrapiBlogPost {
+export type AssessmentJurisdiction =
+  | "Federal"
+  | "Alberta"
+  | "British Columbia"
+  | "Ontario"
+  | "Quebec"
+  | "Manitoba"
+  | "Saskatchewan"
+  | "Nova Scotia"
+  | "New Brunswick"
+  | "Newfoundland and Labrador"
+  | "Prince Edward Island"
+  | "Yukon"
+  | "Northwest Territories"
+  | "Nunavut";
+
+export type AssessmentStatus = "Completed" | "In Progress";
+export type AssessmentPolicyStatus = "Proposed" | "Enacted" | "Election Platform" | "Repealed";
+export type AssessmentSector =
+  | "Electricity"
+  | "Oil & Gas"
+  | "Buildings"
+  | "Transportation"
+  | "Industry"
+  | "Agriculture"
+  | "Cross-cutting";
+export type AssessmentAccent = "default" | "gold" | "slate";
+
+export interface AssessmentFinding {
+  text: string;
+}
+
+export interface StrapiAssessment {
   id: number;
   documentId: string;
   title: string;
   slug: string;
-  content: string | null;
-  excerpt: string | null;
-  coverImage: StrapiImage | null;
-  author: StrapiTeamMember | null;
-  category: "insights" | "news" | "case-study";
-  publishedDate: string | null;
-  seoTitle: string | null;
-  seoDescription: string | null;
-  createdAt: string;
-  updatedAt: string;
+  publishedDate: string;
+  jurisdiction: AssessmentJurisdiction;
+  party: string | null;
+  status: AssessmentStatus;
+  policyStatus: AssessmentPolicyStatus;
+  sector: AssessmentSector;
+  tags: string[] | null;
+  claim: string;
+  finding: string | null;
+  claimedValue: string | null;
+  modelledValue: string | null;
+  execSummary: string | null;
+  findings: AssessmentFinding[] | null;
+  epmPlus: boolean;
+  accentClass: AssessmentAccent;
+  citation: string | null;
+  cardImage: StrapiImage | null;
+  detailImage: StrapiImage | null;
+  zenodoUrl: string | null;
+  githubUrl: string | null;
+  datasetUrl: string | null;
+  policyEncodingUrl: string | null;
+}
+
+export interface StrapiFaq {
+  id: number;
+  documentId: string;
+  question: string;
+  answer: string;
+  order: number;
+  category: "general" | "methodology" | "data" | "contact";
 }
 
 export interface StrapiResponse<T> {

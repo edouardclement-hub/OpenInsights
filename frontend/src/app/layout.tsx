@@ -1,22 +1,37 @@
 import type { Metadata } from "next";
-import { Public_Sans } from "next/font/google";
+import { Playfair_Display, DM_Sans, DM_Mono } from "next/font/google";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import "./globals.css";
 
-const publicSans = Public_Sans({
+const playfair = Playfair_Display({
   subsets: ["latin"],
-  variable: "--font-public-sans",
-  weight: ["400", "500", "700", "900"],
+  variable: "--font-playfair",
+  weight: ["400", "600", "700"],
+});
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  variable: "--font-dm-sans",
+  weight: ["300", "400", "500", "600"],
+});
+
+const dmMono = DM_Mono({
+  subsets: ["latin"],
+  variable: "--font-dm-mono",
+  weight: ["400", "500"],
 });
 
 export const metadata: Metadata = {
   title: {
-    default: "Open Insights",
-    template: "%s | Open Insights",
+    default: "Energy Policy Monitor — Open Insights",
+    template: "%s | Energy Policy Monitor",
   },
   description:
-    "Independent, data-driven energy policy analysis. Transparent, non-partisan assessments for policy makers and the public.",
+    "Independent, data-driven assessments of Canadian energy policy. Transparent modelling, traceable findings, publicly archived.",
+  icons: {
+    icon: "/images/favicon.svg",
+  },
 };
 
 export default function RootLayout({
@@ -25,16 +40,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body className={`${publicSans.variable} font-sans antialiased`}>
+    <html lang="en" className={`${playfair.variable} ${dmSans.variable} ${dmMono.variable}`}>
+      <body>
         <Header />
-        <main className="flex flex-1 flex-col">{children}</main>
+        <main>{children}</main>
         <Footer />
       </body>
     </html>

@@ -8,4 +8,14 @@ dist/
 .next/
 cms/public/uploads/*
 !cms/public/uploads/.gitkeep
+cms/types/generated/
+
+# Design source material (kept locally, not versioned)
+Screenshots/
+epm-design-brief.docx
+epm-website-v12.html
+epm-package/
+~$*
+
+# OS
 .DS_Store

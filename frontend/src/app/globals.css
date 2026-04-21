@@ -1,25 +1,91 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+@import "./epm.css";
 
-@theme inline {
-  --color-primary: #2463eb;
-  --color-accent-orange: #ea580c;
-  --color-accent-green: #16a34a;
-  --color-background-light: #f6f6f8;
-  --color-background-dark: #111621;
-  --color-foreground: #0e121b;
-  --color-muted: #4d6599;
-  --color-border: #e7ebf3;
-  --color-border-dark: #d0d7e7;
-  --font-sans: "Public Sans", system-ui, sans-serif;
+/* Next.js route rendering — disable the SPA .page class hiding inherited from the mockup */
+.page { display: block !important; }
+
+/* ═══════════════════════════════════════
+   SUPPLEMENTAL (fills gaps vs. mockup SPA)
+═══════════════════════════════════════ */
+
+/* Card image wrapper — mockup used `.card-photo-placeholder`; our React card renders into
+   `.card-visual` which is more flexible (fits real <img> or labeled placeholder). */
+.card-visual {
+  width: 100%;
+  aspect-ratio: 5 / 3;
+  background: var(--surface);
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.card-visual-label {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--muted);
+  letter-spacing: 0.4px;
 }
 
-body {
-  background: var(--color-background-light);
-  color: var(--color-foreground);
-  font-family: var(--font-sans);
+/* Generic empty-state block (no assessments yet, no team members, etc.) */
+.empty-state {
+  padding: 48px 32px;
+  background: var(--white);
+  border: 1px dashed var(--rule);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  color: var(--slate);
+  font-size: 14.5px;
+  line-height: 1.6;
 }
+.empty-state a { color: var(--teal); text-decoration: underline; }
 
-.material-symbols-outlined {
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+/* Contact form — native input styling inside .contact-form wrapper */
+.contact-form { display: flex; flex-direction: column; gap: 14px; }
+.contact-form label {
+  display: flex; flex-direction: column; gap: 6px;
+  font-size: 12.5px; font-weight: 600; color: var(--navy);
+  letter-spacing: 0.2px;
 }
+.contact-form label > span { text-transform: uppercase; letter-spacing: 0.8px; font-size: 11px; color: var(--slate); }
+.contact-form input,
+.contact-form textarea {
+  font-family: var(--font-body);
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-sm);
+  background: var(--white);
+  font-size: 14px; color: var(--navy);
+  transition: border-color var(--transition);
+}
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none; border-color: var(--teal);
+}
+.contact-form textarea { resize: vertical; min-height: 140px; }
+.contact-form .btn-primary { align-self: flex-start; }
+.form-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+}
+@media (max-width: 640px) { .form-row { grid-template-columns: 1fr; } }
+.form-error {
+  font-size: 13px; color: #B91C1C;
+  background: #FEF2F2; border: 1px solid #FECACA;
+  padding: 8px 12px; border-radius: var(--radius-sm);
+}
+.form-confirmed {
+  padding: 24px;
+  border: 1px solid rgba(12,122,122,0.25);
+  background: var(--teal-pale);
+  border-radius: var(--radius);
+}
+.form-confirmed h3 {
+  font-family: var(--font-display);
+  font-size: 20px; color: var(--navy); margin-bottom: 8px;
+}
+.form-confirmed p { font-size: 14px; color: var(--slate); }
+
+/* Nav hamburger — reset button element */
+.nav-hamburger { background: none; border: none; padding: 0; }

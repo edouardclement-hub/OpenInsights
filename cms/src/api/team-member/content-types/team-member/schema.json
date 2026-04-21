@@ -37,12 +37,6 @@
     "order": {
       "type": "integer",
       "default": 0
-    },
-    "blogPosts": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::blog-post.blog-post",
-      "mappedBy": "author"
     }
   }
 }

@@ -3,9 +3,9 @@ import type {
   StrapiGlobal,
   StrapiHomepage,
   StrapiAboutPage,
-  StrapiService,
-  StrapiBlogPost,
   StrapiTeamMember,
+  StrapiAssessment,
+  StrapiFaq,
 } from "@/types/strapi";
 
 const STRAPI_URL = process.env.STRAPI_URL || "http://localhost:1337";
@@ -53,29 +53,6 @@ export async function getAboutPage() {
   return fetchStrapi<StrapiAboutPage>("/about-page", { populate: "*" }, 3600);
 }
 
-export async function getServices() {
-  return fetchStrapi<StrapiService[]>("/services", {
-    populate: "*",
-    "sort[0]": "order:asc",
-  }, 3600);
-}
-
-export async function getBlogPosts(page = 1, pageSize = 9) {
-  return fetchStrapi<StrapiBlogPost[]>("/blog-posts", {
-    populate: "*",
-    "sort[0]": "publishedDate:desc",
-    "pagination[page]": String(page),
-    "pagination[pageSize]": String(pageSize),
-  });
-}
-
-export async function getBlogPostBySlug(slug: string) {
-  return fetchStrapi<StrapiBlogPost[]>("/blog-posts", {
-    "filters[slug][$eq]": slug,
-    populate: "*",
-  });
-}
-
 export async function getTeamMembers() {
   return fetchStrapi<StrapiTeamMember[]>("/team-members", {
     populate: "*",
@@ -83,8 +60,44 @@ export async function getTeamMembers() {
   }, 3600);
 }
 
+export async function getAssessments() {
+  return fetchStrapi<StrapiAssessment[]>("/assessments", {
+    populate: "*",
+    "sort[0]": "publishedDate:desc",
+    "pagination[pageSize]": "100",
+  });
+}
+
+export async function getFeaturedAssessments(limit = 3) {
+  return fetchStrapi<StrapiAssessment[]>("/assessments", {
+    populate: "*",
+    "sort[0]": "publishedDate:desc",
+    "pagination[pageSize]": String(limit),
+  });
+}
+
+export async function getAssessmentBySlug(slug: string) {
+  return fetchStrapi<StrapiAssessment[]>("/assessments", {
+    "filters[slug][$eq]": slug,
+    populate: "*",
+  });
+}
+
+export async function getFaqs(category?: string) {
+  const params: Record<string, string> = {
+    "sort[0]": "order:asc",
+  };
+  if (category) params["filters[category][$eq]"] = category;
+  return fetchStrapi<StrapiFaq[]>("/faqs", params, 3600);
+}
+
 export function getStrapiMediaUrl(url: string | undefined): string {
-  if (!url) return "/images/placeholder.svg";
+  if (!url) return "";
   if (url.startsWith("http")) return url;
   return `${STRAPI_URL}${url}`;
+}
+
+export function formatAssessmentDate(dateStr: string): string {
+  const d = new Date(dateStr);
+  return d.toLocaleDateString("en-US", { month: "long", year: "numeric" });
 }

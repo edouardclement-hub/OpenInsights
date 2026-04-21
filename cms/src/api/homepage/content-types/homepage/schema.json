@@ -5,13 +5,17 @@
     "singularName": "homepage",
     "pluralName": "homepages",
     "displayName": "Homepage",
-    "description": "Homepage content"
+    "description": "Homepage content (hero, pillar claims, intro text)"
   },
   "options": {
     "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
+    "eyebrow": {
+      "type": "string",
+      "default": "Independent policy assessment"
+    },
     "heroTitle": {
       "type": "string",
       "required": true
@@ -19,30 +23,48 @@
     "heroSubtitle": {
       "type": "text"
     },
-    "heroImage": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": ["images"]
+    "heroCtaPrimaryLabel": {
+      "type": "string",
+      "default": "Browse assessments"
     },
-    "heroCta": {
-      "type": "component",
-      "repeatable": false,
-      "component": "shared.link"
+    "heroCtaPrimaryHref": {
+      "type": "string",
+      "default": "/results"
     },
-    "featuredServices": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::service.service"
+    "heroCtaSecondaryLabel": {
+      "type": "string",
+      "default": "Our methodology"
+    },
+    "heroCtaSecondaryHref": {
+      "type": "string",
+      "default": "/methodology"
+    },
+    "pillarEmissionsTitle": {
+      "type": "string",
+      "default": "Emissions claims"
+    },
+    "pillarEmissionsClaim": {
+      "type": "string",
+      "default": "Modelled Mt CO₂e trajectories"
+    },
+    "pillarInfrastructureTitle": {
+      "type": "string",
+      "default": "Infrastructure"
+    },
+    "pillarInfrastructureClaim": {
+      "type": "string",
+      "default": "GW capacity, grid corridors"
+    },
+    "pillarEmploymentTitle": {
+      "type": "string",
+      "default": "Employment"
+    },
+    "pillarEmploymentClaim": {
+      "type": "string",
+      "default": "FTE impacts by sector"
     },
     "aboutPreview": {
       "type": "richtext"
-    },
-    "aboutImage": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": ["images"]
     }
   }
 }

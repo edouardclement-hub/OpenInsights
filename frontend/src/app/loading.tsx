@@ -1,12 +1,27 @@
-import { Container } from "@/components/ui/Container";
-
 export default function Loading() {
   return (
-    <div className="flex min-h-[60vh] items-center justify-center">
-      <Container className="text-center">
-        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-secondary border-t-accent" />
-        <p className="mt-4 text-sm text-muted">Loading...</p>
-      </Container>
+    <div
+      style={{
+        display: "flex",
+        minHeight: "60vh",
+        alignItems: "center",
+        justifyContent: "center",
+        flexDirection: "column",
+        gap: 16,
+      }}
+    >
+      <div
+        style={{
+          width: 32,
+          height: 32,
+          borderRadius: "50%",
+          border: "3px solid var(--rule)",
+          borderTopColor: "var(--teal)",
+          animation: "spin 0.8s linear infinite",
+        }}
+      />
+      <p style={{ fontSize: 14, color: "var(--muted)" }}>Loading…</p>
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );
 }

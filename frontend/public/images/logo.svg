@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 40" width="220" height="40">
+  <!-- Waveform bars (Logo C) -->
+  <rect x="0"  y="17" width="5" height="14" rx="2.5" fill="#0FA8A8"/>
+  <rect x="8"  y="10" width="5" height="21" rx="2.5" fill="#0FA8A8"/>
+  <rect x="16" y="2"  width="5" height="29" rx="2.5" fill="#0FA8A8"/>
+  <rect x="24" y="13" width="5" height="18" rx="2.5" fill="#0FA8A8"/>
+  <rect x="32" y="6"  width="5" height="25" rx="2.5" fill="#0FA8A8"/>
+  <rect x="40" y="15" width="5" height="16" rx="2.5" fill="#0FA8A8"/>
+  <!-- Wordmark -->
+  <text x="55" y="18" font-family="'Playfair Display', Georgia, serif" font-size="15" font-weight="600" fill="#FFFFFF" letter-spacing="0.2">Energy Policy Monitor</text>
+  <text x="55" y="32" font-family="'DM Sans', system-ui, sans-serif" font-size="9.5" font-weight="400" fill="#8FA3B8" letter-spacing="1.2" text-transform="uppercase">OPEN INSIGHTS</text>
+</svg>
