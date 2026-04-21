@@ -2,20 +2,24 @@
 
 import { useState } from "react";
 
+type FormStatus = "idle" | "submitting" | "sent" | "error";
+
 export function ContactForm() {
-  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
-    "idle"
-  );
+  const [status, setStatus] = useState<FormStatus>("idle");
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setStatus("sending");
+    setStatus("submitting");
+    setErrorMsg(null);
 
-    const formData = new FormData(e.currentTarget);
+    const form = e.currentTarget;
     const data = {
-      name: formData.get("name"),
-      email: formData.get("email"),
-      message: formData.get("message"),
+      name: (form.elements.namedItem("name") as HTMLInputElement).value,
+      email: (form.elements.namedItem("email") as HTMLInputElement).value,
+      organization: (form.elements.namedItem("organization") as HTMLInputElement).value,
+      subject: (form.elements.namedItem("subject") as HTMLInputElement).value,
+      message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
     };
 
     try {
@@ -24,86 +28,52 @@ export function ContactForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-
-      if (res.ok) {
-        setStatus("sent");
-        e.currentTarget.reset();
-      } else {
-        setStatus("error");
-      }
-    } catch {
+      if (!res.ok) throw new Error(`Submit failed: ${res.status}`);
+      setStatus("sent");
+      form.reset();
+    } catch (err) {
       setStatus("error");
+      setErrorMsg(err instanceof Error ? err.message : "Something went wrong.");
     }
   }
 
+  if (status === "sent") {
+    return (
+      <div className="form-confirmed">
+        <h3>Message received.</h3>
+        <p>Thanks — we'll get back to you by email shortly.</p>
+      </div>
+    );
+  }
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div>
-        <label
-          htmlFor="name"
-          className="block text-sm font-medium text-foreground"
-        >
-          Name
+    <form className="contact-form" onSubmit={onSubmit}>
+      <div className="form-row">
+        <label>
+          <span>Name</span>
+          <input name="name" type="text" required />
         </label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          required
-          className="mt-1 block w-full rounded-lg border border-secondary px-4 py-3 text-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
-        />
-      </div>
-
-      <div>
-        <label
-          htmlFor="email"
-          className="block text-sm font-medium text-foreground"
-        >
-          Email
+        <label>
+          <span>Email</span>
+          <input name="email" type="email" required />
         </label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          required
-          className="mt-1 block w-full rounded-lg border border-secondary px-4 py-3 text-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
-        />
       </div>
-
-      <div>
-        <label
-          htmlFor="message"
-          className="block text-sm font-medium text-foreground"
-        >
-          Message
-        </label>
-        <textarea
-          id="message"
-          name="message"
-          rows={5}
-          required
-          className="mt-1 block w-full rounded-lg border border-secondary px-4 py-3 text-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
-        />
-      </div>
-
-      <button
-        type="submit"
-        disabled={status === "sending"}
-        className="inline-flex items-center justify-center rounded-lg bg-accent px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-accent-light disabled:opacity-50"
-      >
-        {status === "sending" ? "Sending..." : "Send Message"}
+      <label>
+        <span>Organization</span>
+        <input name="organization" type="text" />
+      </label>
+      <label>
+        <span>Subject</span>
+        <input name="subject" type="text" required />
+      </label>
+      <label>
+        <span>Message</span>
+        <textarea name="message" rows={6} required />
+      </label>
+      {status === "error" && errorMsg && <p className="form-error">{errorMsg}</p>}
+      <button type="submit" className="btn-primary" disabled={status === "submitting"}>
+        {status === "submitting" ? "Sending…" : "Send message"}
       </button>
-
-      {status === "sent" && (
-        <p className="text-sm text-green-600">
-          Thank you! Your message has been sent.
-        </p>
-      )}
-      {status === "error" && (
-        <p className="text-sm text-red-600">
-          Something went wrong. Please try again.
-        </p>
-      )}
     </form>
   );
 }

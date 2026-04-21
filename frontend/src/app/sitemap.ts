@@ -1,29 +1,30 @@
 import type { MetadataRoute } from "next";
-import { getBlogPosts, getServices } from "@/lib/strapi";
+import { getAssessments } from "@/lib/strapi";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:4000";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
     { url: SITE_URL, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },
     { url: `${SITE_URL}/about`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${SITE_URL}/services`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${SITE_URL}/blog`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.7 },
+    { url: `${SITE_URL}/methodology`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${SITE_URL}/team`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
+    { url: `${SITE_URL}/assessments`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
     { url: `${SITE_URL}/contact`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.5 },
   ];
 
-  let blogUrls: MetadataRoute.Sitemap = [];
+  let assessmentUrls: MetadataRoute.Sitemap = [];
   try {
-    const res = await getBlogPosts(1, 100);
-    blogUrls = res.data.map((post) => ({
-      url: `${SITE_URL}/blog/${post.slug}`,
-      lastModified: new Date(post.updatedAt),
-      changeFrequency: "weekly" as const,
-      priority: 0.6,
+    const res = await getAssessments();
+    assessmentUrls = res.data.map((a) => ({
+      url: `${SITE_URL}/assessments/${a.slug}`,
+      lastModified: new Date(a.publishedDate),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
     }));
   } catch {
     // Strapi not available
   }
 
-  return [...staticPages, ...blogUrls];
+  return [...staticPages, ...assessmentUrls];
 }

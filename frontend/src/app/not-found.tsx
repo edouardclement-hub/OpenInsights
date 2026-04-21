@@ -1,20 +1,18 @@
 import Link from "next/link";
-import { Container } from "@/components/ui/Container";
-import { Button } from "@/components/ui/Button";
 
 export default function NotFound() {
   return (
-    <div className="flex min-h-[60vh] items-center">
-      <Container className="text-center">
-        <h1 className="text-6xl font-bold text-primary">404</h1>
-        <p className="mt-4 text-xl text-muted">Page not found</p>
-        <p className="mt-2 text-muted">
-          The page you&apos;re looking for doesn&apos;t exist or has been moved.
-        </p>
-        <div className="mt-8">
-          <Button href="/">Go Home</Button>
+    <div className="page-header">
+      <div className="page-header-inner" style={{ textAlign: "center" }}>
+        <div className="section-label">404</div>
+        <h1>Page not found</h1>
+        <p>The page you're looking for doesn't exist or has been moved.</p>
+        <div style={{ marginTop: 24 }}>
+          <Link href="/" className="btn-primary">
+            Back to home
+          </Link>
         </div>
-      </Container>
+      </div>
     </div>
   );
 }

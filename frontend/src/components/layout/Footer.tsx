@@ -2,120 +2,74 @@ import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="bg-white px-6 md:px-20 py-16 border-t border-border">
-      <div className="mx-auto max-w-[1200px] grid grid-cols-1 md:grid-cols-4 gap-12">
-        {/* Brand */}
-        <div className="flex flex-col gap-6">
-          <Link href="/" className="flex items-center gap-3 text-primary">
-            <div className="size-6">
-              <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  clipRule="evenodd"
-                  d="M47.2426 24L24 47.2426L0.757355 24L24 0.757355L47.2426 24ZM12.2426 21H35.7574L24 9.24264L12.2426 21Z"
-                  fill="currentColor"
-                  fillRule="evenodd"
-                />
-              </svg>
+    <footer className="footer">
+      <div className="footer-inner">
+        <div className="footer-top">
+          <div className="footer-brand">
+            <div className="footer-brand-logo">
+              <div className="logo-c" style={{ display: "flex", alignItems: "flex-end", gap: "3px", height: "24px" }}>
+                <div className="bar" />
+                <div className="bar" />
+                <div className="bar" />
+                <div className="bar" />
+                <div className="bar" />
+                <div className="bar" />
+              </div>
+              <div>
+                <div className="footer-brand-name">Energy Policy Monitor</div>
+                <div className="footer-brand-sub">Open Insights</div>
+              </div>
             </div>
-            <h2 className="text-foreground text-lg font-bold">Open Insights</h2>
-          </Link>
-          <p className="text-muted text-sm leading-relaxed">
-            The leading source for independent, data-driven energy policy
-            analysis. Building a transparent future for public discourse.
-          </p>
-          <div className="flex gap-4">
-            <span className="material-symbols-outlined text-muted hover:text-primary cursor-pointer transition-colors">
-              public
-            </span>
-            <span className="material-symbols-outlined text-muted hover:text-primary cursor-pointer transition-colors">
-              hub
-            </span>
-            <span className="material-symbols-outlined text-muted hover:text-primary cursor-pointer transition-colors">
-              alternate_email
-            </span>
+            <p className="footer-tagline">
+              Independent, data-driven assessments of Canadian energy policy.
+              Transparent modelling, traceable findings, publicly archived.
+            </p>
+          </div>
+
+          <div>
+            <div className="footer-links-title">Explore</div>
+            <ul className="footer-links">
+              <li><Link href="/assessments">Assessments</Link></li>
+              <li><Link href="/methodology">Methodology</Link></li>
+              <li><Link href="/compare">Compare tool</Link></li>
+            </ul>
+          </div>
+
+          <div>
+            <div className="footer-links-title">Organization</div>
+            <ul className="footer-links">
+              <li><Link href="/about">About</Link></li>
+              <li><Link href="/team">Team</Link></li>
+              <li><Link href="/contact">Contact</Link></li>
+            </ul>
+          </div>
+
+          <div>
+            <div className="footer-links-title">Open data</div>
+            <ul className="footer-links">
+              <li><a href="https://zenodo.org" target="_blank" rel="noreferrer">Zenodo archive</a></li>
+              <li><a href="https://github.com/edouardclement-hub/OpenInsights" target="_blank" rel="noreferrer">GitHub</a></li>
+            </ul>
           </div>
         </div>
 
-        {/* Quick Links */}
-        <div>
-          <h4 className="text-foreground font-bold mb-6">Quick Links</h4>
-          <ul className="flex flex-col gap-4 text-muted text-sm font-medium">
-            <li>
-              <Link href="/assessments" className="hover:text-primary transition-colors">
-                Assessments Archive
-              </Link>
-            </li>
-            <li>
-              <Link href="/methodology" className="hover:text-primary transition-colors">
-                Methodology Whitepaper
-              </Link>
-            </li>
-            <li>
-              <Link href="#" className="hover:text-primary transition-colors">
-                Data Sources
-              </Link>
-            </li>
-            <li>
-              <Link href="#" className="hover:text-primary transition-colors">
-                Partnerships
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        {/* About */}
-        <div>
-          <h4 className="text-foreground font-bold mb-6">About</h4>
-          <ul className="flex flex-col gap-4 text-muted text-sm font-medium">
-            <li>
-              <Link href="/about" className="hover:text-primary transition-colors">
-                Our Team
-              </Link>
-            </li>
-            <li>
-              <Link href="#" className="hover:text-primary transition-colors">
-                Annual Report
-              </Link>
-            </li>
-            <li>
-              <Link href="#" className="hover:text-primary transition-colors">
-                Careers
-              </Link>
-            </li>
-            <li>
-              <Link href="#" className="hover:text-primary transition-colors">
-                Press Room
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        {/* Contact */}
-        <div>
-          <h4 className="text-foreground font-bold mb-6">Contact</h4>
-          <ul className="flex flex-col gap-4 text-muted text-sm font-medium">
-            <li className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-sm">mail</span>
-              contact@openinsights.org
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-sm">location_on</span>
-              Ottawa, ON - Canada
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-sm">call</span>
-              +1 (800) INSIGHT
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div className="mx-auto max-w-[1200px] border-t border-border mt-16 pt-8 flex flex-col md:flex-row justify-between text-muted text-xs gap-4">
-        <p>&copy; {new Date().getFullYear()} Open Insights. All rights reserved.</p>
-        <div className="flex gap-8">
-          <Link href="#" className="hover:underline">Privacy Policy</Link>
-          <Link href="#" className="hover:underline">Terms of Service</Link>
-          <Link href="#" className="hover:underline">Cookie Policy</Link>
+        <div className="footer-bottom">
+          <div className="footer-copy">
+            &copy; {new Date().getFullYear()} Open Insights / Energy Policy Monitor. All rights reserved.
+          </div>
+          <div className="footer-social">
+            <Link href="/privacy" className="social-btn" aria-label="Privacy policy" title="Privacy">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.55)" strokeWidth="2">
+                <path d="M12 2L4 6v6c0 5 3.5 9.5 8 10 4.5-.5 8-5 8-10V6l-8-4z" />
+              </svg>
+            </Link>
+            <Link href="/terms" className="social-btn" aria-label="Terms" title="Terms">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.55)" strokeWidth="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+              </svg>
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

@@ -1,0 +1,125 @@
+{
+  "kind": "collectionType",
+  "collectionName": "assessments",
+  "info": {
+    "singularName": "assessment",
+    "pluralName": "assessments",
+    "displayName": "Assessment",
+    "description": "EPM policy assessment — claims vs modelled findings"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "publishedDate": {
+      "type": "date",
+      "required": true
+    },
+    "jurisdiction": {
+      "type": "enumeration",
+      "enum": [
+        "Federal",
+        "Alberta",
+        "British Columbia",
+        "Ontario",
+        "Quebec",
+        "Manitoba",
+        "Saskatchewan",
+        "Nova Scotia",
+        "New Brunswick",
+        "Newfoundland and Labrador",
+        "Prince Edward Island",
+        "Yukon",
+        "Northwest Territories",
+        "Nunavut"
+      ],
+      "required": true
+    },
+    "party": {
+      "type": "enumeration",
+      "enum": ["Liberal", "Conservative", "NDP", "Bloc Québécois", "Green", "Non-partisan", "Other"]
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": ["Completed", "In Progress"],
+      "default": "In Progress",
+      "required": true
+    },
+    "policyStatus": {
+      "type": "enumeration",
+      "enum": ["Proposed", "Enacted", "Election Platform", "Repealed"],
+      "required": true
+    },
+    "sector": {
+      "type": "enumeration",
+      "enum": ["Electricity", "Oil & Gas", "Buildings", "Transportation", "Industry", "Agriculture", "Cross-cutting"],
+      "required": true
+    },
+    "tags": {
+      "type": "json"
+    },
+    "claim": {
+      "type": "text",
+      "required": true
+    },
+    "finding": {
+      "type": "text"
+    },
+    "claimedValue": {
+      "type": "string"
+    },
+    "modelledValue": {
+      "type": "string"
+    },
+    "execSummary": {
+      "type": "text"
+    },
+    "findings": {
+      "type": "json"
+    },
+    "epmPlus": {
+      "type": "boolean",
+      "default": false
+    },
+    "accentClass": {
+      "type": "enumeration",
+      "enum": ["default", "gold", "slate"],
+      "default": "default"
+    },
+    "citation": {
+      "type": "text"
+    },
+    "cardImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "detailImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "zenodoUrl": {
+      "type": "string"
+    },
+    "githubUrl": {
+      "type": "string"
+    },
+    "datasetUrl": {
+      "type": "string"
+    },
+    "policyEncodingUrl": {
+      "type": "string"
+    }
+  }
+}

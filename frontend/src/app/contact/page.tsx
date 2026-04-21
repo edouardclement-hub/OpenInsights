@@ -1,76 +1,87 @@
 import type { Metadata } from "next";
-import { Hero } from "@/components/blocks/Hero";
 import { ContactForm } from "@/components/blocks/ContactForm";
-import { Container } from "@/components/ui/Container";
-import { Section } from "@/components/ui/Section";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Get in touch with OpenInsights. We'd love to hear from you.",
+  description: "Get in touch with the Energy Policy Monitor team at Open Insights.",
 };
 
 export default function ContactPage() {
   return (
     <>
-      <Hero
-        title="Contact Us"
-        subtitle="Have a question or want to work together? We'd love to hear from you."
-      />
+      <div className="page-header">
+        <div className="page-header-inner">
+          <div className="section-label">Get in touch</div>
+          <h1>Contact the EPM team</h1>
+          <p>
+            Have a question, a policy to flag, or an academic partnership in mind? Reach out.
+          </p>
+        </div>
+      </div>
 
-      <Section>
-        <Container>
-          <div className="grid gap-12 md:grid-cols-2">
-            {/* Contact Form */}
-            <div>
-              <h2 className="text-2xl font-bold text-primary">
-                Send Us a Message
-              </h2>
-              <p className="mt-2 text-muted">
-                Fill out the form below and we&apos;ll get back to you as soon
-                as possible.
-              </p>
-              <div className="mt-6">
-                <ContactForm />
-              </div>
+      <div className="contact-content">
+        <div className="contact-form-section">
+          <h2>Send us a message</h2>
+          <p>We read everything and respond within a few business days.</p>
+          <ContactForm />
+        </div>
+
+        <aside className="contact-info">
+          <h2>Other ways to reach us</h2>
+          <p>Prefer email or social? Here's where to find the EPM team.</p>
+
+          <div className="contact-channel">
+            <div className="contact-channel-icon">
+              <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                <polyline points="22,6 12,13 2,6" />
+              </svg>
             </div>
-
-            {/* Contact Info */}
             <div>
-              <h2 className="text-2xl font-bold text-primary">Get in Touch</h2>
-              <p className="mt-2 text-muted">
-                You can also reach us through the following channels.
-              </p>
-
-              <div className="mt-8 space-y-6">
-                <div>
-                  <h3 className="font-semibold text-primary">Email</h3>
-                  <p className="mt-1 text-muted">contact@openinsights.com</p>
-                </div>
-
-                <div>
-                  <h3 className="font-semibold text-primary">Office</h3>
-                  <p className="mt-1 text-muted">
-                    123 Business Street
-                    <br />
-                    Suite 100
-                    <br />
-                    City, State 12345
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className="font-semibold text-primary">Hours</h3>
-                  <p className="mt-1 text-muted">
-                    Monday - Friday: 9:00 AM - 6:00 PM
-                    <br />
-                    Saturday - Sunday: Closed
-                  </p>
-                </div>
-              </div>
+              <div className="contact-channel-label">Email</div>
+              <div className="contact-channel-value">info@openinsights.org</div>
+              <div className="contact-channel-note">For media, research, and partnership inquiries.</div>
             </div>
           </div>
-        </Container>
-      </Section>
+
+          <div className="contact-channel">
+            <div className="contact-channel-icon">
+              <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
+                <polyline points="16 18 22 12 16 6" />
+                <polyline points="8 6 2 12 8 18" />
+              </svg>
+            </div>
+            <div>
+              <div className="contact-channel-label">GitHub</div>
+              <div className="contact-channel-value">
+                <a
+                  href="https://github.com/edouardclement-hub/OpenInsights"
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ color: "var(--teal)" }}
+                >
+                  edouardclement-hub/OpenInsights
+                </a>
+              </div>
+              <div className="contact-channel-note">Issues, pull requests, and replication questions.</div>
+            </div>
+          </div>
+
+          <div className="contact-channel">
+            <div className="contact-channel-icon">
+              <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+            </div>
+            <div>
+              <div className="contact-channel-label">Location</div>
+              <div className="contact-channel-value">Ottawa, ON · Canada</div>
+              <div className="contact-channel-note">Remote-first team across Canada.</div>
+            </div>
+          </div>
+        </aside>
+      </div>
     </>
   );
 }

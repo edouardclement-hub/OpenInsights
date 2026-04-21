@@ -1,226 +1,188 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
-import { getHomepage, getServices, getStrapiMediaUrl } from "@/lib/strapi";
+import { AssessmentCard } from "@/components/blocks/AssessmentCard";
+import { getFeaturedAssessments, getHomepage } from "@/lib/strapi";
+import type { StrapiAssessment, StrapiHomepage } from "@/types/strapi";
 
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "Open Insights — Energy Policy Analysis You Can Trust",
+  title: "Energy Policy Monitor — Open Insights",
+  description:
+    "Independent, data-driven assessments of Canadian energy policy. Transparent modelling, traceable findings, publicly archived.",
+};
+
+const FALLBACK_HOMEPAGE: Partial<StrapiHomepage> = {
+  eyebrow: "Independent assessment",
+  heroTitle: "Canadian energy policy insights, independently assessed.",
+  heroSubtitle:
+    "The Energy Policy Monitor delivers independent, timely analysis of Canada's major energy and climate policy developments. Led by the Open Insights team, EPM cuts through complexity to provide clear, evidence-based assessments of what new policies mean for emissions trajectories, energy systems, and economic outcomes.",
+  heroCtaPrimaryLabel: "Explore assessments",
+  heroCtaPrimaryHref: "/assessments",
+  heroCtaSecondaryLabel: "How it works",
+  heroCtaSecondaryHref: "/methodology",
 };
 
 export default async function HomePage() {
-  let homepage = null;
-  let services = null;
+  let homepage: Partial<StrapiHomepage> = FALLBACK_HOMEPAGE;
+  let featured: StrapiAssessment[] = [];
 
   try {
-    const [homepageRes, servicesRes] = await Promise.all([
+    const [homepageRes, featuredRes] = await Promise.all([
       getHomepage(),
-      getServices(),
+      getFeaturedAssessments(3),
     ]);
-    homepage = homepageRes.data;
-    services = servicesRes.data;
+    homepage = { ...FALLBACK_HOMEPAGE, ...homepageRes.data };
+    featured = featuredRes.data;
   } catch {
-    // Strapi not running — render fallback
+    // Strapi not running — render with fallback, no assessments
   }
 
   return (
     <>
-      {/* Hero Section */}
-      <section className="px-6 md:px-20 py-12 md:py-20 flex justify-center bg-white">
-        <div className="max-w-[1200px] w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div className="flex flex-col gap-8 order-2 md:order-1">
-            <div className="flex flex-col gap-4">
-              <span className="text-primary font-bold tracking-widest uppercase text-xs">
-                Non-Partisan Analysis
-              </span>
-              <h1 className="text-foreground text-4xl lg:text-6xl font-black leading-tight tracking-tight">
-                {homepage?.heroTitle ? (
-                  homepage.heroTitle
-                ) : (
-                  <>
-                    Energy Policy Analysis{" "}
-                    <br />
-                    <span className="text-primary">You Can Trust</span>
-                  </>
-                )}
-              </h1>
-              <p className="text-muted text-lg leading-relaxed max-w-lg">
-                {homepage?.heroSubtitle ||
-                  "Independent, rapid-response modeling for a sustainable energy future. Providing transparent, non-partisan assessments for policy makers and the public."}
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-4">
-              <Link
-                href="/assessments"
-                className="flex items-center justify-center rounded-lg h-14 px-8 bg-primary text-white text-base font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform"
-              >
-                Explore Assessments
+      <section className="hero">
+        <div className="hero-grid-lines" />
+        <div className="hero-inner">
+          <div className="hero-left">
+            <div className="hero-eyebrow">{homepage.eyebrow || "Independent assessment"}</div>
+            <h1>{homepage.heroTitle}</h1>
+            {homepage.heroSubtitle && <p className="hero-sub">{homepage.heroSubtitle}</p>}
+            <div className="hero-actions">
+              <Link href={homepage.heroCtaPrimaryHref || "/assessments"} className="btn-primary">
+                {homepage.heroCtaPrimaryLabel || "Explore assessments"}
               </Link>
-              <Link
-                href="/methodology"
-                className="flex items-center justify-center rounded-lg h-14 px-8 border-2 border-border text-foreground text-base font-bold hover:bg-gray-50 transition-colors"
-              >
-                Our Methodology
+              <Link href={homepage.heroCtaSecondaryHref || "/methodology"} className="btn-ghost">
+                {homepage.heroCtaSecondaryLabel || "How it works"}
               </Link>
             </div>
           </div>
-          <div className="order-1 md:order-2">
-            {homepage?.heroImage ? (
-              <div className="relative w-full aspect-[4/3] rounded-2xl shadow-2xl overflow-hidden">
-                <Image
-                  src={getStrapiMediaUrl(homepage.heroImage.url)}
-                  alt={homepage.heroImage.alternativeText || "Hero image"}
-                  fill
-                  className="object-cover"
-                  priority
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent" />
+          <div className="hero-right">
+            <div className="hero-stats">
+              <div className="hero-stats-title">Platform at a glance</div>
+              <div className="stat-row">
+                <div className="stat-icon">
+                  <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  </svg>
+                </div>
+                <div>
+                  <div className="stat-label">Independence</div>
+                  <div className="stat-value">All policies and jurisdictions</div>
+                  <div className="stat-note">
+                    One methodology, applied consistently on major Canadian energy and climate
+                    policy announcements.
+                  </div>
+                </div>
               </div>
-            ) : (
-              <div className="w-full aspect-[4/3] rounded-2xl shadow-2xl overflow-hidden bg-gradient-to-br from-primary/10 to-primary/30 flex items-center justify-center">
-                <span className="material-symbols-outlined text-primary/40 text-[120px]">
-                  solar_power
-                </span>
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* Core Pillars */}
-      <section className="px-6 md:px-20 py-16 flex justify-center bg-background-light">
-        <div className="max-w-[1200px] w-full flex flex-col gap-12">
-          <div className="flex flex-col gap-3 text-center md:text-left">
-            <h2 className="text-foreground text-3xl font-bold tracking-tight">
-              Our Core Pillars
-            </h2>
-            <p className="text-muted text-lg max-w-2xl">
-              Ensuring integrity and speed in every policy model we release to
-              maintain objective standards.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="flex flex-col gap-4 rounded-xl border border-border-dark bg-white p-8 hover:shadow-xl transition-shadow">
-              <div className="bg-primary/10 text-primary w-12 h-12 rounded-lg flex items-center justify-center">
-                <span className="material-symbols-outlined text-3xl">visibility</span>
-              </div>
-              <div className="flex flex-col gap-2">
-                <h3 className="text-foreground text-xl font-bold">Transparent</h3>
-                <p className="text-muted text-base leading-relaxed">
-                  Full methodology disclosure for every assessment. We publish our data sources and modeling assumptions openly.
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col gap-4 rounded-xl border border-border-dark bg-white p-8 hover:shadow-xl transition-shadow">
-              <div className="bg-accent-orange/10 text-accent-orange w-12 h-12 rounded-lg flex items-center justify-center">
-                <span className="material-symbols-outlined text-3xl">balance</span>
-              </div>
-              <div className="flex flex-col gap-2">
-                <h3 className="text-foreground text-xl font-bold">Fair</h3>
-                <p className="text-muted text-base leading-relaxed">
-                  Non-partisan analysis through a multi-stakeholder lens. We weigh economic and environmental impacts equally.
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col gap-4 rounded-xl border border-border-dark bg-white p-8 hover:shadow-xl transition-shadow">
-              <div className="bg-accent-green/10 text-accent-green w-12 h-12 rounded-lg flex items-center justify-center">
-                <span className="material-symbols-outlined text-3xl">bolt</span>
-              </div>
-              <div className="flex flex-col gap-2">
-                <h3 className="text-foreground text-xl font-bold">Fast</h3>
-                <p className="text-muted text-base leading-relaxed">
-                  Rapid modeling designed for current legislative cycles. Getting critical data to decision makers when it matters most.
-                </p>
+              <div className="stat-row">
+                <div className="stat-icon">
+                  <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
+                    <polyline points="16 18 22 12 16 6" />
+                    <polyline points="8 6 2 12 8 18" />
+                  </svg>
+                </div>
+                <div>
+                  <div className="stat-label">Transparency</div>
+                  <div className="stat-value">Open-source</div>
+                  <div className="stat-note">Code, data, assumptions. All public.</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Featured Assessments */}
-      <section className="px-6 md:px-20 py-16 flex justify-center bg-white">
-        <div className="max-w-[1200px] w-full flex flex-col gap-8">
-          <div className="flex items-center justify-between">
-            <h2 className="text-foreground text-2xl font-bold">Featured Assessments</h2>
-            <Link href="/assessments" className="text-primary font-bold text-sm flex items-center gap-1 hover:underline">
-              View all <span className="material-symbols-outlined text-sm">arrow_forward</span>
+      <section className="pillars">
+        <div className="pillars-inner">
+          <div className="section-label">Our commitment</div>
+          <div className="section-title">
+            Standardizing transparency
+            <br />
+            in energy policy analysis.
+          </div>
+          <div className="pillars-grid">
+            <article className="pillar-card">
+              <div className="pillar-icon">
+                <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+              </div>
+              <div className="pillar-title">Independent</div>
+              <div className="pillar-claim">
+                One methodology, applied consistently on major Canadian energy and climate policy
+                announcements.
+              </div>
+              <div className="pillar-desc">
+                A standardized methodology is applied to every policy evaluated, regardless of the
+                organization or jurisdiction it applies to.
+              </div>
+            </article>
+            <article className="pillar-card">
+              <div className="pillar-icon">
+                <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </svg>
+              </div>
+              <div className="pillar-title">Timely</div>
+              <div className="pillar-claim">
+                Assessments are published shortly after major energy policy announcements.
+              </div>
+              <div className="pillar-desc">
+                EPM delivers assessments shortly after major energy policies are announced, so
+                modelling results are useful while debates and public discourse are still active.
+              </div>
+            </article>
+            <article className="pillar-card">
+              <div className="pillar-icon">
+                <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
+                  <polyline points="16 18 22 12 16 6" />
+                  <polyline points="8 6 2 12 8 18" />
+                </svg>
+              </div>
+              <div className="pillar-title">Credible</div>
+              <div className="pillar-claim">
+                Every finding is backed by a publicly archived audit trail, from assumptions to
+                final outputs.
+              </div>
+              <div className="pillar-desc">
+                Every EPM brief is Zenodo-archived, QAQC-validated by independent experts, and
+                published with full documentation: code, assumptions, data, and results — all
+                available for public review and replication.
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section className="assessments-section">
+        <div className="assessments-inner">
+          <div className="section-header">
+            <div>
+              <div className="section-label">Latest work</div>
+              <div className="section-title">Assessments</div>
+            </div>
+            <Link className="link-all" href="/assessments">
+              View all assessments →
             </Link>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {services && services.length > 0
-              ? services.slice(0, 3).map((service) => (
-                  <div key={service.id} className="group flex flex-col overflow-hidden rounded-xl border border-border bg-white transition-all hover:-translate-y-1">
-                    {service.image ? (
-                      <div className="relative w-full aspect-video overflow-hidden">
-                        <Image src={getStrapiMediaUrl(service.image.url)} alt={service.image.alternativeText || service.title} fill className="object-cover" />
-                      </div>
-                    ) : (
-                      <div className="w-full aspect-video bg-gradient-to-br from-primary/5 to-primary/15 flex items-center justify-center">
-                        <span className="material-symbols-outlined text-primary/30 text-6xl">analytics</span>
-                      </div>
-                    )}
-                    <div className="p-6 flex flex-col gap-4">
-                      <h3 className="text-foreground text-lg font-bold group-hover:text-primary transition-colors">{service.title}</h3>
-                      {service.excerpt && <p className="text-muted text-sm">{service.excerpt}</p>}
-                      <div className="flex items-center justify-end border-t border-gray-100 pt-4 mt-auto">
-                        <div className="bg-primary/10 text-primary hover:bg-primary hover:text-white p-2 rounded-lg transition-colors cursor-pointer">
-                          <span className="material-symbols-outlined">chevron_right</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))
-              : [
-                  { title: "Federal Green Party 2025", desc: "Comprehensive analysis of the proposed environmental platform and economic viability.", tag: "Federal", year: "2025", metricLabel: "Reduction Claim", metricValue: "40% Emissions", metricColor: "text-accent-green", yearColor: "text-accent-green bg-accent-green/10" },
-                  { title: "Alberta NDP 2026", desc: "Grid reliability focus and impact assessment of provincial energy transitions.", tag: "Alberta", year: "2026", metricLabel: "Focus", metricValue: "Grid Stability", metricColor: "text-accent-orange", yearColor: "text-accent-orange bg-accent-orange/10" },
-                  { title: "Federal Clean Electricity", desc: "Detailed 2035 Net-Zero pathway analysis for national power generation systems.", tag: "Federal", year: "2025", metricLabel: "Pathway", metricValue: "Net-Zero 2035", metricColor: "text-primary", yearColor: "text-accent-green bg-accent-green/10" },
-                ].map((card) => (
-                  <div key={card.title} className="group flex flex-col overflow-hidden rounded-xl border border-border bg-white transition-all hover:-translate-y-1">
-                    <div className="w-full aspect-video bg-gradient-to-br from-primary/5 to-primary/15 flex items-center justify-center">
-                      <span className="material-symbols-outlined text-primary/30 text-6xl">analytics</span>
-                    </div>
-                    <div className="p-6 flex flex-col gap-4">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="px-2 py-0.5 bg-gray-100 rounded text-[10px] font-bold uppercase tracking-wider text-gray-600">Jurisdiction: {card.tag}</span>
-                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${card.yearColor}`}>Year: {card.year}</span>
-                      </div>
-                      <h3 className="text-foreground text-lg font-bold group-hover:text-primary transition-colors">{card.title}</h3>
-                      <p className="text-muted text-sm">{card.desc}</p>
-                      <div className="flex items-center justify-between border-t border-gray-100 pt-4 mt-auto">
-                        <div className="flex flex-col">
-                          <span className="text-[10px] text-gray-500 font-medium uppercase">{card.metricLabel}</span>
-                          <span className={`${card.metricColor} font-bold`}>{card.metricValue}</span>
-                        </div>
-                        <div className="bg-primary/10 text-primary hover:bg-primary hover:text-white p-2 rounded-lg transition-colors cursor-pointer">
-                          <span className="material-symbols-outlined">chevron_right</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Newsletter CTA */}
-      <section className="px-6 md:px-20 py-20 flex justify-center bg-primary text-white">
-        <div className="max-w-[1200px] w-full flex flex-col md:flex-row items-center justify-between gap-10">
-          <div className="flex flex-col gap-4 max-w-xl text-center md:text-left">
-            <h2 className="text-3xl md:text-4xl font-bold">Stay informed on policy changes</h2>
-            <p className="text-white/80 text-lg">
-              Subscribe to get rapid-response assessment notifications directly in your inbox as soon as they are published.
-            </p>
-          </div>
-          <div className="flex w-full max-w-md flex-col gap-3">
-            <div className="flex w-full items-stretch rounded-lg overflow-hidden h-14 bg-white">
-              <input className="w-full border-none bg-transparent text-foreground px-6 text-base font-normal placeholder:text-gray-400 focus:outline-none" placeholder="Enter your email" />
-              <button className="bg-accent-orange text-white px-8 font-bold hover:bg-accent-orange/90 transition-colors whitespace-nowrap">Join Now</button>
+          {featured.length > 0 ? (
+            <div className="assessments-grid">
+              {featured.map((a) => (
+                <AssessmentCard key={a.id} assessment={a} />
+              ))}
             </div>
-            <p className="text-xs text-white/60 text-center md:text-left">
-              By subscribing, you agree to our privacy policy and data protection terms.
-            </p>
-          </div>
+          ) : (
+            <div className="empty-state">
+              <p>
+                No assessments published yet. Add them via the{" "}
+                <a href="http://localhost:1337/admin" target="_blank" rel="noreferrer">
+                  Strapi admin
+                </a>
+                .
+              </p>
+            </div>
+          )}
         </div>
       </section>
     </>
