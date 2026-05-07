@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Open Insights favicon">
+  <!-- Dark background -->
+  <rect width="32" height="32" fill="#0f1410"/>
+  <!-- "OI" monogram in sage-light -->
+  <text
+    x="50%"
+    y="50%"
+    dominant-baseline="central"
+    text-anchor="middle"
+    font-family="IBM Plex Mono, monospace"
+    font-size="14"
+    font-weight="600"
+    fill="#6b8f62"
+  >OI</text>
+</svg>
