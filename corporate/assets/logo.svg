@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 40" role="img" aria-label="Open Insights">
+  <!-- Background (transparent) -->
+  <!-- "OPEN" wordmark -->
+  <text
+    x="0" y="17"
+    font-family="IBM Plex Mono, monospace"
+    font-size="14"
+    font-weight="500"
+    letter-spacing="2.5"
+    fill="#0f1410"
+  >OPEN</text>
+  <!-- Horizontal rule -->
+  <line x1="0" y1="21" x2="72" y2="21" stroke="#c8c2b4" stroke-width="1"/>
+  <!-- "INSIGHTS" wordmark -->
+  <text
+    x="0" y="36"
+    font-family="IBM Plex Mono, monospace"
+    font-size="14"
+    font-weight="300"
+    letter-spacing="2.5"
+    fill="#4a6741"
+  >INSIGHTS</text>
+</svg>
