@@ -84,7 +84,7 @@ export default async function HomePage() {
                 <div>
                   <div className="stat-label">Transparency</div>
                   <div className="stat-value">Open-source</div>
-                  <div className="stat-note">Code, data, assumptions. All public.</div>
+                  <div className="stat-note">Code, data, assumptions. All public and free.</div>
                 </div>
               </div>
             </div>

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { StrapiAssessment } from "@/types/strapi";
-import { formatAssessmentDate, getStrapiMediaUrl } from "@/lib/strapi";
+import { formatAssessmentDate, getAssessmentImage } from "@/lib/strapi";
 
 function PolicyStatusBadge({ status }: { status: StrapiAssessment["policyStatus"] }) {
   const cls =
@@ -27,7 +27,7 @@ export function AssessmentCard({
 }) {
   const a = assessment;
   const accentClass = a.accentClass && a.accentClass !== "default" ? ` ${a.accentClass}` : "";
-  const cardImg = a.cardImage ? getStrapiMediaUrl(a.cardImage.url) : null;
+  const cardImg = getAssessmentImage(a, "card");
 
   return (
     <article className="assessment-card">

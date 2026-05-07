@@ -97,6 +97,26 @@ export function getStrapiMediaUrl(url: string | undefined): string {
   return `${STRAPI_URL}${url}`;
 }
 
+const ASSESSMENT_LOCAL_IMAGES: Record<string, string> = {
+  "alberta-emissions-reduction-and-energy-development-plan":
+    "/assessments/alberta-emissions-reduction-and-energy-development-plan.png",
+  "bc-building-electrification-standard-2026-implementation":
+    "/assessments/bc-building-electrification-standard-2026-implementation.png",
+  "federal-clean-electricity-regulations-draft-framework":
+    "/assessments/federal-clean-electricity-regulations-draft-framework.png",
+  "ndp-federal-election-platform-energy-climate-chapter":
+    "/assessments/ndp-federal-election-platform-energy-climate-chapter.jpg",
+};
+
+export function getAssessmentImage(
+  a: { slug: string; cardImage?: { url: string } | null; detailImage?: { url: string } | null },
+  type: "card" | "detail"
+): string | null {
+  const cmsImage = type === "card" ? a.cardImage : a.detailImage;
+  if (cmsImage?.url) return getStrapiMediaUrl(cmsImage.url);
+  return ASSESSMENT_LOCAL_IMAGES[a.slug] ?? null;
+}
+
 export function formatAssessmentDate(dateStr: string): string {
   const d = new Date(dateStr);
   return d.toLocaleDateString("en-US", { month: "long", year: "numeric" });
