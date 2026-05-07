@@ -6,7 +6,7 @@ import {
   getAssessmentBySlug,
   getAssessments,
   formatAssessmentDate,
-  getStrapiMediaUrl,
+  getAssessmentImage,
 } from "@/lib/strapi";
 import { CopyCitation } from "@/components/blocks/CopyCitation";
 
@@ -61,7 +61,7 @@ export default async function AssessmentDetailPage({
 
   if (!a) notFound();
 
-  const detailImg = a.detailImage ? getStrapiMediaUrl(a.detailImage.url) : null;
+  const detailImg = getAssessmentImage(a, "detail");
 
   return (
     <>
@@ -148,6 +148,11 @@ export default async function AssessmentDetailPage({
             </div>
           )}
 
+          <div className="charts-placeholder" aria-label="Charts and visualizations placeholder">
+            <div className="charts-placeholder-label">Charts &amp; visualizations</div>
+            <div className="charts-placeholder-sublabel">Reserved for upcoming slides &middot; 16:9</div>
+          </div>
+
           {a.findings && a.findings.length > 0 && (
             <div className="detail-section">
               <h2>Key findings</h2>
@@ -231,66 +236,98 @@ export default async function AssessmentDetailPage({
               <div className="qf-label">Policy status</div>
               <div className="qf-value">{a.policyStatus}</div>
             </div>
-            {a.party && (
-              <div className="qf-row">
-                <div className="qf-label">Governing party</div>
-                <div className="qf-value">{a.party}</div>
+            <div className="qf-row">
+              {a.zenodoUrl ? (
+                <a href={a.zenodoUrl} target="_blank" rel="noreferrer" className="download-btn-primary">
+                  <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                  </svg>
+                  <span>Zenodo 2-page brief</span>
+                  <span className="download-tag-primary">PDF</span>
+                </a>
+              ) : (
+                <button className="download-btn-primary" disabled style={{ opacity: 0.5 }}>
+                  <span>Zenodo brief — coming soon</span>
+                </button>
+              )}
+            </div>
+            <div className="qf-row">
+              <div className="download-btn-wrap">
+                {a.datasetUrl ? (
+                  <a href={a.datasetUrl} target="_blank" rel="noreferrer" className="download-btn">
+                    <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                      <polyline points="7 10 12 15 17 10" />
+                      <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg>
+                    <span>Results dataset</span>
+                    <span className="download-tag">ZIP</span>
+                  </a>
+                ) : (
+                  <button className="download-btn" disabled style={{ opacity: 0.5, cursor: "not-allowed" }}>
+                    <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                      <polyline points="7 10 12 15 17 10" />
+                      <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg>
+                    <span>Results dataset — coming soon</span>
+                  </button>
+                )}
+                <span className="download-tooltip">Technical modelling expertise required to replicate results.</span>
               </div>
-            )}
-          </div>
-          <div className="qf-downloads">
-            <div className="qf-downloads-title">Download package</div>
-            {a.zenodoUrl ? (
-              <a href={a.zenodoUrl} target="_blank" rel="noreferrer" className="download-btn-primary">
-                <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                  <polyline points="14 2 14 8 20 8" />
-                </svg>
-                <span>Zenodo 2-page brief</span>
-                <span className="download-tag-primary">PDF</span>
-              </a>
-            ) : (
-              <button className="download-btn-primary" disabled style={{ opacity: 0.5 }}>
-                <span>Zenodo brief — coming soon</span>
-              </button>
-            )}
-            <div className="download-divider" />
-            {a.datasetUrl && (
-              <a href={a.datasetUrl} target="_blank" rel="noreferrer" className="download-btn">
-                <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                  <polyline points="7 10 12 15 17 10" />
-                  <line x1="12" y1="15" x2="12" y2="3" />
-                </svg>
-                <span>Results dataset</span>
-                <span className="download-tag">ZIP</span>
-              </a>
-            )}
-            {a.policyEncodingUrl && (
-              <a
-                href={a.policyEncodingUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="download-btn"
-              >
-                <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                  <polyline points="14 2 14 8 20 8" />
-                </svg>
-                <span>Policy encoding sheet</span>
-                <span className="download-tag">CSV</span>
-              </a>
-            )}
-            {a.githubUrl && (
-              <a href={a.githubUrl} target="_blank" rel="noreferrer" className="download-btn">
-                <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
-                  <polyline points="16 18 22 12 16 6" />
-                  <polyline points="8 6 2 12 8 18" />
-                </svg>
-                <span>View code on GitHub</span>
-                <span className="download-tag">↗</span>
-              </a>
-            )}
+            </div>
+            <div className="qf-row">
+              <div className="download-btn-wrap">
+                {a.policyEncodingUrl ? (
+                  <a
+                    href={a.policyEncodingUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="download-btn"
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                      <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                    <span>Policy encoding sheet</span>
+                    <span className="download-tag">CSV</span>
+                  </a>
+                ) : (
+                  <button className="download-btn" disabled style={{ opacity: 0.5, cursor: "not-allowed" }}>
+                    <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                      <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                    <span>Policy encoding sheet — coming soon</span>
+                  </button>
+                )}
+                <span className="download-tooltip">Technical modelling expertise required to replicate results.</span>
+              </div>
+            </div>
+            <div className="qf-row">
+              <div className="download-btn-wrap">
+                {a.githubUrl ? (
+                  <a href={a.githubUrl} target="_blank" rel="noreferrer" className="download-btn">
+                    <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
+                      <polyline points="16 18 22 12 16 6" />
+                      <polyline points="8 6 2 12 8 18" />
+                    </svg>
+                    <span>View code on GitHub</span>
+                    <span className="download-tag">↗</span>
+                  </a>
+                ) : (
+                  <button className="download-btn" disabled style={{ opacity: 0.5, cursor: "not-allowed" }}>
+                    <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
+                      <polyline points="16 18 22 12 16 6" />
+                      <polyline points="8 6 2 12 8 18" />
+                    </svg>
+                    <span>View code on GitHub — coming soon</span>
+                  </button>
+                )}
+                <span className="download-tooltip">Technical modelling expertise required to replicate results.</span>
+              </div>
+            </div>
           </div>
         </aside>
       </div>

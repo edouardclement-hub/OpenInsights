@@ -287,6 +287,12 @@ nav {
   letter-spacing: 0.08em; color: var(--ink);
   display: block; margin-bottom: 1rem;
 }
+a.service-tag--link {
+  color: var(--sage); text-decoration: none;
+  transition: color 0.2s;
+}
+a.service-tag--link::after { content: ' →'; }
+a.service-tag--link:hover { color: var(--sage-light); }
 .service-card p { font-size: 0.9rem; max-width: none; margin-bottom: 1.5rem; }
 .service-link {
   font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem;

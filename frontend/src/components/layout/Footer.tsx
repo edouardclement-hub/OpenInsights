@@ -31,7 +31,6 @@ export function Footer() {
             <ul className="footer-links">
               <li><Link href="/assessments">Assessments</Link></li>
               <li><Link href="/methodology">Methodology</Link></li>
-              <li><Link href="/compare">Compare tool</Link></li>
             </ul>
           </div>
 

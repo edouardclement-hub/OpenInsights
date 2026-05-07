@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import M3PlatformSchematic from "@/components/blocks/M3PlatformSchematic";
 
 export const metadata: Metadata = {
   title: "Methodology",
@@ -62,10 +63,7 @@ export default function MethodologyPage() {
           </p>
         </div>
 
-        <div className="m3-schematic">
-          <span className="m3-schematic-label">Image placeholder</span>
-          <span className="m3-schematic-sublabel">M3 Platform architecture diagram · 800 × 360 px</span>
-        </div>
+        <M3PlatformSchematic />
 
         <div className="timeline">
           <div className="timeline-title">The EPM assessment process</div>
