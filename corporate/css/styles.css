@@ -88,7 +88,10 @@ nav {
   font-size: 0.875rem; color: var(--sage); text-decoration: none;
   letter-spacing: 0.02em; transition: color 0.2s;
 }
-.nav-links a:hover { color: var(--sage-light); }
+.nav-links a:hover {
+  color: var(--sage-light);
+  text-decoration: underline; text-underline-offset: 4px;
+}
 
 .nav-cta {
   font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem;
@@ -292,14 +295,22 @@ a.service-tag--link {
   transition: color 0.2s;
 }
 a.service-tag--link::after { content: ' →'; }
-a.service-tag--link:hover { color: var(--sage-light); }
+a.service-tag--link:hover {
+  color: var(--sage-light);
+  text-decoration: underline; text-underline-offset: 3px;
+}
 .service-card p { font-size: 0.9rem; max-width: none; margin-bottom: 1.5rem; }
 .service-link {
   font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem;
   letter-spacing: 0.08em; color: var(--sage); text-decoration: none;
   display: flex; align-items: center; gap: 0.5rem;
+  transition: color 0.2s;
 }
 .service-link::after { content: '→'; }
+.service-link:hover {
+  color: var(--sage-light);
+  text-decoration: underline; text-underline-offset: 3px;
+}
 
 /* ── PARTNERS ────────────────────────────────────────────────── */
 .partners-section { background: var(--mist); padding: 3rem 0; }

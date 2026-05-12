@@ -46,7 +46,27 @@ export default async function HomePage() {
           <div className="hero-left">
             <div className="hero-eyebrow">{homepage.eyebrow || "Independent assessment"}</div>
             <h1>{homepage.heroTitle}</h1>
-            {homepage.heroSubtitle && <p className="hero-sub">{homepage.heroSubtitle}</p>}
+            {homepage.heroSubtitle && (
+              <p className="hero-sub">
+                {(() => {
+                  const parts = homepage.heroSubtitle.split("Open Insights");
+                  return parts.flatMap((part, i) => [
+                    part,
+                    i < parts.length - 1 && (
+                      <a
+                        key={i}
+                        href="https://www.openinsights.ca/"
+                        target="_blank"
+                        rel="noopener"
+                        className="hero-sub-link"
+                      >
+                        Open Insights
+                      </a>
+                    ),
+                  ]);
+                })()}
+              </p>
+            )}
             <div className="hero-actions">
               <Link href={homepage.heroCtaPrimaryHref || "/assessments"} className="btn-primary">
                 {homepage.heroCtaPrimaryLabel || "Explore assessments"}

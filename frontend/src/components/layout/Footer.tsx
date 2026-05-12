@@ -43,13 +43,6 @@ export function Footer() {
             </ul>
           </div>
 
-          <div>
-            <div className="footer-links-title">Open data</div>
-            <ul className="footer-links">
-              <li><a href="https://zenodo.org" target="_blank" rel="noreferrer">Zenodo archive</a></li>
-              <li><a href="https://github.com/edouardclement-hub/OpenInsights" target="_blank" rel="noreferrer">GitHub</a></li>
-            </ul>
-          </div>
         </div>
 
         <div className="footer-bottom">

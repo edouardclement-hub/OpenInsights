@@ -1,114 +1,147 @@
 "use client";
 
-import { useState, type CSSProperties, type ReactNode } from "react";
+import { useState } from "react";
 
-type ColorKey = "teal" | "cyan" | "blue" | "slate" | "mauve" | "rose";
-
-const C: Record<ColorKey, { bg: string; border: string; title: string; sub: string; dot: string }> = {
-  teal:  { bg: "#e8f6f6", border: "#3ba0a1", title: "#1a5657", sub: "#3ba0a1", dot: "#3ba0a1" },
-  cyan:  { bg: "#e3f4f8", border: "#1193b2", title: "#0a4e60", sub: "#1193b2", dot: "#1193b2" },
-  blue:  { bg: "#e4eff8", border: "#3a82b9", title: "#1b3f5c", sub: "#3a82b9", dot: "#3a82b9" },
-  slate: { bg: "#ededf8", border: "#6c6cae", title: "#2e2e5e", sub: "#6c6cae", dot: "#6c6cae" },
-  mauve: { bg: "#f2ebf2", border: "#8f528e", title: "#3e1f3e", sub: "#8f528e", dot: "#8f528e" },
-  rose:  { bg: "#faedf2", border: "#9e3b60", title: "#5a1530", sub: "#9e3b60", dot: "#9e3b60" },
+const TIER = {
+  green: {
+    containerBg:    "#EDF2EB",
+    containerBorder:"#5A7A52",
+    headColor:      "#2E4A27",
+    cardBg:         "#C8D9C3",
+    cardBorder:     "#5A7A52",
+    cardTitle:      "#1E3A18",
+    cardSub:        "#3D5E35",
+    linkColor:      "#2E4A27",
+  },
+  blue: {
+    containerBg:    "#E8EFF7",
+    containerBorder:"#3A5F8A",
+    headColor:      "#1A3A5C",
+    cardBg:         "#B8CEDF",
+    cardBorder:     "#3A5F8A",
+    cardTitle:      "#0F2740",
+    cardSub:        "#2C4D6E",
+    dropBg:         "#CDDAEB",
+    dropText:       "#0F2740",
+    dropBorder:     "#3A5F8A",
+    tagBg:          "#E8EFF7",
+    tagText:        "#0F2740",
+    tagBorder:      "#3A5F8A",
+    linkColor:      "#1A3A5C",
+  },
+  mauve: {
+    containerBg:    "#F0EBF4",
+    containerBorder:"#7A5A8A",
+    headColor:      "#3D1F52",
+    cardBg:         "#D9CCDF",
+    cardBorder:     "#7A5A8A",
+    cardTitle:      "#2A1240",
+    cardSub:        "#5A3D6E",
+  },
+  teal: {
+    containerBg:    "#E4F0EE",
+    containerBorder:"#2E7A6E",
+    headColor:      "#14453D",
+    cardBg:         "#AECEC9",
+    cardBorder:     "#2E7A6E",
+    cardTitle:      "#0A2E2A",
+    cardSub:        "#1E5A52",
+    linkColor:      "#2E7A6E",
+  },
 };
+
+const FONT = "'DM Sans', system-ui, sans-serif";
+
+const INPUTS = [
+  { id: "policy", label: "Policy Scenarios",       sub: "Carbon pricing, regulations" },
+  { id: "econ",   label: "Economic & Energy Data", sub: "GDP, fuel prices, trade flows" },
+  { id: "tech",   label: "Technology Assumptions", sub: "Cost curves, learning rates" },
+];
 
 type Model = {
   id: string;
   label: string;
-  color: ColorKey;
   capabilities: string[];
-  models: string[];
-  href: string;
+  modelNames: string[];
+  learnMore: string;
 };
 
 const MODELS: Model[] = [
   {
     id: "energy",
-    label: "Energy system",
-    color: "teal",
+    label: "Energy System Models",
     capabilities: [
-      "Whole-economy emissions paths",
-      "Oil & gas, buildings, transport",
+      "Whole-economy emissions pathways",
+      "Oil & gas, buildings, transport, industry",
       "Net-zero scenarios to 2050",
-      "Hydrogen pathways & tech mix",
+      "Hydrogen pathways & technology mix",
     ],
-    models: ["MESSAGEix-Canada", "CIMS", "EnergyABM"],
-    href: "https://m3.cme-emh.ca/open-models/#energy-systems",
+    modelNames: ["MESSAGEix-Canada", "CIMS", "EnergyABM"],
+    learnMore: "https://m3.cme-emh.ca/open-models/",
   },
   {
     id: "power",
-    label: "Power system",
-    color: "cyan",
+    label: "Power System Models",
     capabilities: [
       "Least-cost grid configuration",
-      "Hourly dispatch & reliability",
-      "Interprovincial transmission",
-      "Wind, solar, storage, SMR",
+      "Hourly dispatch & reliability (8,760 hrs)",
+      "Interprovincial transmission planning",
+      "Wind, solar, storage, SMR, gas + CCS",
     ],
-    models: ["COPPER", "SILVER"],
-    href: "https://m3.cme-emh.ca/open-models/#power-systems",
+    modelNames: ["COPPER", "SILVER"],
+    learnMore: "https://m3.cme-emh.ca/open-models/",
   },
   {
     id: "economic",
-    label: "Economic & labour",
-    color: "blue",
+    label: "Economic & Labour Models",
     capabilities: [
       "GDP & household budget impacts",
-      "Jobs by sector & occupation",
-      "Trade flows, tariff impacts",
-      "All 10 provinces & 50+ sectors",
+      "Jobs by sector, occupation & province",
+      "Trade flows & tariff analysis",
+      "All 10 provinces, 50+ sectors",
     ],
-    models: ["M3 Macromodel", "LabourABM"],
-    href: "https://m3.cme-emh.ca/open-models/#economic",
+    modelNames: ["M3 Macromodel", "LabourABM"],
+    learnMore: "https://m3.cme-emh.ca/open-models/",
   },
   {
     id: "sectoral",
-    label: "Sectoral & technology",
-    color: "slate",
+    label: "Sectoral & Technology Models",
     capabilities: [
-      "Building decarbonization",
+      "Building decarbonization pathways",
       "Clean tech cost forecasts",
       "Solar, wind, EVs, heat pumps, H₂",
       "Uncertainty quantification",
     ],
-    models: ["BDA-OSM", "Tech cost models"],
-    href: "https://m3.cme-emh.ca/open-models/#sectoral",
+    modelNames: ["BDA-OSM", "Tech cost models"],
+    learnMore: "https://m3.cme-emh.ca/open-models/",
   },
   {
     id: "integrated",
-    label: "Integrated models",
-    color: "mauve",
+    label: "Integrated Models",
     capabilities: [
       "Demand + supply in one workflow",
       "Electricity price feedbacks",
-      "8,760-hour grid feasibility",
+      "8,760-hour grid feasibility check",
       "Consistent cross-sector scenarios",
     ],
-    models: ["CIMS-COPPER-SILVER"],
-    href: "https://m3.cme-emh.ca/open-models/#integrated",
+    modelNames: ["CIMS-COPPER-SILVER"],
+    learnMore: "https://m3.cme-emh.ca/open-models/",
   },
 ];
 
-const OUTPUTS: { label: string; sub: string; color: ColorKey; href: string }[] = [
-  { label: "Abatement cost curves", sub: "Cheapest path to emissions targets", color: "rose",  href: "/methodology" },
-  { label: "Grid & power flows",     sub: "Reliability & dispatch analysis",    color: "cyan",  href: "/methodology" },
-  { label: "Jobs & economy",         sub: "Provincial employment shifts",       color: "blue",  href: "/methodology" },
-  { label: "Investment & tech",      sub: "Capital flows, cost curves",         color: "slate", href: "/methodology" },
+const OUTPUTS = [
+  { id: "macc",   label: "Abatement Cost Curves",  sub: "Cheapest path to emissions targets" },
+  { id: "grid",   label: "Grid & Power Flows",      sub: "Reliability & dispatch analysis" },
+  { id: "jobs",   label: "Jobs & Economy",          sub: "Provincial employment shifts" },
+  { id: "invest", label: "Investment & Technology", sub: "Capital flows, cost curves" },
 ];
 
-const BADGES: { label: string; color: ColorKey; href: string }[] = [
-  { label: "Code (GitHub)", color: "teal",  href: "https://github.com/edouardclement-hub/OpenInsights" },
-  { label: "Data (CODERS)", color: "cyan",  href: "https://m3.cme-emh.ca/open-data-assumptions/" },
-  { label: "Methodology",   color: "slate", href: "https://epm.openinsights.ca/methodology" },
-];
-
-function ExternalLinkIcon({ size = 10 }: { size?: number }) {
+function ExternalLinkIcon({ color }: { color: string }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0 }}>
+    <svg width="11" height="11" viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0 }}>
       <path
         d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V7M7 1h4m0 0v4m0-4L5 7"
-        stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"
+        stroke={color} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"
       />
     </svg>
   );
@@ -117,140 +150,119 @@ function ExternalLinkIcon({ size = 10 }: { size?: number }) {
 function ChevronIcon({ open }: { open: boolean }) {
   return (
     <svg
-      width="10" height="10" viewBox="0 0 12 12" fill="none"
-      style={{ flexShrink: 0, transition: "transform 0.18s", transform: open ? "rotate(180deg)" : "rotate(0deg)" }}
+      width="13" height="13" viewBox="0 0 14 14" fill="none"
+      style={{ flexShrink: 0, transition: "transform 0.22s", transform: open ? "rotate(180deg)" : "rotate(0deg)" }}
     >
-      <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M3 5l4 4 4-4" stroke="currentColor" strokeWidth="1.6"
+        strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
 
 function Arrow() {
   return (
-    <div style={{ display: "flex", justifyContent: "center", padding: "4px 0" }}>
-      <svg width="18" height="20" viewBox="0 0 18 20" fill="none">
-        <path d="M9 2v12M3 10l6 7 6-7" stroke="#888" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+    <div style={{ display: "flex", justifyContent: "center", padding: "7px 0" }}>
+      <svg width="20" height="24" viewBox="0 0 20 24" fill="none">
+        <path d="M10 2v16M4 14l6 7 6-7" stroke="#8A8A85" strokeWidth="1.6"
+          strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     </div>
   );
 }
 
-function Dot({ color }: { color: ColorKey }) {
-  return (
+function TierHead({ label, href, color }: { label: string; href?: string; color: string }) {
+  const inner = (
     <span style={{
-      width: 7, height: 7, borderRadius: "50%",
-      background: C[color].dot, display: "block", flexShrink: 0,
-    }} />
-  );
-}
-
-function Bracket({
-  label, color, borderColor, children, style = {},
-}: {
-  label: string;
-  color?: ColorKey;
-  borderColor?: string;
-  children: ReactNode;
-  style?: CSSProperties;
-}) {
-  const bc = borderColor || (color ? C[color].border : "#000");
-  const tc = color ? C[color].title : "#000";
-  const dc = color ? C[color].dot : bc;
-  return (
-    <div style={{
-      border: `1.5px solid ${bc}`,
-      borderRadius: 12,
-      padding: "14px 10px 12px",
-      position: "relative",
-      ...style,
+      display: "inline-flex", alignItems: "center", gap: 5,
+      fontSize: 11, fontWeight: 600, letterSpacing: "0.08em",
+      textTransform: "uppercase", color,
     }}>
-      <div style={{
-        position: "absolute", top: -10, left: 12,
-        background: "var(--background, #fff)",
-        padding: "0 7px",
-        display: "flex", alignItems: "center", gap: 5,
-      }}>
-        <span style={{ width: 6, height: 6, borderRadius: "50%", background: dc, display: "block", flexShrink: 0 }} />
-        <span style={{
-          fontSize: 11, fontWeight: 500, letterSpacing: "0.12em",
-          color: tc, textTransform: "uppercase",
-        }}>
-          {label}
-        </span>
-      </div>
-      {children}
+      {label} {href && <ExternalLinkIcon color={color} />}
+    </span>
+  );
+  return (
+    <div style={{ marginBottom: 9 }}>
+      {href
+        ? <a href={href} target="_blank" rel="noopener noreferrer"
+            style={{ textDecoration: "none" }}
+            onMouseEnter={e => (e.currentTarget.style.opacity = "0.7")}
+            onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
+          >{inner}</a>
+        : inner
+      }
     </div>
   );
 }
 
-function ModelCard({
-  model, isOpen, onToggle,
-}: {
-  model: Model;
-  isOpen: boolean;
-  onToggle: () => void;
-}) {
-  const c = C[model.color];
+function ModelCard({ model }: { model: Model }) {
+  const [open, setOpen] = useState(false);
+  const b = TIER.blue;
+
   return (
     <div
-      onClick={onToggle}
       style={{
-        background: c.bg,
-        border: `1px solid ${c.border}`,
-        borderRadius: 9,
-        padding: "9px 9px 8px",
-        cursor: "pointer",
-        userSelect: "none",
-        flex: 1,
-        minWidth: 0,
-        transition: "opacity 0.15s",
+        flex: 1, minWidth: 0,
+        background: open ? b.dropBg : b.cardBg,
+        border: `1.5px solid ${b.cardBorder}`,
+        borderRadius: 8,
+        overflow: "hidden",
+        transition: "background 0.18s",
+        fontFamily: FONT,
       }}
-      role="button"
-      tabIndex={0}
-      aria-expanded={isOpen}
-      onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && onToggle()}
     >
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 3 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-          <Dot color={model.color} />
-          <span style={{ fontSize: 11, fontWeight: 500, color: c.title, lineHeight: 1.25 }}>
-            {model.label}
-          </span>
-        </div>
-        <span style={{ color: c.title }}>
-          <ChevronIcon open={isOpen} />
-        </span>
+      <div
+        role="button"
+        tabIndex={0}
+        aria-expanded={open}
+        onClick={() => setOpen(v => !v)}
+        onKeyDown={e => (e.key === "Enter" || e.key === " ") && setOpen(v => !v)}
+        style={{
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          gap: 6, padding: "10px 10px",
+          color: b.cardTitle, cursor: "pointer", userSelect: "none", outline: "none",
+        }}
+      >
+        <span style={{ fontSize: 12, fontWeight: 500, lineHeight: 1.35 }}>{model.label}</span>
+        <ChevronIcon open={open} />
       </div>
 
-      {isOpen && (
-        <div style={{ marginTop: 7 }}>
-          <ul style={{ margin: "0 0 6px 12px", padding: 0, listStyle: "disc" }}>
-            {model.capabilities.map((cap) => (
-              <li key={cap} style={{ fontSize: 10, color: c.title, lineHeight: 1.5 }}>{cap}</li>
+      {open && (
+        <div style={{
+          padding: "0 10px 12px",
+          borderTop: `1px solid ${b.dropBorder}`,
+          background: b.dropBg,
+        }}>
+          <ul style={{ margin: "10px 0 10px 14px", padding: 0, listStyle: "disc" }}>
+            {model.capabilities.map(c => (
+              <li key={c} style={{ fontSize: 11.5, color: b.dropText, lineHeight: 1.6, marginBottom: 1 }}>
+                {c}
+              </li>
             ))}
           </ul>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 3, marginBottom: 6 }}>
-            {model.models.map((m) => (
-              <span key={m} style={{
-                fontSize: 9, fontWeight: 500, padding: "1px 5px", borderRadius: 4,
-                background: c.bg, color: c.title, border: `1px solid ${c.border}`,
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 10 }}>
+            {model.modelNames.map(name => (
+              <span key={name} style={{
+                fontSize: 10, fontWeight: 500, letterSpacing: "0.04em",
+                padding: "2px 7px", borderRadius: 4,
+                background: b.tagBg, color: b.tagText, border: `1px solid ${b.tagBorder}`,
+                whiteSpace: "nowrap",
               }}>
-                {m}
+                {name}
               </span>
             ))}
           </div>
           <a
-            href={model.href}
+            href={model.learnMore}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={(e) => e.stopPropagation()}
             style={{
-              fontSize: 10, fontWeight: 500, color: c.sub,
-              textDecoration: "none",
-              display: "inline-flex", alignItems: "center", gap: 3,
+              display: "inline-flex", alignItems: "center", gap: 4,
+              fontSize: 11, fontWeight: 500, color: b.linkColor, textDecoration: "none",
             }}
+            onMouseEnter={e => (e.currentTarget.style.opacity = "0.72")}
+            onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
           >
-            View details <ExternalLinkIcon />
+            View model details <ExternalLinkIcon color={b.linkColor} />
           </a>
         </div>
       )}
@@ -258,156 +270,170 @@ function ModelCard({
   );
 }
 
+function FooterBadge({
+  label, href, bg, border, text,
+}: {
+  label: string;
+  href: string;
+  bg: string;
+  border: string;
+  text: string;
+}) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{
+        display: "inline-flex", alignItems: "center", gap: 5,
+        fontSize: 11, fontWeight: 500, letterSpacing: "0.03em",
+        padding: "4px 12px", borderRadius: 20,
+        background: bg, color: text, border: `1.5px solid ${border}`,
+        textDecoration: "none", transition: "opacity 0.15s", fontFamily: FONT,
+      }}
+      onMouseEnter={e => (e.currentTarget.style.opacity = "0.72")}
+      onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
+    >
+      <ExternalLinkIcon color={text} /> {label}
+    </a>
+  );
+}
+
 export default function M3PlatformSchematic() {
-  const [openCard, setOpenCard] = useState<string | null>(null);
-  const toggle = (id: string) => setOpenCard((prev) => (prev === id ? null : id));
+  const g  = TIER.green;
+  const b  = TIER.blue;
+  const mv = TIER.mauve;
+  const tl = TIER.teal;
 
   return (
-    <div style={{
-      fontFamily: "inherit",
-      maxWidth: 860,
-      margin: "0 auto",
-      padding: "32px 0",
-    }}>
+    <section
+      aria-label="M3 Platform capabilities schematic"
+      style={{ fontFamily: FONT, maxWidth: 900, margin: "0 auto", padding: "48px 20px 32px" }}
+    >
       <div style={{
-        border: "1.5px solid #000",
-        borderRadius: 16,
-        padding: "18px 12px 14px",
+        border: "2px solid #2C2C2A",
+        borderRadius: 14,
+        padding: "28px 14px 14px",
         position: "relative",
       }}>
         <div style={{
-          position: "absolute", top: -11, left: 16,
-          background: "var(--background, #fff)",
-          padding: "0 8px",
-          display: "flex", alignItems: "center", gap: 5,
+          position: "absolute", top: -16, left: "50%", transform: "translateX(-50%)",
+          background: "var(--color-background-primary, #fff)",
+          padding: "0 16px",
+          whiteSpace: "nowrap",
         }}>
-          <span style={{ width: 7, height: 7, borderRadius: "50%", background: C.cyan.dot, display: "block" }} />
-          <span style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.13em", color: C.cyan.dot, textTransform: "uppercase" }}>
+          <span style={{ fontSize: 17, fontWeight: 500, letterSpacing: "0.06em", color: "var(--color-text-primary)", fontFamily: FONT }}>
             M3 Platform
           </span>
         </div>
 
-        <Bracket label="Open data: CODERS" color="teal" style={{ marginBottom: 4 }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
-            {[
-              { title: "Policy scenarios",       sub: "Carbon pricing, regulations" },
-              { title: "Economic & energy data", sub: "GDP, fuel prices, trade flows" },
-              { title: "Technology assumptions", sub: "Cost curves, learning rates" },
-            ].map((inp) => (
-              <div key={inp.title} style={{
-                background: C.teal.bg, border: `1px solid ${C.teal.border}`,
-                borderRadius: 9, padding: "11px 12px",
+        <div style={{
+          background: g.containerBg, border: `1.5px solid ${g.containerBorder}`,
+          borderRadius: 10, padding: "12px 12px 10px", marginBottom: 0,
+        }}>
+          <TierHead label="Open Data: CODERS" href="https://m3.cme-emh.ca/open-data-assumptions/" color={g.headColor} />
+          <div style={{ display: "flex", gap: 8 }}>
+            {INPUTS.map(inp => (
+              <div key={inp.id} style={{
+                flex: 1,
+                background: g.cardBg, border: `1.5px solid ${g.cardBorder}`,
+                borderRadius: 8, padding: "9px 11px",
               }}>
-                <div style={{ fontSize: 12, fontWeight: 500, color: C.teal.title, marginBottom: 2 }}>{inp.title}</div>
-                <div style={{ fontSize: 11, color: C.teal.sub }}>{inp.sub}</div>
+                <div style={{ fontSize: 12, fontWeight: 500, color: g.cardTitle, marginBottom: 2 }}>{inp.label}</div>
+                <div style={{ fontSize: 11, color: g.cardSub }}>{inp.sub}</div>
               </div>
             ))}
           </div>
-        </Bracket>
+        </div>
 
         <Arrow />
-
-        <Bracket label="Open code: models" color="cyan" style={{ marginBottom: 4 }}>
-          <div style={{ display: "flex", gap: 6 }}>
-            {MODELS.map((model) => (
-              <ModelCard
-                key={model.id}
-                model={model}
-                isOpen={openCard === model.id}
-                onToggle={() => toggle(model.id)}
-              />
-            ))}
-          </div>
-        </Bracket>
-
-        <Arrow />
-
-        <Bracket label="Model outputs" color="rose" style={{ marginBottom: 4 }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 7 }}>
-            {OUTPUTS.map((out) => {
-              const c = C[out.color];
-              return (
-                <a
-                  key={out.label}
-                  href={out.href}
-                  style={{
-                    display: "block", background: c.bg,
-                    border: `1px solid ${c.border}`,
-                    borderRadius: 9, padding: "11px 12px",
-                    textDecoration: "none", transition: "opacity 0.15s",
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.8")}
-                  onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
-                >
-                  <div style={{ fontSize: 12, fontWeight: 500, color: c.title, marginBottom: 2 }}>{out.label}</div>
-                  <div style={{ fontSize: 11, color: c.sub }}>{out.sub}</div>
-                </a>
-              );
-            })}
-          </div>
-        </Bracket>
-
-        <Arrow />
-
-        <Bracket label="Open visualization: IDEA" color="mauve" style={{ marginBottom: 14 }}>
-          <a
-            href="https://m3.cme-emh.ca/open-visualization-tools/"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: "flex", alignItems: "center", justifyContent: "space-between",
-              background: C.mauve.bg, border: `1px solid ${C.mauve.border}`,
-              borderRadius: 9, padding: "12px 14px",
-              textDecoration: "none", transition: "opacity 0.15s",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.8")}
-            onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
-          >
-            <div>
-              <span style={{ fontSize: 13, fontWeight: 500, color: C.mauve.title, marginRight: 8 }}>
-                IDEA visualization dashboard
-              </span>
-              <span style={{ fontSize: 11, color: C.mauve.sub }}>
-                Explore model inputs, outputs &amp; scenarios interactively
-              </span>
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 4, color: C.mauve.sub, fontSize: 12, fontWeight: 500, flexShrink: 0, marginLeft: 10 }}>
-              Open dashboard <ExternalLinkIcon size={11} />
-            </div>
-          </a>
-        </Bracket>
 
         <div style={{
-          borderTop: "0.5px solid rgba(0,0,0,0.12)",
-          paddingTop: 10,
-          display: "flex", alignItems: "center", gap: 7, flexWrap: "wrap",
+          background: b.containerBg, border: `1.5px solid ${b.containerBorder}`,
+          borderRadius: 10, padding: "12px 12px 10px", marginBottom: 0,
         }}>
-          <span style={{ fontSize: 11, color: "#666" }}>Open source:</span>
-          {BADGES.map((b) => {
-            const c = C[b.color];
-            return (
-              <a
-                key={b.label}
-                href={b.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: "inline-flex", alignItems: "center", gap: 4,
-                  fontSize: 11, fontWeight: 500, padding: "3px 9px", borderRadius: 20,
-                  background: c.bg, color: c.title,
-                  border: `1px solid ${c.border}`,
-                  textDecoration: "none", letterSpacing: "0.03em",
-                  transition: "opacity 0.15s",
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.75")}
-                onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
-              >
-                <ExternalLinkIcon /> {b.label}
-              </a>
-            );
-          })}
+          <TierHead label="Open Code: MODELS" href="https://m3.cme-emh.ca/open-models/" color={b.headColor} />
+          <div style={{ display: "flex", gap: 7 }}>
+            {MODELS.map(model => <ModelCard key={model.id} model={model} />)}
+          </div>
         </div>
+
+        <Arrow />
+
+        <div style={{
+          background: mv.containerBg, border: `1.5px solid ${mv.containerBorder}`,
+          borderRadius: 10, padding: "12px 12px 10px", marginBottom: 0,
+        }}>
+          <TierHead label="Model Outputs" color={mv.headColor} />
+          <div style={{ display: "flex", gap: 8 }}>
+            {OUTPUTS.map(out => (
+              <div key={out.id} style={{
+                flex: 1,
+                background: mv.cardBg, border: `1.5px solid ${mv.cardBorder}`,
+                borderRadius: 8, padding: "9px 11px",
+              }}>
+                <div style={{ fontSize: 12, fontWeight: 500, color: mv.cardTitle, marginBottom: 2 }}>{out.label}</div>
+                <div style={{ fontSize: 11, color: mv.cardSub }}>{out.sub}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <Arrow />
+
+        <div style={{
+          background: tl.containerBg, border: `1.5px solid ${tl.containerBorder}`,
+          borderRadius: 10, padding: "12px 12px 10px", marginBottom: 0,
+        }}>
+          <TierHead label="Open Visualization: IDEA" href="https://m3.cme-emh.ca/open-visualization-tools/" color={tl.headColor} />
+          <div style={{
+            background: tl.cardBg, border: `1.5px solid ${tl.cardBorder}`,
+            borderRadius: 8, padding: "10px 14px",
+          }}>
+            <div style={{ fontSize: 13, fontWeight: 500, color: tl.cardTitle, marginBottom: 2 }}>
+              IDEA Visualization Dashboard
+            </div>
+            <div style={{ fontSize: 11, color: tl.cardSub }}>
+              Explore model inputs, outputs &amp; scenarios interactively
+            </div>
+          </div>
+        </div>
+
+        <Arrow />
+
+        <div style={{
+          background: "var(--color-background-secondary, #F5F5F3)",
+          border: "0.5px solid rgba(0,0,0,0.12)",
+          borderRadius: 9, padding: "10px 14px",
+          display: "flex", alignItems: "center", flexWrap: "wrap", gap: 8,
+        }}>
+          <span style={{
+            fontSize: 11, fontWeight: 600, letterSpacing: "0.08em",
+            textTransform: "uppercase", color: "#3A3A38", marginRight: 4,
+          }}>
+            Open Source
+          </span>
+
+          <FooterBadge
+            label="Models"
+            href="https://m3.cme-emh.ca/open-models/"
+            bg={g.containerBg} border={g.containerBorder} text={g.headColor}
+          />
+
+          <FooterBadge
+            label="Data (CODERS)"
+            href="https://m3.cme-emh.ca/open-data-assumptions/"
+            bg={b.containerBg} border={b.containerBorder} text={b.headColor}
+          />
+
+          <FooterBadge
+            label="Visualization (IDEA)"
+            href="https://m3.cme-emh.ca/open-visualization-tools/"
+            bg={tl.containerBg} border={tl.containerBorder} text={tl.headColor}
+          />
+        </div>
+
       </div>
-    </div>
+    </section>
   );
 }
