@@ -74,7 +74,11 @@ export default async function AboutPage() {
         <div className="about-main">
           <h2>What is Open Insights?</h2>
           <p>
-            The Energy Policy Monitor (EPM) is led by the Open Insights team, enabled by{" "}
+            The Energy Policy Monitor (EPM) is led by the{" "}
+            <a href="https://www.openinsights.ca/" target="_blank" rel="noopener" style={{ color: "var(--teal)" }}>
+              Open Insights
+            </a>
+            {" "}team, enabled by{" "}
             <a href="https://cme-emh.ca/en/" target="_blank" rel="noreferrer" style={{ color: "var(--teal)" }}>
               Energy Modelling Hub
             </a>

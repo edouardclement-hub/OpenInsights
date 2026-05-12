@@ -39,31 +39,10 @@ export default function ContactPage() {
             </div>
             <div>
               <div className="contact-channel-label">Email</div>
-              <div className="contact-channel-value">info@openinsights.org</div>
-              <div className="contact-channel-note">For media, research, and partnership inquiries.</div>
-            </div>
-          </div>
-
-          <div className="contact-channel">
-            <div className="contact-channel-icon">
-              <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
-                <polyline points="16 18 22 12 16 6" />
-                <polyline points="8 6 2 12 8 18" />
-              </svg>
-            </div>
-            <div>
-              <div className="contact-channel-label">GitHub</div>
               <div className="contact-channel-value">
-                <a
-                  href="https://github.com/edouardclement-hub/OpenInsights"
-                  target="_blank"
-                  rel="noreferrer"
-                  style={{ color: "var(--teal)" }}
-                >
-                  edouardclement-hub/OpenInsights
-                </a>
+                <a href="mailto:deven@openinsights.ca">deven@openinsights.ca</a>
               </div>
-              <div className="contact-channel-note">Issues, pull requests, and replication questions.</div>
+              <div className="contact-channel-note">For media, research, and partnership inquiries.</div>
             </div>
           </div>
 

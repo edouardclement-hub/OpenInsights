@@ -33,6 +33,7 @@ export function AssessmentCard({
     <article className="assessment-card">
       <div className={`card-accent${accentClass}`} />
       <div className="card-visual">
+        <div className="card-example-banner">Example</div>
         {cardImg ? (
           <Image
             src={cardImg}

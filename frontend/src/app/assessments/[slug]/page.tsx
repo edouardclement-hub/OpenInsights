@@ -127,6 +127,12 @@ export default async function AssessmentDetailPage({
 
       <div className="detail-main">
         <div className="detail-content">
+          <div className="example-notice" role="note">
+            <div className="example-notice-label">Example assessment</div>
+            <p>
+              This is a fictional example assessment. It was created for demonstration purposes only and does not represent a real policy evaluation, real modelled findings, or the views of any organization.
+            </p>
+          </div>
           {detailImg ? (
             <div className="detail-photo">
               <Image
@@ -172,6 +178,7 @@ export default async function AssessmentDetailPage({
               <div className="cite-block-label">How to cite this assessment</div>
               <div className="cite-text">{a.citation}</div>
               <CopyCitation citation={a.citation} />
+              <div className="cite-do-not-cite">This is a fictional example. Do not cite.</div>
             </div>
           )}
 
