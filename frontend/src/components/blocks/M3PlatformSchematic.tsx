@@ -100,7 +100,7 @@ const OUTPUTS: { label: string; sub: string; color: ColorKey; href: string }[] =
 const BADGES: { label: string; color: ColorKey; href: string }[] = [
   { label: "Code (GitHub)", color: "teal",  href: "https://github.com/edouardclement-hub/OpenInsights" },
   { label: "Data (CODERS)", color: "cyan",  href: "https://m3.cme-emh.ca/open-data-assumptions/" },
-  { label: "Methodology",   color: "slate", href: "https://open-insights-frontend.vercel.app/methodology" },
+  { label: "Methodology",   color: "slate", href: "https://epm.openinsights.ca/methodology" },
 ];
 
 function ExternalLinkIcon({ size = 10 }: { size?: number }) {
