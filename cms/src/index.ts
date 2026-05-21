@@ -156,6 +156,43 @@ const SAMPLE_FAQS: any[] = [
   },
 ];
 
+const CONSERVATIVE_2021: any = {
+  title: 'Conservative Party of Canada — Federal Election Platform 2021 Energy and Climate Policy Assessment',
+  slug: 'conservative-party-federal-election-platform-2021-energy-climate',
+  publishedDate: '2026-05-21',
+  jurisdiction: 'Federal',
+  party: 'Conservative',
+  status: 'Completed',
+  policyStatus: 'Proposed',
+  sector: 'Election Platform',
+  isExample: false,
+  lead: 'Open Insights',
+  tags: ['Election Platform', 'federal'],
+  claim:
+    "Under the proposed climate policy scenario, Canada's total emissions are projected to reach approximately 633 Mt CO₂e by 2030, representing a 6% decrease from the 2021 implemented policies baseline.",
+  finding:
+    'Manufacturing and industry have a 17.9 Mt CO₂e reduction by 2030, electricity emissions and demand will increase by 2050 alongside a 233 PJ surge in hydrogen adoption.',
+  claimedValue: '633 Mt CO₂e by 2030',
+  modelledValue: '6% decrease vs 2021 baseline',
+  execSummary:
+    'This assessment evaluates the emissions and energy demand impacts of the Conservative Party of Canada — Federal Election Platform 2021. The strategy replaces the consumer carbon price with a personal low-carbon savings account, eliminates federal clean electricity regulations, and maintains industrial carbon pricing (OBPS) alongside Zero-Emission Vehicle (ZEV) mandates and carbon capture tax credits.',
+  findings: [
+    { text: '<strong>Emissions Reductions:</strong> Total emissions are projected to drop to 633 Mt CO₂e by 2030, a 6% decrease relative to the 2021 baseline. The manufacturing and industrial sectors drive the most immediate relief, cutting emissions by roughly 17.9 Mt CO₂e by 2030.' },
+    { text: '<strong>Long-Term Sectoral Shifts:</strong> By 2050, the transportation sector sees a decline of 59.27 Mt CO₂e, aligning with a 910 PJ drop in oil product demand. Conversely, electricity emissions will rise by 23.03 Mt CO₂e alongside a 300 PJ surge in power demand.' },
+    { text: '<strong>Energy Transition:</strong> While total energy demand decreases by 260 PJ, clean energy pivots toward hydrogen, which experiences a notable 233 PJ increase by 2050.' },
+  ],
+  epmPlus: false,
+  accentClass: 'default',
+  citation:
+    'Open Insights. (2026). Conservative Party of Canada — Federal Election Platform 2021 Report. Zenodo. https://doi.org/10.5281/zenodo.20314491',
+  zenodoUrl: 'https://zenodo.org/records/20314491',
+  datasetUrl: 'https://gitlab.com/sesit/cims-models-fork/-/tree/SFU_update/results?ref_type=heads',
+  policyEncodingUrl: 'https://gitlab.com/cme-emh/energy-policy-monitor/-/tree/SFU_clean/scenarios?ref_type=heads',
+  githubUrl: 'https://gitlab.com/cme-emh/energy-policy-monitor/-/tree/SFU_clean/scenarios?ref_type=heads',
+  assumptionsUrl: 'https://docs.google.com/spreadsheets/d/14h-7U0Mc0CI8i0VngaiIz1QHG_JNrpBB/edit?gid=810528026#gid=810528026',
+  publishedAt: new Date().toISOString(),
+};
+
 async function seedIfEmpty(strapi: Core.Strapi) {
   // Seed assessments
   const existing = await strapi.documents('api::assessment.assessment').findMany({ limit: 1 });
@@ -165,6 +202,16 @@ async function seedIfEmpty(strapi: Core.Strapi) {
       await strapi.documents('api::assessment.assessment').create({ data, status: 'published' });
     }
     strapi.log.info('[EPM seed] Seeded sample assessments.');
+  }
+
+  // Upsert the Conservative 2021 assessment (real, non-example) by slug.
+  const conservativeExisting = await strapi.documents('api::assessment.assessment').findMany({
+    filters: { slug: { $eq: CONSERVATIVE_2021.slug } },
+    limit: 1,
+  });
+  if (conservativeExisting.length === 0) {
+    await strapi.documents('api::assessment.assessment').create({ data: CONSERVATIVE_2021, status: 'published' });
+    strapi.log.info('[EPM seed] Created Conservative 2021 assessment.');
   }
 
   // Seed homepage singleton
