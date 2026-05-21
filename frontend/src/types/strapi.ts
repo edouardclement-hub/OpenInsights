@@ -94,7 +94,8 @@ export type AssessmentSector =
   | "Transportation"
   | "Industry"
   | "Agriculture"
-  | "Cross-cutting";
+  | "Cross-cutting"
+  | "Election Platform";
 export type AssessmentAccent = "default" | "gold" | "slate";
 
 export interface AssessmentFinding {
@@ -128,6 +129,9 @@ export interface StrapiAssessment {
   githubUrl: string | null;
   datasetUrl: string | null;
   policyEncodingUrl: string | null;
+  assumptionsUrl: string | null;
+  isExample: boolean | null;
+  lead: string | null;
 }
 
 export interface StrapiFaq {
