@@ -212,11 +212,11 @@ async function seedIfEmpty(strapi: Core.Strapi) {
   if (conservativeExisting.length === 0) {
     await strapi.documents('api::assessment.assessment').create({ data: CONSERVATIVE_2021, status: 'published' });
     strapi.log.info('[EPM seed] Created Conservative 2021 assessment.');
-  } else if (conservativeExisting[0].assumptionsUrl !== CONSERVATIVE_2021.assumptionsUrl) {
+  } else if ((conservativeExisting[0] as any).assumptionsUrl !== CONSERVATIVE_2021.assumptionsUrl) {
     // Patch the assumptionsUrl if the canonical value in this file has changed.
     await strapi.documents('api::assessment.assessment').update({
       documentId: conservativeExisting[0].documentId,
-      data: { assumptionsUrl: CONSERVATIVE_2021.assumptionsUrl },
+      data: { assumptionsUrl: CONSERVATIVE_2021.assumptionsUrl } as any,
       status: 'published',
     });
     strapi.log.info('[EPM seed] Updated Conservative 2021 assumptionsUrl.');
