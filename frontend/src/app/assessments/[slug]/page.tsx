@@ -282,7 +282,6 @@ export default async function AssessmentDetailPage({
                       <line x1="12" y1="15" x2="12" y2="3" />
                     </svg>
                     <span>Results dataset</span>
-                    <span className="download-tag">ZIP</span>
                   </a>
                 ) : (
                   <button className="download-btn" disabled style={{ opacity: 0.5, cursor: "not-allowed" }}>
@@ -311,7 +310,6 @@ export default async function AssessmentDetailPage({
                       <polyline points="14 2 14 8 20 8" />
                     </svg>
                     <span>Policy encoding sheet</span>
-                    <span className="download-tag">CSV</span>
                   </a>
                 ) : (
                   <button className="download-btn" disabled style={{ opacity: 0.5, cursor: "not-allowed" }}>

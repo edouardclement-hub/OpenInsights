@@ -9,11 +9,6 @@ const SLUG_CONSERVATIVE = "conservative-party-federal-election-platform-2021-ene
 export const ASSESSMENT_SLIDES: Record<string, AssessmentSlide[]> = {
   [SLUG_CONSERVATIVE]: [
     {
-      image: `/assessments/${SLUG_CONSERVATIVE}/slides/1-cover.png`,
-      title: "Cover",
-      description: "EPM Conservative — May 2026",
-    },
-    {
       image: `/assessments/${SLUG_CONSERVATIVE}/slides/page-02.png`,
       title: "Platform assessment details",
       description: "Policies repealed and introduced or maintained.",
