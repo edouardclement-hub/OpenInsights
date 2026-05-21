@@ -106,6 +106,8 @@ const ASSESSMENT_LOCAL_IMAGES: Record<string, string> = {
     "/assessments/federal-clean-electricity-regulations-draft-framework.png",
   "ndp-federal-election-platform-energy-climate-chapter":
     "/assessments/ndp-federal-election-platform-energy-climate-chapter.jpg",
+  "conservative-party-federal-election-platform-2021-energy-climate":
+    "/assessments/conservative-party-federal-election-platform-2021-energy-climate.png",
 };
 
 export function getAssessmentImage(

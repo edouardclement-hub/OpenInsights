@@ -9,6 +9,8 @@ import {
   getAssessmentImage,
 } from "@/lib/strapi";
 import { CopyCitation } from "@/components/blocks/CopyCitation";
+import { AssessmentSlideshow } from "@/components/blocks/AssessmentSlideshow";
+import { getAssessmentSlides } from "@/lib/assessment-slides";
 
 export const revalidate = 60;
 
@@ -127,12 +129,14 @@ export default async function AssessmentDetailPage({
 
       <div className="detail-main">
         <div className="detail-content">
-          <div className="example-notice" role="note">
-            <div className="example-notice-label">Example assessment</div>
-            <p>
-              This is a fictional example assessment. It was created for demonstration purposes only and does not represent a real policy evaluation, real modelled findings, or the views of any organization.
-            </p>
-          </div>
+          {a.isExample !== false && (
+            <div className="example-notice" role="note">
+              <div className="example-notice-label">Example assessment</div>
+              <p>
+                This is a fictional example assessment. It was created for demonstration purposes only and does not represent a real policy evaluation, real modelled findings, or the views of any organization.
+              </p>
+            </div>
+          )}
           {detailImg ? (
             <div className="detail-photo">
               <Image
@@ -154,10 +158,17 @@ export default async function AssessmentDetailPage({
             </div>
           )}
 
-          <div className="charts-placeholder" aria-label="Charts and visualizations placeholder">
-            <div className="charts-placeholder-label">Charts &amp; visualizations</div>
-            <div className="charts-placeholder-sublabel">Reserved for upcoming slides &middot; 16:9</div>
-          </div>
+          {(() => {
+            const slides = getAssessmentSlides(a.slug);
+            return slides ? (
+              <AssessmentSlideshow slides={slides} />
+            ) : (
+              <div className="charts-placeholder" aria-label="Charts and visualizations placeholder">
+                <div className="charts-placeholder-label">Charts &amp; visualizations</div>
+                <div className="charts-placeholder-sublabel">Reserved for upcoming slides &middot; 16:9</div>
+              </div>
+            );
+          })()}
 
           {a.findings && a.findings.length > 0 && (
             <div className="detail-section">
@@ -178,7 +189,9 @@ export default async function AssessmentDetailPage({
               <div className="cite-block-label">How to cite this assessment</div>
               <div className="cite-text">{a.citation}</div>
               <CopyCitation citation={a.citation} />
-              <div className="cite-do-not-cite">This is a fictional example. Do not cite.</div>
+              {a.isExample !== false && (
+                <div className="cite-do-not-cite">This is a fictional example. Do not cite.</div>
+              )}
             </div>
           )}
 
@@ -320,7 +333,7 @@ export default async function AssessmentDetailPage({
                       <polyline points="16 18 22 12 16 6" />
                       <polyline points="8 6 2 12 8 18" />
                     </svg>
-                    <span>View code on GitHub</span>
+                    <span>View source code</span>
                     <span className="download-tag">↗</span>
                   </a>
                 ) : (
@@ -329,7 +342,32 @@ export default async function AssessmentDetailPage({
                       <polyline points="16 18 22 12 16 6" />
                       <polyline points="8 6 2 12 8 18" />
                     </svg>
-                    <span>View code on GitHub — coming soon</span>
+                    <span>View source code — coming soon</span>
+                  </button>
+                )}
+                <span className="download-tooltip">Technical modelling expertise required to replicate results.</span>
+              </div>
+            </div>
+            <div className="qf-row">
+              <div className="download-btn-wrap">
+                {a.assumptionsUrl ? (
+                  <a href={a.assumptionsUrl} target="_blank" rel="noreferrer" className="download-btn">
+                    <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
+                      <rect x="3" y="3" width="18" height="18" rx="2" />
+                      <line x1="3" y1="9" x2="21" y2="9" />
+                      <line x1="9" y1="3" x2="9" y2="21" />
+                    </svg>
+                    <span>Assumptions</span>
+                    <span className="download-tag">↗</span>
+                  </a>
+                ) : (
+                  <button className="download-btn" disabled style={{ opacity: 0.5, cursor: "not-allowed" }}>
+                    <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
+                      <rect x="3" y="3" width="18" height="18" rx="2" />
+                      <line x1="3" y1="9" x2="21" y2="9" />
+                      <line x1="9" y1="3" x2="9" y2="21" />
+                    </svg>
+                    <span>Assumptions — coming soon</span>
                   </button>
                 )}
                 <span className="download-tooltip">Technical modelling expertise required to replicate results.</span>

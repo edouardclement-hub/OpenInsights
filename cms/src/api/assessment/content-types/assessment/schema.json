@@ -62,7 +62,7 @@
     },
     "sector": {
       "type": "enumeration",
-      "enum": ["Electricity", "Oil & Gas", "Buildings", "Transportation", "Industry", "Agriculture", "Cross-cutting"],
+      "enum": ["Electricity", "Oil & Gas", "Buildings", "Transportation", "Industry", "Agriculture", "Cross-cutting", "Election Platform"],
       "required": true
     },
     "tags": {
@@ -90,6 +90,14 @@
     "epmPlus": {
       "type": "boolean",
       "default": false
+    },
+    "isExample": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    },
+    "lead": {
+      "type": "string"
     },
     "accentClass": {
       "type": "enumeration",
@@ -119,6 +127,9 @@
       "type": "string"
     },
     "policyEncodingUrl": {
+      "type": "string"
+    },
+    "assumptionsUrl": {
       "type": "string"
     }
   }
