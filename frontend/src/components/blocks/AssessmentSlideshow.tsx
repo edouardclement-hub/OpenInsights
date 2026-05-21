@@ -33,13 +33,6 @@ export function AssessmentSlideshow({ slides }: { slides: AssessmentSlide[] }) {
           priority={i === 0}
         />
       </div>
-      <div className="slideshow-caption">
-        <div className="slideshow-counter">
-          Slide {i + 1} / {total}
-        </div>
-        <div className="slideshow-title">{current.title}</div>
-        {current.description && <div className="slideshow-desc">{current.description}</div>}
-      </div>
       <div className="slideshow-controls">
         <button onClick={prev} aria-label="Previous slide" className="slideshow-nav">
           ←

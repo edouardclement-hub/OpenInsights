@@ -189,7 +189,7 @@ const CONSERVATIVE_2021: any = {
   datasetUrl: 'https://gitlab.com/sesit/cims-models-fork/-/tree/SFU_update/results?ref_type=heads',
   policyEncodingUrl: 'https://gitlab.com/cme-emh/energy-policy-monitor/-/tree/SFU_clean/scenarios?ref_type=heads',
   githubUrl: 'https://gitlab.com/cme-emh/energy-policy-monitor/-/tree/SFU_clean/scenarios?ref_type=heads',
-  assumptionsUrl: 'https://docs.google.com/spreadsheets/d/14h-7U0Mc0CI8i0VngaiIz1QHG_JNrpBB/edit?gid=810528026#gid=810528026',
+  assumptionsUrl: 'https://docs.google.com/spreadsheets/d/1FUpjCgCP1ZL2-c4-6uC89z1IXV8Ti8wy/edit?gid=810528026#gid=810528026',
   publishedAt: new Date().toISOString(),
 };
 
@@ -212,6 +212,14 @@ async function seedIfEmpty(strapi: Core.Strapi) {
   if (conservativeExisting.length === 0) {
     await strapi.documents('api::assessment.assessment').create({ data: CONSERVATIVE_2021, status: 'published' });
     strapi.log.info('[EPM seed] Created Conservative 2021 assessment.');
+  } else if (conservativeExisting[0].assumptionsUrl !== CONSERVATIVE_2021.assumptionsUrl) {
+    // Patch the assumptionsUrl if the canonical value in this file has changed.
+    await strapi.documents('api::assessment.assessment').update({
+      documentId: conservativeExisting[0].documentId,
+      data: { assumptionsUrl: CONSERVATIVE_2021.assumptionsUrl },
+      status: 'published',
+    });
+    strapi.log.info('[EPM seed] Updated Conservative 2021 assumptionsUrl.');
   }
 
   // Seed homepage singleton
