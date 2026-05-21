@@ -263,6 +263,7 @@ async function openPublicPermissions(strapi: Core.Strapi) {
   }
 }
 
+// Bootstrap entrypoint — handles seeding + public read permissions on Strapi startup.
 export default {
   register() {},
 
