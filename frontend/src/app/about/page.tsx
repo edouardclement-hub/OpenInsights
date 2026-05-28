@@ -74,23 +74,22 @@ export default async function AboutPage() {
         <div className="about-main">
           <h2>What is Open Insights?</h2>
           <p>
-            The Energy Policy Monitor (EPM) is led by the{" "}
+            The Energy Policy Monitor (EPM) is an{" "}
             <a href="https://www.openinsights.ca/" target="_blank" rel="noopener" style={{ color: "var(--teal)" }}>
               Open Insights
             </a>
-            {" "}team, enabled by{" "}
-            <a href="https://cme-emh.ca/en/" target="_blank" rel="noreferrer" style={{ color: "var(--teal)" }}>
-              Energy Modelling Hub
-            </a>
-            ‘s operational support, and by model development contributions from academic partner
-            institutions including{" "}
+            {" "}initiative, led by{" "}
             <a href="https://sesit.cive.uvic.ca/" target="_blank" rel="noreferrer" style={{ color: "var(--teal)" }}>
               SESIT-UVic
             </a>
-            . Open Insights is a shared framework for transparent energy modelling, providing the
-            common standards and open-source commitments that connect academic model developers,
-            operational infrastructure partners, and published outputs under one consistent,
-            transparent process.
+            {" "}and enabled by{" "}
+            <a href="https://cme-emh.ca/en/" target="_blank" rel="noreferrer" style={{ color: "var(--teal)" }}>
+              Energy Modelling Hub
+            </a>
+            ‘s operational support. Open Insights is a shared framework for transparent energy
+            modelling, providing open-source data and models and publishing outputs in a consistent
+            and accessible way. We welcome model development contributions and collaborations with
+            other academic and non-academic partners.
           </p>
           <p>
             The EPM is Open Insights' flagship assessment service, providing independent, timely,
@@ -99,7 +98,7 @@ export default async function AboutPage() {
             <a href="https://m3.cme-emh.ca/" target="_blank" rel="noreferrer" style={{ color: "var(--teal)" }}>
               M3 Platform
             </a>
-            .
+            , developed by SESIT-UVic and maintained by the Energy Modelling Hub.
           </p>
 
           <h2>Our commitment</h2>

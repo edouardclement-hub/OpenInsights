@@ -30,15 +30,15 @@ const OPEN_INSIGHTS_TEAM: Member[] = [
     photo: "/team/dr-aaron-hoyle.jpg",
     href: "https://www.linkedin.com/in/aaron-hoyle-19312494/",
   },
-];
-
-const STEERING_COMMITTEE: Member[] = [
   {
     name: "Dr. Madeleine McPherson",
     role: "Principal Investigator, SESIT Group — Associate Professor, University of Victoria",
     photo: "/team/dr-madeleine-mcpherson.jpg",
     href: "https://www.uvic.ca/ecs/civil/people/home/faculty-profiles/mcpherson-madeleine.php",
   },
+];
+
+const STEERING_COMMITTEE: Member[] = [
   {
     name: "Edouard Clement",
     role: "Executive Director, Energy Modelling Hub",
@@ -94,7 +94,7 @@ export default function TeamPage() {
             Open Insights Team
           </div>
           <div className="team-group-desc">Project leadership and strategic communications.</div>
-          <div className="team-grid" style={{ gridTemplateColumns: "repeat(2, 1fr)" }}>
+          <div className="team-grid">
             {OPEN_INSIGHTS_TEAM.map((m) => <TeamCard key={m.name} m={m} />)}
           </div>
         </div>

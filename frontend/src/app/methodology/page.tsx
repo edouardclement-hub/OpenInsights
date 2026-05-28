@@ -94,6 +94,7 @@ export default function MethodologyPage() {
                 <li>Public GitHub repository with code & assumptions</li>
                 <li>Zenodo archiving with permanent DOI</li>
                 <li>QAQC validated by independent experts</li>
+                <li>Model results will be hosted on a dedicated portion of IDEA</li>
               </ul>
             </div>
           </div>
@@ -125,14 +126,12 @@ export default function MethodologyPage() {
           <div className="section-title" style={{ fontSize: 24, marginBottom: 20 }}>
             Every assessment is QAQC validated
           </div>
-          <p style={{ fontSize: 15.5, color: "var(--slate)", lineHeight: 1.75, marginBottom: 16 }}>
-            Before publication, each EPM brief passes through an independent validation process —
-            covering policy encoding accuracy, baseline data currency, model parameter selection,
-            and results interpretation. Validation is performed by experts not involved in the run.
-          </p>
           <p style={{ fontSize: 15.5, color: "var(--slate)", lineHeight: 1.75 }}>
-            Validation status is published alongside every brief. Contested assumptions or
-            encoding decisions are disclosed in the technical appendix.
+            Before publication, each EPM Core brief passes through an independent validation
+            process — covering policy encoding accuracy, baseline data currency, model parameter
+            selection, and results interpretation. Validation status is published alongside every
+            brief. Contested assumptions or encoding decisions are disclosed in the technical
+            appendix.
           </p>
         </div>
       </div>

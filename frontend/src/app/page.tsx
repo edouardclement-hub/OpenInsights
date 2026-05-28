@@ -89,8 +89,8 @@ export default async function HomePage() {
                   <div className="stat-label">Independence</div>
                   <div className="stat-value">All policies and jurisdictions</div>
                   <div className="stat-note">
-                    One methodology, applied consistently on major Canadian energy and climate
-                    policy announcements.
+                    One integrated modelling platform, applied consistently on major Canadian
+                    energy and climate policy announcements.
                   </div>
                 </div>
               </div>
