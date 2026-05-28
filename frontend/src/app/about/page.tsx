@@ -98,7 +98,15 @@ export default async function AboutPage() {
             <a href="https://m3.cme-emh.ca/" target="_blank" rel="noreferrer" style={{ color: "var(--teal)" }}>
               M3 Platform
             </a>
-            , developed by SESIT-UVic and maintained by the Energy Modelling Hub.
+            , developed by{" "}
+            <a href="https://sesit.cive.uvic.ca/" target="_blank" rel="noreferrer" style={{ color: "var(--teal)" }}>
+              SESIT-UVic
+            </a>
+            {" "}and maintained by the{" "}
+            <a href="https://cme-emh.ca/en/" target="_blank" rel="noreferrer" style={{ color: "var(--teal)" }}>
+              Energy Modelling Hub
+            </a>
+            .
           </p>
 
           <h2>Our commitment</h2>
