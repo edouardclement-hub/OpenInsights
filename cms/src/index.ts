@@ -169,11 +169,11 @@ const CONSERVATIVE_2021: any = {
   lead: 'Open Insights',
   tags: ['Election Platform', 'federal'],
   claim:
-    "Under the proposed climate policy scenario, Canada's total emissions are projected to reach approximately 633 Mt CO₂e by 2030, representing a 6% decrease from the 2021 implemented policies baseline.",
+    "Under the proposed platform, Canada's total emissions are projected to hit 440 Mt CO₂e by 2030, representing a 35% fall from current levels.",
   finding:
     'Manufacturing and industry have a 17.9 Mt CO₂e reduction by 2030, electricity emissions and demand will increase by 2050 alongside a 233 PJ surge in hydrogen adoption.',
   claimedValue: '633 Mt CO₂e by 2030',
-  modelledValue: '6% decrease vs 2021 baseline',
+  modelledValue: 'We estimate that emissions will fall by about 6% from current levels to 2030.',
   execSummary:
     'This assessment evaluates the emissions and energy demand impacts of the Conservative Party of Canada — Federal Election Platform 2021. The strategy replaces the consumer carbon price with a personal low-carbon savings account, eliminates federal clean electricity regulations, and maintains industrial carbon pricing (OBPS) alongside Zero-Emission Vehicle (ZEV) mandates and carbon capture tax credits.',
   findings: [

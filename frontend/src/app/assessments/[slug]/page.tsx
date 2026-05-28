@@ -232,12 +232,6 @@ export default async function AssessmentDetailPage({
               <div className="qf-label">Emissions claim</div>
               <div className="qf-value highlight">{a.claim}</div>
             </div>
-            {a.claimedValue && (
-              <div className="qf-row">
-                <div className="qf-label">Claimed value</div>
-                <div className="qf-value">{a.claimedValue}</div>
-              </div>
-            )}
             {a.modelledValue && (
               <div className="qf-row">
                 <div className="qf-label">Modelled value</div>
