@@ -177,9 +177,9 @@ const CONSERVATIVE_2021: any = {
   execSummary:
     'This assessment evaluates the emissions and energy demand impacts of the Conservative Party of Canada — Federal Election Platform 2021. The strategy replaces the consumer carbon price with a personal low-carbon savings account, eliminates federal clean electricity regulations, and maintains industrial carbon pricing (OBPS) alongside Zero-Emission Vehicle (ZEV) mandates and carbon capture tax credits.',
   findings: [
-    { text: '<strong>Emissions Reductions:</strong> Total emissions are projected to drop to 633 Mt CO₂e by 2030, a 6% decrease relative to the 2021 baseline. The manufacturing and industrial sectors drive the most immediate relief, cutting emissions by roughly 17.9 Mt CO₂e by 2030.' },
-    { text: '<strong>Long-Term Sectoral Shifts:</strong> By 2050, the transportation sector sees a decline of 59.27 Mt CO₂e, aligning with a 910 PJ drop in oil product demand. Conversely, electricity emissions will rise by 23.03 Mt CO₂e alongside a 300 PJ surge in power demand.' },
-    { text: '<strong>Energy Transition:</strong> While total energy demand decreases by 260 PJ, clean energy pivots toward hydrogen, which experiences a notable 233 PJ increase by 2050.' },
+    { text: '<strong>Emissions Reductions:</strong> Total emissions are projected to drop to 633 Mt CO₂e by 2030, a 6% decrease relative to the 2021 baseline.' },
+    { text: '<strong>Sectoral Shifts:</strong> Manufacturing & Industry sees the greatest near-term impact, with emissions projected to drop ~17.9 Mt CO₂e below baseline by 2030. Transportation follows with the largest long-term reduction of ~59.27 Mt CO₂e below baseline by 2050. The Electricity sector, however, is projected to rise ~23.03 Mt CO₂e above baseline by 2050.' },
+    { text: '<strong>Energy Demand Outlook:</strong> By 2050, the energy mix shifts away from fossil fuels with an overall decrease in total energy demand of ~260 PJ. Oil products see the largest decline at ~910 PJ. Bioenergy sees a modest decline of ~13 PJ. Electricity and natural gas rise by ~300 PJ and ~74 PJ respectively, while hydrogen emerges as a growing energy source with a ~233 PJ increase.' },
   ],
   epmPlus: false,
   accentClass: 'default',
@@ -212,14 +212,31 @@ async function seedIfEmpty(strapi: Core.Strapi) {
   if (conservativeExisting.length === 0) {
     await strapi.documents('api::assessment.assessment').create({ data: CONSERVATIVE_2021, status: 'published' });
     strapi.log.info('[EPM seed] Created Conservative 2021 assessment.');
-  } else if ((conservativeExisting[0] as any).assumptionsUrl !== CONSERVATIVE_2021.assumptionsUrl) {
-    // Patch the assumptionsUrl if the canonical value in this file has changed.
-    await strapi.documents('api::assessment.assessment').update({
-      documentId: conservativeExisting[0].documentId,
-      data: { assumptionsUrl: CONSERVATIVE_2021.assumptionsUrl } as any,
-      status: 'published',
-    });
-    strapi.log.info('[EPM seed] Updated Conservative 2021 assumptionsUrl.');
+  } else {
+    // Keep the canonical content fields in sync with this file.
+    // Edits to these fields via Strapi admin will be overwritten on next boot —
+    // the seed file is the source of truth for the Conservative 2021 entry.
+    const SYNCED_FIELDS = [
+      'title', 'publishedDate', 'jurisdiction', 'party', 'status', 'policyStatus',
+      'sector', 'lead', 'tags', 'claim', 'finding', 'claimedValue', 'modelledValue',
+      'execSummary', 'findings', 'citation', 'zenodoUrl', 'datasetUrl',
+      'policyEncodingUrl', 'githubUrl', 'assumptionsUrl',
+    ] as const;
+    const current = conservativeExisting[0] as any;
+    const patch: Record<string, unknown> = {};
+    for (const field of SYNCED_FIELDS) {
+      if (JSON.stringify(current[field]) !== JSON.stringify(CONSERVATIVE_2021[field])) {
+        patch[field] = CONSERVATIVE_2021[field];
+      }
+    }
+    if (Object.keys(patch).length > 0) {
+      await strapi.documents('api::assessment.assessment').update({
+        documentId: conservativeExisting[0].documentId,
+        data: patch as any,
+        status: 'published',
+      });
+      strapi.log.info(`[EPM seed] Patched Conservative 2021 fields: ${Object.keys(patch).join(', ')}.`);
+    }
   }
 
   // Seed homepage singleton
