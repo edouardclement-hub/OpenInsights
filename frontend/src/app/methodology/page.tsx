@@ -94,7 +94,7 @@ export default function MethodologyPage() {
                 <li>Public GitHub repository with code & assumptions</li>
                 <li>Zenodo archiving with permanent DOI</li>
                 <li>QAQC validated by independent experts</li>
-                <li>Model results will be hosted on a dedicated portion of IDEA</li>
+                <li>Model results will be hosted on a dedicated portion of <a href="https://m3.cme-emh.ca/open-visualization-tools/" target="_blank" rel="noreferrer" style={{ color: "var(--teal)", textDecoration: "underline" }}>IDEA</a></li>
               </ul>
             </div>
           </div>

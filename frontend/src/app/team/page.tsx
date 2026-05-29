@@ -24,17 +24,18 @@ const OPEN_INSIGHTS_TEAM: Member[] = [
     href: "https://www.linkedin.com/in/devenazevedo/",
   },
   {
+    name: "Dr. Madeleine McPherson",
+    role: "Principal Investigator, SESIT Group — Associate Professor, University of Victoria",
+    bio: "Leads the EPM initiative, overseeing various phases of the EPM analysis and validation process.",
+    photo: "/team/dr-madeleine-mcpherson.jpg",
+    href: "https://www.uvic.ca/ecs/civil/people/home/faculty-profiles/mcpherson-madeleine.php",
+  },
+  {
     name: "Dr. Aaron Hoyle",
     role: "Director of EPM",
     bio: "Leads the EPM initiative, overseeing various phases of the EPM process and technical framework.",
     photo: "/team/dr-aaron-hoyle.jpg",
     href: "https://www.linkedin.com/in/aaron-hoyle-19312494/",
-  },
-  {
-    name: "Dr. Madeleine McPherson",
-    role: "Principal Investigator, SESIT Group — Associate Professor, University of Victoria",
-    photo: "/team/dr-madeleine-mcpherson.jpg",
-    href: "https://www.uvic.ca/ecs/civil/people/home/faculty-profiles/mcpherson-madeleine.php",
   },
 ];
 
