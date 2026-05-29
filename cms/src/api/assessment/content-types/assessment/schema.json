@@ -25,6 +25,9 @@
       "type": "date",
       "required": true
     },
+    "publishedDateLabel": {
+      "type": "string"
+    },
     "jurisdiction": {
       "type": "enumeration",
       "enum": [

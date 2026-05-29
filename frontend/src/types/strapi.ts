@@ -108,6 +108,7 @@ export interface StrapiAssessment {
   title: string;
   slug: string;
   publishedDate: string;
+  publishedDateLabel: string | null;
   jurisdiction: AssessmentJurisdiction;
   party: string | null;
   status: AssessmentStatus;

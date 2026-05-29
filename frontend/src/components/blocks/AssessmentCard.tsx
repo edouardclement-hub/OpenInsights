@@ -13,11 +13,6 @@ function PolicyStatusBadge({ status }: { status: StrapiAssessment["policyStatus"
   return <span className={`badge ${cls}`}>{status}</span>;
 }
 
-function StatusBadge({ status }: { status: StrapiAssessment["status"] }) {
-  const cls = status === "Completed" ? "badge-status-complete" : "badge-status-progress";
-  return <span className={`badge ${cls}`}>{status}</span>;
-}
-
 export function AssessmentCard({
   assessment,
   showTags = true,
@@ -50,8 +45,7 @@ export function AssessmentCard({
         <div className="card-meta">
           <span className="badge badge-jurisdiction">{a.jurisdiction}</span>
           <PolicyStatusBadge status={a.policyStatus} />
-          <StatusBadge status={a.status} />
-          <span className="card-date">{formatAssessmentDate(a.publishedDate)}</span>
+          <span className="card-date">{a.publishedDateLabel || formatAssessmentDate(a.publishedDate)}</span>
         </div>
         <h3 className="card-title">{a.title}</h3>
         {a.finding && (

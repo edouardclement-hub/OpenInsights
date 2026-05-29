@@ -80,18 +80,11 @@ export default async function AssessmentDetailPage({
           </div>
           <div className="detail-meta-top">
             <span className="badge badge-jurisdiction">{a.jurisdiction}</span>
-            <span
-              className={`badge ${
-                a.status === "Completed" ? "badge-status-complete" : "badge-status-progress"
-              }`}
-            >
-              {a.status}
-            </span>
           </div>
           <h1 className="detail-title">{a.title}</h1>
           <div className="detail-byline">
             <span>
-              Published <strong>{formatAssessmentDate(a.publishedDate)}</strong>
+              Published <strong>{a.publishedDateLabel || formatAssessmentDate(a.publishedDate)}</strong>
             </span>
             <span>·</span>
             <span>
