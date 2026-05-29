@@ -159,7 +159,8 @@ const SAMPLE_FAQS: any[] = [
 const CONSERVATIVE_2021: any = {
   title: 'Conservative Party of Canada — Federal Election Platform 2021 Energy and Climate Policy Assessment',
   slug: 'conservative-party-federal-election-platform-2021-energy-climate',
-  publishedDate: '2026-05-21',
+  publishedDate: '2021-08-01',
+  publishedDateLabel: 'Summer 2021',
   jurisdiction: 'Federal',
   party: 'Conservative',
   status: 'Completed',
@@ -171,15 +172,19 @@ const CONSERVATIVE_2021: any = {
   claim:
     "Under the proposed platform, Canada's total emissions are projected to hit 440 Mt CO₂e by 2030, representing a 35% fall from current levels.",
   finding:
-    'Manufacturing and industry have a 17.9 Mt CO₂e reduction by 2030, electricity emissions and demand will increase by 2050 alongside a 233 PJ surge in hydrogen adoption.',
+    "We estimate modest emissions reductions under the Conservative Party of Canada's 2021 platform — an estimated 6% decline from current levels by 2030, versus the 35% decrease by 2030 the Paris Agreement target requires.",
   claimedValue: '633 Mt CO₂e by 2030',
   modelledValue: 'We estimate that emissions will fall by about 6% from current levels to 2030.',
   execSummary:
-    'This assessment evaluates the emissions and energy demand impacts of the Conservative Party of Canada — Federal Election Platform 2021. The strategy replaces the consumer carbon price with a personal low-carbon savings account, eliminates federal clean electricity regulations, and maintains industrial carbon pricing (OBPS) alongside Zero-Emission Vehicle (ZEV) mandates and carbon capture tax credits.',
+    "The Conservative Party of Canada's 2021 federal election platform, which repeals the federal carbon tax and Clean Fuel Regulations while introducing measures like a $5B carbon capture tax credit and a 30% ZEV mandate, is projected to reduce Canada's emissions by approximately 6% from 2021 levels by 2030 — short of the 35% reduction required under Canada's Paris Agreement commitments. Emissions reductions in oil and gas and transportation are partly offset by increases in the electricity and industry sectors. By 2050, the platform delivers roughly 50 Mt CO₂e in annual reductions, driven largely by transportation decarbonization and growth in hydrogen and clean fuels.",
   findings: [
-    { text: '<strong>Emissions Reductions:</strong> Total emissions are projected to drop to 633 Mt CO₂e by 2030, a 6% decrease relative to the 2021 baseline.' },
-    { text: '<strong>Sectoral Shifts:</strong> Manufacturing & Industry sees the greatest near-term impact, with emissions projected to drop ~17.9 Mt CO₂e below baseline by 2030. Transportation follows with the largest long-term reduction of ~59.27 Mt CO₂e below baseline by 2050. The Electricity sector, however, is projected to rise ~23.03 Mt CO₂e above baseline by 2050.' },
-    { text: '<strong>Energy Demand Outlook:</strong> By 2050, the energy mix shifts away from fossil fuels with an overall decrease in total energy demand of ~260 PJ. Oil products see the largest decline at ~910 PJ. Bioenergy sees a modest decline of ~13 PJ. Electricity and natural gas rise by ~300 PJ and ~74 PJ respectively, while hydrogen emerges as a growing energy source with a ~233 PJ increase.' },
+    { text: 'Proposed policies modestly reduce emissions. However, our analysis does not support the claim that Canada will be on track to our Paris climate commitments by 2030.' },
+    { text: 'We estimate that emissions will fall by about 6% from current levels to 2030, versus the Paris target (35% decrease).' },
+    { text: 'By 2050, proposed policies reduce emissions by ~50 Mt CO₂e per year.' },
+    { text: 'Emissions reductions in oil and gas and transport are partly offset by increases in industry and electricity generation.' },
+    { text: 'The economy grows, on aggregate, but with sectoral winners and losers.' },
+    { text: 'Demand for gasoline and diesel declines, while natural gas and clean fuels rise.' },
+    { text: 'Electric vehicle adoption accelerates load growth, while natural gas and onshore wind compete for new electricity generation capacity.' },
   ],
   epmPlus: false,
   accentClass: 'default',
@@ -217,7 +222,7 @@ async function seedIfEmpty(strapi: Core.Strapi) {
     // Edits to these fields via Strapi admin will be overwritten on next boot —
     // the seed file is the source of truth for the Conservative 2021 entry.
     const SYNCED_FIELDS = [
-      'title', 'publishedDate', 'jurisdiction', 'party', 'status', 'policyStatus',
+      'title', 'publishedDate', 'publishedDateLabel', 'jurisdiction', 'party', 'status', 'policyStatus',
       'sector', 'lead', 'tags', 'claim', 'finding', 'claimedValue', 'modelledValue',
       'execSummary', 'findings', 'citation', 'zenodoUrl', 'datasetUrl',
       'policyEncodingUrl', 'githubUrl', 'assumptionsUrl',
