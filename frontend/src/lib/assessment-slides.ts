@@ -10,38 +10,38 @@ export const ASSESSMENT_SLIDES: Record<string, AssessmentSlide[]> = {
   [SLUG_CONSERVATIVE]: [
     {
       image: `/assessments/${SLUG_CONSERVATIVE}/slides/page-02.png`,
-      title: "Platform assessment details",
-      description: "Policies repealed and introduced or maintained.",
+      title: "About the assessment",
+      description: "Policies repealed and introduced under the 2021 Conservative platform.",
     },
     {
       image: `/assessments/${SLUG_CONSERVATIVE}/slides/page-03.png`,
       title: "Key findings",
-      description: "Total emissions, sectoral emissions, energy demand by 2050.",
+      description: "Modest reductions; off-track from Paris targets by 2030.",
     },
     {
       image: `/assessments/${SLUG_CONSERVATIVE}/slides/page-04.png`,
       title: "Emissions trajectory",
-      description: "Down 2% in 2025, 6% in 2030.",
+      description: "Emissions fall 2% by 2025 and 6% by 2030 versus reference scenario.",
     },
     {
       image: `/assessments/${SLUG_CONSERVATIVE}/slides/page-05.png`,
-      title: "National GHGs",
-      description: "Transport and oil & gas reductions driven by ZEV mandate and CCS.",
+      title: "Sectoral emissions",
+      description: "Oil & gas and transport reductions partly offset by industry and electricity.",
     },
     {
       image: `/assessments/${SLUG_CONSERVATIVE}/slides/page-06.png`,
-      title: "Electricity demand",
-      description: "Load growth driven by EV adoption.",
+      title: "Electricity demand & EV adoption",
+      description: "Load growth driven by EV adoption; ICE sales fall to ~15% by 2050.",
     },
     {
       image: `/assessments/${SLUG_CONSERVATIVE}/slides/page-07.png`,
       title: "Capacity additions",
-      description: "Natural gas and wind compete for new supply.",
+      description: "Natural gas and onshore wind compete for new generation capacity.",
     },
     {
       image: `/assessments/${SLUG_CONSERVATIVE}/slides/page-08.png`,
       title: "End-use energy demand",
-      description: "Reductions in buildings driven by RNG mandate.",
+      description: "Gasoline and diesel decline; natural gas, hydrogen and bioenergy rise.",
     },
   ],
 };
