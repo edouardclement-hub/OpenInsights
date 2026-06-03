@@ -189,8 +189,8 @@ const CONSERVATIVE_2021: any = {
   epmPlus: false,
   accentClass: 'default',
   citation:
-    'Open Insights. (2026). Conservative Party of Canada — Federal Election Platform 2021 Report. Zenodo. https://doi.org/10.5281/zenodo.20437540',
-  zenodoUrl: 'https://zenodo.org/records/20437540',
+    'Open Insights. (2026). Conservative Party of Canada — Federal Election Platform 2021 Report. Zenodo. https://doi.org/10.5281/zenodo.20530225',
+  zenodoUrl: 'https://zenodo.org/records/20530225',
   datasetUrl: 'https://gitlab.com/sesit/cims-models-fork/-/tree/SFU_update/results?ref_type=heads',
   policyEncodingUrl: 'https://gitlab.com/cme-emh/energy-policy-monitor/-/tree/SFU_clean/scenarios?ref_type=heads',
   githubUrl: 'https://gitlab.com/cme-emh/energy-policy-monitor/-/tree/SFU_clean/scenarios?ref_type=heads',
