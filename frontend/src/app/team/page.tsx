@@ -31,7 +31,7 @@ const OPEN_INSIGHTS_TEAM: Member[] = [
     href: "https://www.uvic.ca/ecs/civil/people/home/faculty-profiles/mcpherson-madeleine.php",
   },
   {
-    name: "Dr. Aaron Hoyle",
+    name: "Aaron Hoyle",
     role: "Director of EPM",
     bio: "Leads the EPM initiative, overseeing various phases of the EPM process and technical framework.",
     photo: "/team/dr-aaron-hoyle.jpg",
@@ -48,7 +48,7 @@ const STEERING_COMMITTEE: Member[] = [
   },
   {
     name: "Michael Bernstein",
-    role: "President and Chief Executive Officer, Clean Prosperity",
+    role: "Executive Director, Clean Prosperity Foundation",
     photo: "/team/michael-bernstein.jpg",
     href: "https://cleanprosperity.ca/team/michael-bernstein/",
   },
