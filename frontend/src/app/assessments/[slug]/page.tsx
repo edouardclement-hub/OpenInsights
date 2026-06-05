@@ -259,6 +259,18 @@ export default async function AssessmentDetailPage({
                 </button>
               )}
             </div>
+            {a.ideaUrl && (
+              <div className="qf-row">
+                <a href={a.ideaUrl} target="_blank" rel="noreferrer" className="download-btn-primary">
+                  <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
+                    <path d="M3 3v18h18" />
+                    <path d="M7 14l4-4 3 3 5-6" />
+                  </svg>
+                  <span>IDEA dashboard</span>
+                  <span className="download-tag-primary">INTERACTIVE</span>
+                </a>
+              </div>
+            )}
             <div className="qf-row">
               <div className="download-btn-wrap">
                 {a.datasetUrl ? (

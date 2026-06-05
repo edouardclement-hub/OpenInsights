@@ -122,6 +122,9 @@
     "zenodoUrl": {
       "type": "string"
     },
+    "ideaUrl": {
+      "type": "string"
+    },
     "githubUrl": {
       "type": "string"
     },

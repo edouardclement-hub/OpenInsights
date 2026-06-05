@@ -127,6 +127,7 @@ export interface StrapiAssessment {
   cardImage: StrapiImage | null;
   detailImage: StrapiImage | null;
   zenodoUrl: string | null;
+  ideaUrl: string | null;
   githubUrl: string | null;
   datasetUrl: string | null;
   policyEncodingUrl: string | null;
