@@ -72,10 +72,15 @@ tokens, and the rules about what not to touch. Describe what you want in plain l
 
 Worth knowing before you ask for changes:
 
-- **EPM site content** — assessments, team bios, FAQs — lives in **Strapi**, not in the
-  code. Edit it in the Strapi admin, not by asking Claude to change a component.
-- **The corporate site** (openinsights.ca) is hand-written HTML in `corporate/`. That
-  content *is* edited in code.
+- **Most content is edited here, in code** — the real Conservative 2021 assessment, the
+  team page and bios, methodology, contact, and the assessment slideshows. Just ask
+  Claude; it knows where each one lives (see the table in `CLAUDE.md`).
+- **Some content lives in Strapi instead** — the sample assessments, the homepage copy,
+  the FAQs and the about page. Those are edited at the CMS admin, not in code.
+- **One trap:** the Conservative 2021 assessment must be changed in code
+  (`cms/src/index.ts`). Editing it in Strapi looks like it works, then reverts the next
+  time the CMS restarts.
+- **The corporate site** (openinsights.ca) is hand-written HTML in `corporate/`.
 - Layout, styling and new features on either site are code changes.
 
 ## 6. Publish it

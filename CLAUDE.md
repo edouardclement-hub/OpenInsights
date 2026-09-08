@@ -12,7 +12,7 @@ Confusing them is the most common and most damaging mistake here.
 | Directory | `corporate/` | `frontend/` |
 | Live at | https://www.openinsights.ca | https://epm.openinsights.ca |
 | Stack | Static HTML/CSS/JS — no framework | Next.js 16 + React 19 + Tailwind 4 |
-| Content source | Hand-edited in `corporate/index.html` | **Strapi CMS** (`cms/`) |
+| Content source | Hand-edited in `corporate/index.html` | Split — Strapi CMS *and* the repo (see table below) |
 | Palette | sage `#4a6741`, amber `#e5a94a`, paper `#f5f2eb`, ink `#0f1410` | navy `#0D1B2A`, teal `#0C7A7A`, teal-bright `#0FA8A8`, gold `#C9963B` |
 | Mono font | IBM Plex Mono | DM Mono |
 | Feel | academic / editorial | data / dashboard |
@@ -28,24 +28,56 @@ follow, so keep the corporate site product-agnostic.
 - **`cms/`** — Strapi 5 + PostgreSQL. Admin UI is how staff edit EPM content. Port 1337.
 - **`corporate/`** — static files, no build step.
 
-## Core rule: Strapi is the source of truth for EPM
+## Where EPM content actually lives — check this before editing
 
-Every piece of EPM content — assessments, team members, FAQs, homepage and about copy —
-comes from Strapi via `frontend/src/lib/strapi.ts`. **Do not hardcode content into
-components.** If something needs to change on the EPM site and it is content rather than
-layout, it belongs in the CMS, not in a `.tsx` file.
+Content is split between the CMS and the repo. Editing in the wrong place either does
+nothing or gets silently reverted, so check this table first.
 
-Content types live in `cms/src/api/*/content-types/*/schema.json`:
-`assessment`, `team-member`, `faq`, `homepage`, `about-page`, `global`.
+**Edit in code, via git:**
+
+| Content | File |
+|---|---|
+| **Conservative 2021 assessment** (the only real one) | `cms/src/index.ts` → `CONSERVATIVE_2021` |
+| Team page and bios | `frontend/src/app/team/page.tsx` (hardcoded `TEAM` array) |
+| Methodology page | `frontend/src/app/methodology/page.tsx` |
+| Contact page | `frontend/src/app/contact/page.tsx` |
+| Assessment slideshows | `frontend/public/assessments/<slug>/slides/` + `frontend/src/lib/assessment-slides.ts` |
+
+**Edit in the Strapi admin** (`<cms-url>/admin`):
+
+| Content | Notes |
+|---|---|
+| The 4 sample assessments (`isExample: true`) | Seeded once from `cms/src/index.ts`; Strapi owns them afterwards |
+| Homepage copy | Seeded once if missing, then Strapi owns it |
+| FAQs | Seeded once, then Strapi owns them |
+| About page | Strapi only |
+
+### The trap: the Conservative 2021 assessment
+
+`seedIfEmpty()` in `cms/src/index.ts` **re-syncs that entry's fields from the file on
+every Strapi boot**. Editing it in the Strapi admin appears to work, then silently
+reverts the next time Railway restarts. The file is the source of truth for it — the
+code says so in a comment. Change it in `cms/src/index.ts` and push.
+
+The other seeds (`sample assessments`, homepage, FAQs) only run when the target is
+empty, so Strapi edits to those do persist.
+
+### Which pages read from Strapi
+
+`/` (home), `/about`, `/assessments`, `/assessments/[slug]` fetch via
+`frontend/src/lib/strapi.ts`. `/team`, `/methodology` and `/contact` are hardcoded
+`.tsx` — there is a `team-member` content type in Strapi, but the team page does not
+use it.
+
+Content types live in `cms/src/api/*/content-types/*/schema.json`: `assessment`,
+`team-member`, `faq`, `homepage`, `about-page`, `global`.
 
 `assessment` is the main one (draft & publish enabled). Key fields: `title`, `slug`,
 `jurisdiction`, `party`, `status`, `policyStatus`, `sector`, `claim`, `finding`,
 `claimedValue`, `modelledValue`, `execSummary`, `findings` (json), `tags` (json),
 `epmPlus`, `isExample`, plus media (`cardImage`, `detailImage`) and link fields
-(`zenodoUrl`, `ideaUrl`, `githubUrl`, `datasetUrl`, `policyEncodingUrl`, `assumptionsUrl`).
-
-Business logic belongs in the CMS layer, not the frontend — a custom staff UI is planned
-for later and should be able to reuse the same API contract.
+(`zenodoUrl`, `ideaUrl`, `githubUrl`, `datasetUrl`, `policyEncodingUrl`,
+`assumptionsUrl`).
 
 ## Deploys — read this before pushing
 
