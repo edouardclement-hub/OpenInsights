@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AssessmentCard } from "@/components/blocks/AssessmentCard";
-import { getFeaturedAssessments, getHomepage } from "@/lib/strapi";
+import { getFeaturedAssessments } from "@/lib/strapi";
 import type { StrapiAssessment, StrapiHomepage } from "@/types/strapi";
 
 export const revalidate = 60;
@@ -12,7 +12,8 @@ export const metadata: Metadata = {
     "Independent, data-driven assessments of Canadian energy policy. Transparent modelling, traceable findings, publicly archived.",
 };
 
-const FALLBACK_HOMEPAGE: Partial<StrapiHomepage> = {
+// Homepage copy is owned by this file, not the CMS. Edit it here.
+const HOMEPAGE: Partial<StrapiHomepage> = {
   eyebrow: "Independent assessment",
   heroTitle: "Canadian energy policy insights, independently assessed.",
   heroSubtitle:
@@ -24,18 +25,14 @@ const FALLBACK_HOMEPAGE: Partial<StrapiHomepage> = {
 };
 
 export default async function HomePage() {
-  let homepage: Partial<StrapiHomepage> = FALLBACK_HOMEPAGE;
+  const homepage: Partial<StrapiHomepage> = HOMEPAGE;
   let featured: StrapiAssessment[] = [];
 
   try {
-    const [homepageRes, featuredRes] = await Promise.all([
-      getHomepage(),
-      getFeaturedAssessments(3),
-    ]);
-    homepage = { ...FALLBACK_HOMEPAGE, ...homepageRes.data };
-    featured = featuredRes.data;
+    // Assessments still come from Strapi; the copy above does not.
+    featured = (await getFeaturedAssessments(3)).data;
   } catch {
-    // Strapi not running — render with fallback, no assessments
+    // Strapi unreachable — render the page without the featured row
   }
 
   return (

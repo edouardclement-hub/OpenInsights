@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { FaqAccordion, type FaqItem } from "@/components/blocks/FaqAccordion";
-import { getFaqs } from "@/lib/strapi";
 
 export const revalidate = 3600;
 
@@ -10,7 +9,8 @@ export const metadata: Metadata = {
     "About the Energy Policy Monitor — independent assessment infrastructure for Canadian energy and climate policy.",
 };
 
-const FALLBACK_FAQS: FaqItem[] = [
+// FAQs are owned by this file, not the CMS. Edit them here.
+const FAQS: FaqItem[] = [
   {
     id: "what-is-epm",
     question: "What is the EPM?",
@@ -49,16 +49,8 @@ const FALLBACK_FAQS: FaqItem[] = [
   },
 ];
 
-export default async function AboutPage() {
-  let faqs: FaqItem[] = FALLBACK_FAQS;
-  try {
-    const res = await getFaqs();
-    if (res.data.length > 0) {
-      faqs = res.data.map((f) => ({ id: f.id, question: f.question, answer: f.answer }));
-    }
-  } catch {
-    // use fallback
-  }
+export default function AboutPage() {
+  const faqs: FaqItem[] = FAQS;
 
   return (
     <>

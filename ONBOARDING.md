@@ -72,16 +72,15 @@ tokens, and the rules about what not to touch. Describe what you want in plain l
 
 Worth knowing before you ask for changes:
 
-- **Most content is edited here, in code** — the real Conservative 2021 assessment, the
-  team page and bios, methodology, contact, and the assessment slideshows. Just ask
-  Claude; it knows where each one lives (see the table in `CLAUDE.md`).
-- **Some content lives in Strapi instead** — the sample assessments, the homepage copy,
-  the FAQs and the about page. Those are edited at the CMS admin, not in code.
-- **One trap:** the Conservative 2021 assessment must be changed in code
-  (`cms/src/index.ts`). Editing it in Strapi looks like it works, then reverts the next
-  time the CMS restarts.
+- **Content and code are both edited the same way — here, by asking Claude.** Homepage
+  copy, FAQs, team bios, methodology, contact, the assessment text and the slideshows
+  are all files in this repo. `CLAUDE.md` has the table of which file holds what, and
+  Claude reads it automatically.
 - **The corporate site** (openinsights.ca) is hand-written HTML in `corporate/`.
-- Layout, styling and new features on either site are code changes.
+- Layout, styling and new features on either site are code changes too.
+
+There is a CMS (Strapi) behind the assessment records, but you do not need it for
+day-to-day work and can ignore it.
 
 ## 6. Publish it
 
