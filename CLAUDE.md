@@ -58,8 +58,11 @@ one repo with different root directories:
 Strapi runs separately on Railway (`cms-production-4424.up.railway.app`) and is **not**
 deployed by pushing here.
 
-Work on a branch and open a PR. Vercel builds a preview URL per branch — check that
-before merging. Never push directly to `main`.
+The team works directly on `main` — there is no required review step, so a push is a
+publish. Verify changes locally (`npm run dev:frontend`) before pushing.
+
+For a large or risky change, pushing to a branch instead gives a Vercel preview URL to
+check first. Use that judgement; it is not enforced.
 
 ## Local development
 
@@ -118,6 +121,6 @@ Corporate tokens are in `corporate/css/styles.css`, same principle.
   rather than calling `fetch` from a component.
 - Page components live in `frontend/src/app/*/page.tsx`; reusable pieces in
   `frontend/src/components/blocks/` and `frontend/src/components/layout/`.
-- `npm run lint -w frontend` before opening a PR.
+- `npm run lint -w frontend` before pushing.
 
 New here? See `ONBOARDING.md` for setup start to finish.

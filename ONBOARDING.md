@@ -3,7 +3,7 @@
 Setup guide for a new contributor using Claude Code. Should take about 30 minutes.
 
 Start to finish, you will end up able to run the EPM site locally, make a change with
-Claude, preview it on a real URL, and open a PR.
+Claude, and publish it.
 
 ## Before you start — what to ask Edouard for
 
@@ -59,13 +59,7 @@ You do **not** need to run Strapi locally unless you are changing content types.
 
 ## 5. Make a change
 
-Always work on a branch — pushing to `main` deploys straight to production.
-
-```bash
-git checkout -b your-change-name
-```
-
-Then start Claude Code from the repo root:
+Start Claude Code from the repo root:
 
 ```bash
 claude
@@ -82,19 +76,25 @@ Worth knowing before you ask for changes:
   content *is* edited in code.
 - Layout, styling and new features on either site are code changes.
 
-## 6. Preview and open a PR
+## 6. Publish it
+
+Check it looks right at http://localhost:4000 first. Then:
 
 ```bash
 git add -A
 git commit -m "describe what changed"
-git push -u origin your-change-name
+git push
 ```
 
-Vercel automatically builds a **preview URL** for your branch — a real link showing your
-change, safe to share for feedback. Find it in the PR, or in the Vercel dashboard.
+That's it — the site rebuilds and your change is live in a couple of minutes.
 
-Then open a pull request on GitHub for Edouard to review. Once merged to `main`, it goes
-live within a couple of minutes.
+**Pushing publishes immediately.** There is no review step, so what you push is what
+visitors see. Look over your change locally before you push it.
+
+If you want a safety net on something bigger, push to a branch instead of `main`
+(`git checkout -b my-change` before committing). Vercel builds a private **preview URL**
+for any branch — a real link you can check or share before merging it in. Optional, but
+useful for a redesign or anything you are unsure about.
 
 ## 7. If you changed content in Strapi and the site looks stale
 
@@ -103,7 +103,8 @@ update the live site. Wait it out, or ask Edouard to trigger a revalidation.
 
 ## Ground rules
 
-- **Never push directly to `main`** — it is an instant production deploy of a live site.
+- **A push to `main` goes live immediately** on a public site. Check your work locally
+  first; for anything substantial, use a branch preview.
 - **Never commit secrets.** The repo is public. Anything in `.env.local` or `cms/.env`
   stays out of git.
 - **Do not mix the two brands' palettes.** Open Insights is sage/amber; EPM is
