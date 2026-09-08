@@ -8,10 +8,11 @@ Claude, and publish it.
 ## Before you start — what to ask Edouard for
 
 1. A **GitHub** collaborator invite on `edouardclement-hub/OpenInsights`
-2. The contents of **`frontend/.env.local`** (sent securely — 1Password or similar,
-   never Slack or email)
+2. The **site password** for epm.openinsights.ca (the live site is gated — you only
+   need this to view it in a browser, not to develop)
 3. A **Strapi admin** account, if you will be editing site content
-4. The **site password** for epm.openinsights.ca (the live EPM site is gated)
+
+You do **not** need any secrets or API keys to run the site locally.
 
 You will also need your own **Claude Code access** — a Claude Pro/Max subscription, or a
 seat on the team plan. It authenticates per person; it cannot be shared.
@@ -41,8 +42,9 @@ npm install
 cp frontend/.env.example frontend/.env.local
 ```
 
-Then open `frontend/.env.local` and paste in the values Edouard sent. For everyday
-frontend work `STRAPI_URL` and `NEXT_PUBLIC_SITE_URL` are the ones that matter.
+That's it — no editing needed. The example already points at the live CMS, which
+allows public reads, so the site works straight away. The remaining variables are
+optional and commented out; each one has a safe default in dev.
 
 This file is gitignored and must stay that way — **the repository is public.**
 

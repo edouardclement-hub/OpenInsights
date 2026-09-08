@@ -80,11 +80,15 @@ Node 20–24 required (Strapi constraint).
 
 ### Environment files
 
-Both are gitignored and will not arrive with a clone — get them from Edouard:
+Both are gitignored and will not arrive with a clone:
 
-- `frontend/.env.local` — see `frontend/.env.example`. `STRAPI_URL` and
-  `NEXT_PUBLIC_SITE_URL` are enough for everyday frontend work.
-- `cms/.env` — only needed to run Strapi locally. See `cms/.env.example`.
+- `frontend/.env.local` — `cp frontend/.env.example frontend/.env.local` is the whole
+  setup. **No secrets are needed for frontend development**: the example points at the
+  live CMS, which allows public reads, and every other variable has a safe dev default
+  (`SITE_PASSWORD` unset leaves the password gate open; `REVALIDATION_SECRET` only
+  guards an endpoint you would not call locally).
+- `cms/.env` — only needed to run Strapi locally, which most work does not require.
+  See `cms/.env.example`; the secrets in it can be any values for a local instance.
 
 **This repository is public.** Never commit a real secret, and never paste env values
 into a file, a commit message, or an issue.
