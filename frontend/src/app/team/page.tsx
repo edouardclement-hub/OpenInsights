@@ -41,12 +41,6 @@ const OPEN_INSIGHTS_TEAM: Member[] = [
 
 const STEERING_COMMITTEE: Member[] = [
   {
-    name: "Edouard Clement",
-    role: "Executive Director, Energy Modelling Hub",
-    photo: "/team/edouard-clement.jpg",
-    href: "https://www.linkedin.com/in/edouard-clement-3289665/",
-  },
-  {
     name: "Michael Bernstein",
     role: "Executive Director, Clean Prosperity Foundation",
     photo: "/team/michael-bernstein.jpg",
