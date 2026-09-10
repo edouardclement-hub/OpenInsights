@@ -409,7 +409,34 @@ a.service-tag--link:hover {
   border: 1px solid var(--rule); padding: 0.15rem 0.5rem;
   max-width: none;
 }
-.team-bio { font-size: 0.85rem; color: var(--ink); line-height: 1.6; max-width: none; }
+.team-bio {
+  font-size: 0.85rem; color: var(--ink); line-height: 1.6; max-width: none;
+  margin-top: 0.6rem;
+}
+
+/* Bios collapse so cards stay a uniform height; native <details> keeps this
+   keyboard-accessible and working without JS. */
+.team-details { margin-top: 0.35rem; }
+.team-details summary {
+  cursor: pointer; list-style: none;
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--sage);
+  transition: color 0.2s;
+}
+.team-details summary::-webkit-details-marker { display: none; }
+.team-details summary::after {
+  content: '\25BE'; font-size: 0.7rem; line-height: 1;
+  transition: transform 0.2s ease;
+}
+.team-details[open] summary::after { transform: rotate(180deg); }
+.team-details summary:hover { color: var(--sage-light); }
+.team-details summary:focus-visible { outline: 2px solid var(--sage); outline-offset: 3px; }
+.team-details[open] summary { color: var(--mid); }
+
+@media (prefers-reduced-motion: reduce) {
+  .team-details summary::after { transition: none; }
+}
 
 .partners-footnote {
   border-top: 1px solid var(--rule); margin-top: 2rem; padding-top: 1.5rem;
