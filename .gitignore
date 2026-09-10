@@ -11,6 +11,7 @@ cms/public/uploads/*
 cms/types/generated/
 
 # Design source material (kept locally, not versioned)
+*.pptx
 Screenshots/
 epm-design-brief.docx
 epm-website-v12.html
