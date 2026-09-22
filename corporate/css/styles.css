@@ -411,9 +411,6 @@ a.service-tag--link:hover {
   border: 1px solid var(--rule); padding: 0.15rem 0.5rem;
   max-width: none;
 }
-.team-summary {
-  font-size: 0.85rem; color: var(--mid); line-height: 1.6; max-width: none;
-}
 .team-bio {
   font-size: 0.85rem; color: var(--ink); line-height: 1.6; max-width: none;
   margin-top: 0.6rem;
