@@ -81,7 +81,9 @@ nav {
   padding: 1rem 2rem;
   display: flex; align-items: center; justify-content: space-between;
 }
-.nav-logo { text-decoration: none; }
+.nav-logo { text-decoration: none; display: inline-flex; align-items: center; }
+.nav-logo img { height: 34px; width: auto; display: block; }
+.footer-logo { height: 38px; width: auto; display: block; }
 
 .nav-links { display: flex; gap: 2rem; list-style: none; }
 .nav-links a {
