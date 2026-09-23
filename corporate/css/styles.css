@@ -366,9 +366,17 @@ a.service-tag--link:hover {
 /* Optional image — cards without one simply start at the tag. */
 .research-media {
   margin: -1.75rem -1.75rem 0.5rem; border-bottom: 1px solid var(--rule);
-  background: var(--mist); aspect-ratio: 16 / 9; overflow: hidden;
+  background: var(--mist); overflow: hidden;
 }
-.research-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* Full image, uncropped — the frame follows whatever ratio the file has. */
+.research-media img { width: 100%; height: auto; display: block; }
+
+/* Partner links inside a card follow the site palette, not the browser default. */
+.research-card a:not(.research-link) {
+  color: var(--sage); text-decoration: underline; text-underline-offset: 2px;
+  transition: color 0.2s;
+}
+.research-card a:not(.research-link):hover { color: var(--sage-light); }
 
 /* Program pills — sage for EPM, amber for Custom Scenario Analysis. */
 .research-tag {

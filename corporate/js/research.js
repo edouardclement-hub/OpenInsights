@@ -9,6 +9,9 @@
  *   date     "YYYY-MM". Drives both the displayed "Month Year" and the sort.
  *   program  "Energy Policy Monitor" or "Custom Scenario Analysis".
  *   partner  Organization the work was produced with.
+ *   partnerUrl
+ *            Optional. When set, every mention of the partner's name in the
+ *            meta line and summary becomes a link to it.
  *   image    Optional. Path relative to this page; omit or leave "" for none —
  *            the card is designed to look complete either way.
  *   imageAlt Describe the image for screen readers. Required if image is set.
@@ -21,6 +24,7 @@ const RESEARCH_ITEMS = [
     date: '2026-09',
     program: 'Custom Scenario Analysis',
     partner: 'Clean Prosperity',
+    partnerUrl: 'https://cleanprosperity.ca/',
     title: 'A nuclear grand bargain for Saskatchewan',
     image: 'assets/research/sk-nuclear-grand-bargain.jpg',
     imageAlt: 'The Saskatchewan and Canadian flags flying side by side against a clear sky.',
@@ -46,6 +50,27 @@ const RESEARCH_ITEMS = [
   const TAG_CLASS = {
     'Energy Policy Monitor': 'research-tag--epm',
     'Custom Scenario Analysis': 'research-tag--csa',
+  };
+
+  /* Splits text on the partner name and links each occurrence. Builds real
+     nodes rather than HTML strings, so nothing needs escaping. */
+  const withPartnerLinks = (parent, text, partner, url) => {
+    if (!url || !partner || !text.includes(partner)) {
+      parent.appendChild(document.createTextNode(text));
+      return parent;
+    }
+    text.split(partner).forEach((chunk, i) => {
+      if (i > 0) {
+        const a = document.createElement('a');
+        a.href = url;
+        a.target = '_blank';
+        a.rel = 'noopener';
+        a.textContent = partner;
+        parent.appendChild(a);
+      }
+      if (chunk) parent.appendChild(document.createTextNode(chunk));
+    });
+    return parent;
   };
 
   const el = (tag, className, text) => {
@@ -86,10 +111,12 @@ const RESEARCH_ITEMS = [
 
     article.appendChild(
       el('span', `research-tag ${TAG_CLASS[item.program] || ''}`.trim(), item.program));
-    article.appendChild(
-      el('p', 'research-meta', `With ${item.partner} · ${monthYear(item.date)}`));
+    article.appendChild(withPartnerLinks(
+      el('p', 'research-meta'),
+      `With ${item.partner} · ${monthYear(item.date)}`, item.partner, item.partnerUrl));
     article.appendChild(el('h3', 'research-title', item.title));
-    article.appendChild(el('p', 'research-summary', item.summary));
+    article.appendChild(withPartnerLinks(
+      el('p', 'research-summary'), item.summary, item.partner, item.partnerUrl));
 
     const links = el('div', 'research-links');
     links.appendChild(linkRow('Read the report', item.reportUrl));
