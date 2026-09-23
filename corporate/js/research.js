@@ -22,9 +22,8 @@ const RESEARCH_ITEMS = [
     program: 'Custom Scenario Analysis',
     partner: 'Clean Prosperity',
     title: 'A nuclear grand bargain for Saskatchewan',
-    // No image in the repo yet — drop the file at the path below and set it.
-    image: '',
-    imageAlt: '',
+    image: 'assets/research/sk-nuclear-grand-bargain.jpg',
+    imageAlt: 'The Saskatchewan and Canadian flags flying side by side against a clear sky.',
     summary: 'The Open Insights team collaborated with Clean Prosperity to model several electricity policy scenarios for Saskatchewan, including a “grand bargain” scenario where the province restarts its output-based performance standards carbon market and builds 2,600 megawatts of nuclear power by 2050. Impacts on emissions, costs, electricity demand & supply were assessed.',
     reportUrl: 'https://cleanprosperity.ca/wp-content/uploads/2026/09/A-Nuclear-Grand-Bargain-September-2026.pdf',
     modelUrl: 'https://sesit.gitlab.io/m3-linkages/',
