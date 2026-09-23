@@ -9,7 +9,7 @@
 
 (function initScrollReveal() {
   const targets = document.querySelectorAll(
-    '.framework-cell, .service-card, .partner-cell, .commitment-item'
+    '.framework-cell, .service-card, .partner-cell, .commitment-item, .research-card'
   );
   targets.forEach(el => el.classList.add('reveal'));
   const observer = new IntersectionObserver(
@@ -65,7 +65,8 @@ if (newsletterBtn) {
 }
 
 (function initAnchorOffset() {
-  const NAV_HEIGHT = 72;
+  const navEl = document.querySelector('nav');
+  const navHeight = () => (navEl ? navEl.getBoundingClientRect().height : 72);
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
       const href = this.getAttribute('href');
@@ -73,7 +74,7 @@ if (newsletterBtn) {
       const target = document.querySelector(href);
       if (!target) return;
       e.preventDefault();
-      const top = target.getBoundingClientRect().top + window.scrollY - NAV_HEIGHT;
+      const top = target.getBoundingClientRect().top + window.scrollY - navHeight();
       window.scrollTo({ top, behavior: 'smooth' });
     });
   });
