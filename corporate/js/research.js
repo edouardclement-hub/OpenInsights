@@ -39,7 +39,7 @@ const RESEARCH_ITEMS = [
     partnerUrl: 'https://www.electricity.ca/',
     title: 'Reliability, extreme weather and interties',
     image: 'assets/research/open-insights-electricity-canada.jpg',
-    imageAlt: 'The Open Insights and Electricity Canada logos side by side, separated by a vertical rule.',
+    imageAlt: 'The report cover, showing transmission towers at sunset, beside the stacked Open Insights and Electricity Canada logos.',
     summary: 'This report from Electricity Canada and the Open Insights initiative, led by researchers at the University of Victoria, examines how expanded interprovincial electricity connections can strengthen Canada\u2019s grid against extreme weather. Modelling shows that greater interconnection can reduce outage risks, improve resilience, lower system costs and make better use of diverse generation resources, demonstrating the value of greater provincial cooperation in building Canada\u2019s future electricity system.',
     reportUrl: 'https://www.electricity.ca/publications/building-grid-resilience-through-interprovincial-interties/',
     modelUrl: '',
