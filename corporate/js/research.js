@@ -25,12 +25,24 @@ const RESEARCH_ITEMS = [
     program: 'Custom Scenario Analysis',
     partner: 'Clean Prosperity',
     partnerUrl: 'https://cleanprosperity.ca/',
-    title: 'A nuclear grand bargain for Saskatchewan',
-    image: 'assets/research/sk-nuclear-grand-bargain.jpg',
-    imageAlt: 'The Saskatchewan and Canadian flags flying side by side against a clear sky.',
+    title: 'Electricity system pathway modelling for Saskatchewan',
+    image: 'assets/research/saskatchewan-electricity-pathways.jpg',
+    imageAlt: 'Clean Prosperity logo above a photograph of the Saskatchewan and Canadian flags flying against a clear sky.',
     summary: 'The Open Insights team collaborated with Clean Prosperity to model several electricity policy scenarios for Saskatchewan, including a “grand bargain” scenario where the province restarts its output-based performance standards carbon market and builds 2,600 megawatts of nuclear power by 2050. Impacts on emissions, costs, electricity demand & supply were assessed.',
     reportUrl: 'https://cleanprosperity.ca/wp-content/uploads/2026/09/A-Nuclear-Grand-Bargain-September-2026.pdf',
     modelUrl: 'https://sesit.gitlab.io/m3-linkages/',
+  },
+  {
+    date: '2026-09',
+    program: 'Custom Scenario Analysis',
+    partner: 'Electricity Canada',
+    partnerUrl: 'https://www.electricity.ca/',
+    title: 'Reliability, extreme weather and interties',
+    image: 'assets/research/open-insights-electricity-canada.jpg',
+    imageAlt: 'The Open Insights and Electricity Canada logos side by side, separated by a vertical rule.',
+    summary: 'This report from Electricity Canada and the Open Insights initiative, led by researchers at the University of Victoria, examines how expanded interprovincial electricity connections can strengthen Canada\u2019s grid against extreme weather. Modelling shows that greater interconnection can reduce outage risks, improve resilience, lower system costs and make better use of diverse generation resources, demonstrating the value of greater provincial cooperation in building Canada\u2019s future electricity system.',
+    reportUrl: 'https://www.electricity.ca/publications/building-grid-resilience-through-interprovincial-interties/',
+    modelUrl: '',
   },
 ];
 
@@ -64,7 +76,7 @@ const RESEARCH_ITEMS = [
         const a = document.createElement('a');
         a.href = url;
         a.target = '_blank';
-        a.rel = 'noopener';
+        a.rel = 'noopener noreferrer';
         a.textContent = partner;
         parent.appendChild(a);
       }
@@ -86,7 +98,7 @@ const RESEARCH_ITEMS = [
       const a = el('a', 'research-link', label);
       a.href = url;
       a.target = '_blank';
-      a.rel = 'noopener';
+      a.rel = 'noopener noreferrer';
       return a;
     }
     const span = el('span', 'research-link research-link--disabled');

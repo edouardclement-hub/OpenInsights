@@ -371,11 +371,13 @@ a.service-tag--link:hover {
 /* Full image, uncropped — the frame follows whatever ratio the file has. */
 .research-media img { width: 100%; height: auto; display: block; }
 
-/* Partner links inside a card follow the site palette, not the browser default. */
+/* In-text links in body copy follow the site palette, not the browser default. */
+.service-card p a,
 .research-card a:not(.research-link) {
   color: var(--sage); text-decoration: underline; text-underline-offset: 2px;
   transition: color 0.2s;
 }
+.service-card p a:hover,
 .research-card a:not(.research-link):hover { color: var(--sage-light); }
 
 /* Program pills — sage for EPM, amber for Custom Scenario Analysis. */
