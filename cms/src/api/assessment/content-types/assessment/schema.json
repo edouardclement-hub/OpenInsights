@@ -104,10 +104,10 @@
       "type": "text"
     },
     "claimedValue": {
-      "type": "string"
+      "type": "text"
     },
     "modelledValue": {
-      "type": "string"
+      "type": "text"
     },
     "execSummary": {
       "type": "text"
