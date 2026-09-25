@@ -348,6 +348,7 @@ async function seedIfEmpty(strapi: Core.Strapi) {
 // CONSERVATIVE_2021: this file is the source of truth, so admin edits to these
 // fields are overwritten on the next boot.
 async function seedBudget2026(strapi: Core.Strapi) {
+  strapi.log.info(`[EPM seed] Budget 2026: checking for slug ${BUDGET_2026.slug}`);
   const existing = await strapi.documents('api::assessment.assessment').findMany({
     filters: { slug: { $eq: BUDGET_2026.slug } },
     limit: 1,
@@ -380,6 +381,8 @@ async function seedBudget2026(strapi: Core.Strapi) {
       status: 'published',
     });
     strapi.log.info(`[EPM seed] Synced Budget 2026 fields: ${Object.keys(patch).join(', ')}`);
+  } else {
+    strapi.log.info('[EPM seed] Budget 2026 already up to date.');
   }
 }
 
@@ -420,12 +423,20 @@ export default {
   register() {},
 
   async bootstrap({ strapi }: { strapi: Core.Strapi }) {
-    try {
-      await seedIfEmpty(strapi);
-      await seedBudget2026(strapi);
-      await openPublicPermissions(strapi);
-    } catch (err) {
-      strapi.log.error('[EPM bootstrap] failed', err as Error);
+    // Each step gets its own try/catch. These previously shared one block, so a
+    // failure in the first silently skipped the rest — which is how an instance
+    // could end up with the updated schema but without the Budget 2026 record.
+    const steps: Array<[string, () => Promise<unknown>]> = [
+      ['seedIfEmpty', () => seedIfEmpty(strapi)],
+      ['seedBudget2026', () => seedBudget2026(strapi)],
+      ['openPublicPermissions', () => openPublicPermissions(strapi)],
+    ];
+    for (const [name, run] of steps) {
+      try {
+        await run();
+      } catch (err) {
+        strapi.log.error(`[EPM bootstrap] ${name} failed`, err as Error);
+      }
     }
   },
 };
