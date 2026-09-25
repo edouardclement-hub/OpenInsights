@@ -134,6 +134,20 @@ export interface StrapiAssessment {
   assumptionsUrl: string | null;
   isExample: boolean | null;
   lead: string | null;
+
+  // Intake Part A fields added for the Budget 2026 assessment. All optional, so
+  // assessments that predate them (e.g. Conservative 2021) render unchanged.
+  shortName?: string | null;            // F1B
+  instrumentType?: string[] | null;     // F6
+  limitations?: string | null;          // F21
+  methodologySummary?: string | null;   // F22
+  assumptionsSummary?: string | null;   // F23
+  quote?: string | null;                // F24
+  quoteAttribution?: string | null;     // F24
+  platformName?: string | null;         // F36
+  codersUrl?: string | null;            // F31
+  modelReposUrl?: string | null;        // F32
+  fullAssumptionsUrl?: string | null;   // F33
 }
 
 export interface StrapiFaq {

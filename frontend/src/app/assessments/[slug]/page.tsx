@@ -10,6 +10,7 @@ import {
 } from "@/lib/strapi";
 import { CopyCitation } from "@/components/blocks/CopyCitation";
 import { AssessmentSlideshow } from "@/components/blocks/AssessmentSlideshow";
+import { AssessmentDisclosure } from "@/components/blocks/AssessmentDisclosure";
 import { getAssessmentSlides } from "@/lib/assessment-slides";
 
 export const revalidate = 60;
@@ -75,7 +76,7 @@ export default async function AssessmentDetailPage({
             <Link href="/assessments">Assessments</Link>
             <span>›</span>
             <span style={{ color: "rgba(255,255,255,0.55)" }}>
-              {a.title.length > 40 ? `${a.title.slice(0, 40)}…` : a.title}
+              {a.title}
             </span>
           </div>
           <div className="detail-meta-top">
@@ -92,7 +93,7 @@ export default async function AssessmentDetailPage({
             </span>
             <span>·</span>
             <span>
-              Lead: <strong>Open Insights</strong>
+              Lead: <strong>{a.lead || "Open Insights"}</strong>
             </span>
           </div>
           <div className="detail-trust-badges">
@@ -151,6 +152,18 @@ export default async function AssessmentDetailPage({
             </div>
           )}
 
+          {(a.methodologySummary || a.assumptionsSummary) && (
+            <div className="detail-section">
+              <h2>Summaries</h2>
+              {a.methodologySummary && (
+                <AssessmentDisclosure title="Methodology summary" body={a.methodologySummary} />
+              )}
+              {a.assumptionsSummary && (
+                <AssessmentDisclosure title="Assumptions summary" body={a.assumptionsSummary} />
+              )}
+            </div>
+          )}
+
           {(() => {
             const slides = getAssessmentSlides(a.slug);
             return slides ? (
@@ -174,6 +187,27 @@ export default async function AssessmentDetailPage({
                   </li>
                 ))}
               </ul>
+            </div>
+          )}
+
+          {a.limitations && (
+            <div className="detail-section limitations-section">
+              <h2>Limitations and uncertainty</h2>
+              {a.limitations
+                .split(/\n{2,}/)
+                .map((b) => b.trim())
+                .filter(Boolean)
+                .map((block, i) =>
+                  block.startsWith("## ") ? (
+                    <h4 key={i} className="limitations-heading">
+                      {block.slice(3)}
+                    </h4>
+                  ) : (
+                    <p key={i} className="limitations-text">
+                      {block}
+                    </p>
+                  )
+                )}
             </div>
           )}
 
@@ -201,11 +235,19 @@ export default async function AssessmentDetailPage({
           <div className="detail-section">
             <h2>Methodology</h2>
             <p style={{ fontSize: 15, color: "var(--slate)", lineHeight: 1.7, marginBottom: 16 }}>
-              This assessment was produced using the M3 Platform, a suite of energy-economy models
-              maintained by the Energy Modelling Hub and supported by Open Insights and academic
-              partners. Policy measures were encoded using the standardized EPM Policy Encoding
-              framework, run against the EMH Assumptions Database baseline, and validated through
-              independent QAQC review.
+              This assessment was produced using the{" "}
+              <a
+                href="https://m3.cme-emh.ca/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "var(--teal)", fontWeight: 600 }}
+              >
+                {a.platformName || "M3 Platform"}
+              </a>
+              , a suite of energy-economy models maintained by the Energy Modelling Hub and
+              supported by Open Insights and academic partners. Policy measures were encoded using
+              the standardized EPM Policy Encoding framework, run against the EMH Assumptions
+              Database baseline, and validated through independent QAQC review.
             </p>
             <Link
               href="/methodology"
@@ -221,6 +263,12 @@ export default async function AssessmentDetailPage({
             <h3>Quick facts</h3>
           </div>
           <div className="qf-body">
+            {a.quote && (
+              <figure className="qf-quote">
+                <blockquote>&ldquo;{a.quote}&rdquo;</blockquote>
+                {a.quoteAttribution && <figcaption>{a.quoteAttribution}</figcaption>}
+              </figure>
+            )}
             <div className="qf-row">
               <div className="qf-label">Emissions claim</div>
               <div className="qf-value highlight">{a.claim}</div>
@@ -254,8 +302,12 @@ export default async function AssessmentDetailPage({
                   <span className="download-tag-primary">PDF</span>
                 </a>
               ) : (
-                <button className="download-btn-primary" disabled style={{ opacity: 0.5 }}>
-                  <span>Zenodo brief — coming soon</span>
+                <button
+                  className="download-btn-primary is-unavailable"
+                  disabled
+                  style={{ opacity: 0.5 }}
+                >
+                  <span>Zenodo brief - not available</span>
                 </button>
               )}
             </div>
@@ -370,6 +422,19 @@ export default async function AssessmentDetailPage({
                 <span className="download-tooltip">Technical modelling expertise required to replicate results.</span>
               </div>
             </div>
+            {a.codersUrl && (
+              <div className="qf-row">
+                <div className="download-btn-wrap">
+                  <a href={a.codersUrl} target="_blank" rel="noreferrer" className="download-btn">
+                    <span>CODERS data list</span>
+                    <span className="download-tag">↗</span>
+                  </a>
+                  <span className="download-tooltip">
+                    Historical Canadian capacity, demand, and renewable-resource data used by COPPER.
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
         </aside>
       </div>

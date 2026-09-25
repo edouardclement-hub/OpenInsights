@@ -50,22 +50,47 @@
     },
     "party": {
       "type": "enumeration",
-      "enum": ["Liberal", "Conservative", "NDP", "Bloc Québécois", "Green", "Non-partisan", "Other"]
+      "enum": [
+        "Liberal",
+        "Conservative",
+        "NDP",
+        "Bloc Québécois",
+        "Green",
+        "Non-partisan",
+        "Other"
+      ]
     },
     "status": {
       "type": "enumeration",
-      "enum": ["Completed", "In Progress"],
+      "enum": [
+        "Completed",
+        "In Progress"
+      ],
       "default": "In Progress",
       "required": true
     },
     "policyStatus": {
       "type": "enumeration",
-      "enum": ["Proposed", "Enacted", "Election Platform", "Repealed"],
+      "enum": [
+        "Proposed",
+        "Enacted",
+        "Election Platform",
+        "Repealed"
+      ],
       "required": true
     },
     "sector": {
       "type": "enumeration",
-      "enum": ["Electricity", "Oil & Gas", "Buildings", "Transportation", "Industry", "Agriculture", "Cross-cutting", "Election Platform"],
+      "enum": [
+        "Electricity",
+        "Oil & Gas",
+        "Buildings",
+        "Transportation",
+        "Industry",
+        "Agriculture",
+        "Cross-cutting",
+        "Election Platform"
+      ],
       "required": true
     },
     "tags": {
@@ -103,7 +128,11 @@
     },
     "accentClass": {
       "type": "enumeration",
-      "enum": ["default", "gold", "slate"],
+      "enum": [
+        "default",
+        "gold",
+        "slate"
+      ],
       "default": "default"
     },
     "citation": {
@@ -112,12 +141,16 @@
     "cardImage": {
       "type": "media",
       "multiple": false,
-      "allowedTypes": ["images"]
+      "allowedTypes": [
+        "images"
+      ]
     },
     "detailImage": {
       "type": "media",
       "multiple": false,
-      "allowedTypes": ["images"]
+      "allowedTypes": [
+        "images"
+      ]
     },
     "zenodoUrl": {
       "type": "string"
@@ -135,6 +168,39 @@
       "type": "string"
     },
     "assumptionsUrl": {
+      "type": "string"
+    },
+    "shortName": {
+      "type": "string"
+    },
+    "instrumentType": {
+      "type": "json"
+    },
+    "limitations": {
+      "type": "text"
+    },
+    "methodologySummary": {
+      "type": "text"
+    },
+    "assumptionsSummary": {
+      "type": "text"
+    },
+    "quote": {
+      "type": "text"
+    },
+    "quoteAttribution": {
+      "type": "string"
+    },
+    "platformName": {
+      "type": "string"
+    },
+    "codersUrl": {
+      "type": "string"
+    },
+    "modelReposUrl": {
+      "type": "string"
+    },
+    "fullAssumptionsUrl": {
       "type": "string"
     }
   }

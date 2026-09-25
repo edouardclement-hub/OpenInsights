@@ -108,6 +108,8 @@ const ASSESSMENT_LOCAL_IMAGES: Record<string, string> = {
     "/assessments/ndp-federal-election-platform-energy-climate-chapter.jpg",
   "conservative-party-federal-election-platform-2021-energy-climate":
     "/assessments/conservative-party-federal-election-platform-2021-energy-climate.png",
+  "powering-canada-strong-financing-the-build":
+    "/assessments/powering-canada-strong-financing-the-build.jpg",
 };
 
 export function getAssessmentImage(
