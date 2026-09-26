@@ -204,7 +204,7 @@ const CONSERVATIVE_2021: any = {
 // example banner and the "do not cite" line must remain until that changes.
 // [TO CONFIRM: ...] strings are deliberate visible placeholders, not oversights.
 const BUDGET_2026: any = {
-  title: 'Budget 2026, Chapter 2: Powering Canada Strong: Financing the Build',
+  title: 'Budget 2026, Chapter 2 — Powering Canada Strong: Financing the Build',
   shortName: 'Budget 2026',
   slug: 'powering-canada-strong-financing-the-build',
   publishedDate: '2026-09-01',
