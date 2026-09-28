@@ -341,6 +341,15 @@ a.service-tag--link:hover {
   transition: color 0.2s;
 }
 .service-link::after { content: '→'; }
+
+/* Secondary note beside a link, e.g. "(in preparation)" on the EPM links.
+   Sized in em so it stays proportional to whichever link it sits in. */
+.link-note {
+  font-size: 0.9em;
+  letter-spacing: 0.04em;
+  color: var(--mid);
+  white-space: nowrap;
+}
 .service-link:hover {
   color: var(--sage-light);
   text-decoration: underline; text-underline-offset: 3px;
