@@ -362,11 +362,21 @@ a.service-tag--link:hover {
 .research-grid {
   display: grid; grid-template-columns: repeat(3, 1fr);
   gap: 1rem; margin-top: 3rem;
+  align-items: stretch;
+
+  /* Card rhythm. Set here so every current and future card inherits the same
+     spacing, and one edit changes them all. */
+  --rc-space:        0.6rem;   /* tag / meta / title / blurb */
+  --rc-media-gap:    0.5rem;   /* image to tag */
+  --rc-footer-pad:   1rem;     /* divider to first CTA */
+  --rc-footer-gap:   0.6rem;   /* between CTAs */
+  --rc-footer-min:   8.625rem; /* reserves room for three CTAs */
+  --rc-blurb-lines:  9;        /* clamp; see .research-summary */
 }
 
 .research-card {
   background: var(--white); border: 1px solid var(--rule);
-  padding: 1.75rem; display: flex; flex-direction: column; gap: 0.6rem;
+  padding: 1.75rem; display: flex; flex-direction: column; gap: var(--rc-space);
   height: 100%;
   transition: border-color 200ms ease, transform 200ms ease;
 }
@@ -374,11 +384,17 @@ a.service-tag--link:hover {
 
 /* Optional image — cards without one simply start at the tag. */
 .research-media {
-  margin: -1.75rem -1.75rem 0.5rem; border-bottom: 1px solid var(--rule);
+  margin: -1.75rem -1.75rem var(--rc-media-gap); border-bottom: 1px solid var(--rule);
   background: var(--mist); overflow: hidden;
+  aspect-ratio: 16 / 9;
 }
-/* Full image, uncropped — the frame follows whatever ratio the file has. */
-.research-media img { width: 100%; height: auto; display: block; }
+/* Fixed 16:9 frame, so every card's image area is identical whatever the
+   source file's own ratio. Images carry no logos; partners are credited in
+   the metadata line instead. */
+.research-media img {
+  width: 100%; height: 100%; display: block;
+  object-fit: cover; object-position: center;
+}
 
 /* In-text links in body copy follow the site palette, not the browser default. */
 .service-card p a,
@@ -409,11 +425,25 @@ a.service-tag--link:hover {
 
 .research-summary {
   font-size: 0.85rem; color: var(--ink); line-height: 1.6; max-width: none;
+  /* Safety net for future copy. Set to 9 rather than 5 because the current
+     blurbs run 6 to 7 lines on desktop and up to 9 on mobile, and a clamp of 5
+     would cut all three. Lower it once the copy is shorter. */
+  display: -webkit-box;
+  -webkit-line-clamp: var(--rc-blurb-lines);
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-.research-links {
-  margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--rule);
-  display: flex; flex-direction: column; gap: 0.6rem;
+/* The divider and every CTA live in this one footer. margin-top:auto pins it to
+   the bottom of the card; min-height reserves space for three links so a card
+   with two still lines up with a card that has three. */
+.research-footer {
+  /* Reset the page-level `footer` styling, which is dark. */
+  background: none; color: inherit;
+  margin-top: auto; padding: var(--rc-footer-pad) 0 0;
+  border-top: 1px solid var(--rule);
+  display: flex; flex-direction: column; gap: var(--rc-footer-gap);
+  min-height: var(--rc-footer-min);
 }
 .research-link {
   font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem;
