@@ -488,6 +488,12 @@ a.service-tag--link:hover {
   display: grid; grid-template-columns: repeat(3, 1fr);
   gap: 1rem; margin-top: 1.25rem; align-items: start;
 }
+/* Steering Committee: cards stretch to a common height rather than sizing to
+   their own content, and the role reserves two lines, so the three stay
+   identical whether the grid is three columns, two, or one. */
+.team-grid--equal { align-items: stretch; }
+.team-grid--equal .team-role { min-height: 3.2em; }
+
 .team-card {
   background: var(--white); border: 1px solid var(--rule);
   padding: 1.75rem; display: flex; flex-direction: column; gap: 0.45rem;
