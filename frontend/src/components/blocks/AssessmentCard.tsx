@@ -13,13 +13,7 @@ function PolicyStatusBadge({ status }: { status: StrapiAssessment["policyStatus"
   return <span className={`badge ${cls}`}>{status}</span>;
 }
 
-export function AssessmentCard({
-  assessment,
-  showTags = true,
-}: {
-  assessment: StrapiAssessment;
-  showTags?: boolean;
-}) {
+export function AssessmentCard({ assessment }: { assessment: StrapiAssessment }) {
   const a = assessment;
   const accentClass = a.accentClass && a.accentClass !== "default" ? ` ${a.accentClass}` : "";
   const cardImg = getAssessmentImage(a, "card");
@@ -52,15 +46,6 @@ export function AssessmentCard({
           <div className="card-finding">
             <div className="card-finding-label">EPM Finding</div>
             <div className="card-finding-text">{a.finding}</div>
-          </div>
-        )}
-        {showTags && a.tags && a.tags.length > 0 && (
-          <div className="card-tags">
-            {a.tags.slice(0, 5).map((tag) => (
-              <span key={tag} className="tag">
-                {tag}
-              </span>
-            ))}
           </div>
         )}
         <div className="card-actions">

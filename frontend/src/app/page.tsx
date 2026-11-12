@@ -7,7 +7,7 @@ import type { StrapiAssessment, StrapiHomepage } from "@/types/strapi";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "Energy Policy Monitor — Open Insights",
+  title: "Energy Policy Monitor: Open Insights",
   description:
     "Independent, data-driven assessments of Canadian energy policy. Transparent modelling, traceable findings, publicly archived.",
 };
@@ -17,7 +17,7 @@ const HOMEPAGE: Partial<StrapiHomepage> = {
   eyebrow: "Independent assessment",
   heroTitle: "Canadian energy policy insights, independently assessed.",
   heroSubtitle:
-    "The Energy Policy Monitor delivers independent, timely analysis of Canada's major energy and climate policy developments. Led by the Open Insights team, EPM cuts through complexity to provide clear, evidence-based assessments of what new policies mean for emissions trajectories, energy systems, and economic outcomes.",
+    "The Energy Policy Monitor delivers independent, timely analysis of Canada's major energy and climate policy developments. Built on the Open Insights framework for transparent modelling, EPM provides evidence-based assessments of what new policies mean for emissions, the economy, and energy infrastructure.",
   heroCtaPrimaryLabel: "Explore assessments",
   heroCtaPrimaryHref: "/assessments",
   heroCtaSecondaryLabel: "How it works",
@@ -163,9 +163,8 @@ export default async function HomePage() {
                 final outputs.
               </div>
               <div className="pillar-desc">
-                Every EPM brief is Zenodo-archived, QAQC-validated by independent experts, and
-                published with full documentation: code, assumptions, data, and results — all
-                available for public review and replication.
+                Every EPM assessment is published with its code, assumptions, data, and results,
+                and archived with a permanent DOI so anyone can review or reproduce it.
               </div>
             </article>
           </div>

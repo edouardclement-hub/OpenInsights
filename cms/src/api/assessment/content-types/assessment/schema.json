@@ -5,7 +5,7 @@
     "singularName": "assessment",
     "pluralName": "assessments",
     "displayName": "Assessment",
-    "description": "EPM policy assessment — claims vs modelled findings"
+    "description": "EPM policy assessment: claims vs modelled findings"
   },
   "options": {
     "draftAndPublish": true
@@ -202,6 +202,12 @@
     },
     "fullAssumptionsUrl": {
       "type": "string"
+    },
+    "policyAssessed": {
+      "type": "text"
+    },
+    "methodologyIntro": {
+      "type": "text"
     }
   }
 }

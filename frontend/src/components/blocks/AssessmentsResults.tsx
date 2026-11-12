@@ -29,7 +29,7 @@ export function AssessmentsResults({ assessments }: { assessments: StrapiAssessm
   const fuse = useMemo(
     () =>
       new Fuse(assessments, {
-        keys: ["title", "claim", "finding", "execSummary", "tags", "sector", "jurisdiction"],
+        keys: ["title", "claim", "finding", "execSummary", "sector", "jurisdiction"],
         threshold: 0.35,
         includeMatches: false,
       }),
@@ -46,7 +46,7 @@ export function AssessmentsResults({ assessments }: { assessments: StrapiAssessm
         pool.length === assessments.length
           ? fuse
           : new Fuse(pool, {
-              keys: ["title", "claim", "finding", "execSummary", "tags", "sector", "jurisdiction"],
+              keys: ["title", "claim", "finding", "execSummary", "sector", "jurisdiction"],
               threshold: 0.35,
             });
       pool = poolFuse.search(query).map((r) => r.item);

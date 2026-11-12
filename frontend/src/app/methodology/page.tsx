@@ -4,7 +4,7 @@ import M3PlatformSchematic from "@/components/blocks/M3PlatformSchematic";
 export const metadata: Metadata = {
   title: "Methodology",
   description:
-    "How every EPM assessment is built — a standardized, reproducible process from policy announcement to published results.",
+    "How every EPM assessment is built: a standardized, reproducible process from policy announcement to published results.",
 };
 
 const TIMELINE_STEPS = [
@@ -12,19 +12,19 @@ const TIMELINE_STEPS = [
     n: "00",
     title: "Policy announced",
     phase: "Phase 0",
-    desc: "A major energy or climate policy announcement triggers an EPM scope review.",
+    desc: "A major energy or climate policy announcement triggers a review of which measures can be modelled.",
   },
   {
     n: "01",
     title: "Policy encoding",
     phase: "Phase 1",
-    desc: "The EPM team parses and encodes the policy measures using the standardized Policy Encoding framework.",
+    desc: "The EPM team parses and encodes the policy measures using a standard template that translates each policy measure into model inputs.",
   },
   {
     n: "02",
     title: "Baseline validation",
     phase: "Phase 2",
-    desc: "Baseline data is validated against the Assumptions Database. Scope and sector coverage are confirmed.",
+    desc: "Baseline data is validated against a shared, public set of baseline assumptions. Scope and sector coverage are confirmed.",
   },
   {
     n: "03",
@@ -36,7 +36,7 @@ const TIMELINE_STEPS = [
     n: "04",
     title: "Review & publish",
     phase: "Phase 4",
-    desc: "External QAQC validation, 2-page brief authoring, Zenodo archiving, and public release.",
+    desc: "Two-page brief authoring, permanent archiving with a DOI, and public release.",
   },
 ];
 
@@ -82,33 +82,33 @@ export default function MethodologyPage() {
         <div className="comparison-table">
           <div className="comparison-col featured">
             <div className="comparison-header featured">
-              <div className="comparison-tier">Standard service</div>
+              <div className="comparison-tier">Every assessment</div>
               <div className="comparison-name">EPM Core</div>
             </div>
             <div className="comparison-body" style={{ padding: "24px 28px" }}>
               <ul style={{ listStyle: "disc", paddingLeft: 20, margin: 0, fontSize: 14, color: "var(--slate)", lineHeight: 2.1 }}>
                 <li>Rapid turnaround from announcement</li>
-                <li>2-page neutral summary of key findings</li>
+                <li>Two-page summary of key findings</li>
                 <li>Full Policy Encoding Sheet (CSV)</li>
-                <li>Complete results dataset (ZIP)</li>
-                <li>Public GitHub repository with code & assumptions</li>
-                <li>Zenodo archiving with permanent DOI</li>
-                <li>QAQC validated by independent experts</li>
-                <li>Model results will be hosted on a dedicated portion of <a href="https://m3.cme-emh.ca/open-visualization-tools/" target="_blank" rel="noreferrer" style={{ color: "var(--teal)", textDecoration: "underline" }}>IDEA</a></li>
+                <li>Results dataset</li>
+                <li>Public code repository with model code and assumptions</li>
+                <li>Permanent public archive with a citable DOI</li>
+                <li><a href="https://m3.cme-emh.ca/open-visualization-tools/" target="_blank" rel="noreferrer" style={{ color: "var(--teal)", textDecoration: "underline" }}>Interactive results dashboard</a></li>
+                <li>Results reported for emissions, the economy, and infrastructure.</li>
               </ul>
             </div>
           </div>
           <div className="comparison-col">
             <div className="comparison-header">
-              <div className="comparison-tier">Expert extension</div>
+              <div className="comparison-tier">Follow-up analysis</div>
               <div className="comparison-name">EPM+</div>
-              <div style={{ fontSize: 11, opacity: 0.8, marginTop: 4 }}>Released after EPM Core</div>
+              <div style={{ fontSize: 11, color: "rgba(255,255,255,0.85)", marginTop: 4 }}>Released after EPM Core</div>
             </div>
             <div className="comparison-body" style={{ padding: "24px 28px" }}>
               <p style={{ fontSize: 13.5, color: "var(--slate)", lineHeight: 1.65, margin: "0 0 16px" }}>
                 EPM+ is an independent academic response to EPM Core. Written by an external
-                contributor, it explores what the policy means in practice — beyond the neutral
-                2-page summary.
+                contributor, it explores what the policy means in practice, beyond the two-page
+                summary.
               </p>
               <p style={{ fontSize: 13, fontWeight: 600, color: "var(--navy)", margin: "0 0 8px" }}>
                 EPM+ briefs include:
@@ -121,17 +121,31 @@ export default function MethodologyPage() {
           </div>
         </div>
 
-        <div style={{ maxWidth: 680 }}>
-          <div className="section-label">Quality assurance</div>
+        <section id="baseline" className="method-baseline" style={{ maxWidth: 680, scrollMarginTop: 120 }}>
+          <div className="section-label">Scenario baseline</div>
           <div className="section-title" style={{ fontSize: 24, marginBottom: 20 }}>
-            Every assessment is QAQC validated
+            Baseline: November 2026{" "}
+            <a
+              href="#baseline"
+              className="baseline-permalink"
+              aria-label="Link to the Baseline: November 2026 section"
+              title="Link to this section"
+            >
+              #
+            </a>
+          </div>
+          <p style={{ fontSize: 15.5, color: "var(--slate)", lineHeight: 1.75 }}>[COPY TO COME]</p>
+        </section>
+
+        <div style={{ maxWidth: 680 }}>
+          <div className="section-label">Transparency</div>
+          <div className="section-title" style={{ fontSize: 24, marginBottom: 20 }}>
+            Every assessment can be checked
           </div>
           <p style={{ fontSize: 15.5, color: "var(--slate)", lineHeight: 1.75 }}>
-            Before publication, each EPM Core brief passes through an independent validation
-            process — covering policy encoding accuracy, baseline data currency, model parameter
-            selection, and results interpretation. Validation status is published alongside every
-            brief. Contested assumptions or encoding decisions are disclosed in the technical
-            appendix.
+            Each assessment is published with its policy inputs, model code, assumptions, and
+            results. Where reasonable modelling choices could differ, we disclose them in the
+            technical appendix.
           </p>
         </div>
       </div>

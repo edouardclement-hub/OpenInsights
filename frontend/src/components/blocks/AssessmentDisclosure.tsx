@@ -9,19 +9,27 @@ import { useState } from "react";
  * Body text is plain text from Strapi. Two conventions are honoured:
  *   "## Heading"  -> sub-heading within the block
  *   blank line    -> paragraph break
+ *
+ * `children` render after the body, for blocks the template owns rather than
+ * the CMS (the "What we measure" and "Data and code" blocks, and the closing
+ * links on every Methodology summary).
  */
 export function AssessmentDisclosure({
   title,
   body,
+  intro,
+  children,
   defaultOpen = false,
 }: {
   title: string;
-  body: string;
+  body?: string;
+  intro?: React.ReactNode;
+  children?: React.ReactNode;
   defaultOpen?: boolean;
 }) {
   const [open, setOpen] = useState(defaultOpen);
 
-  const blocks = body
+  const blocks = (body || "")
     .split(/\n{2,}/)
     .map((b) => b.trim())
     .filter(Boolean);
@@ -41,6 +49,7 @@ export function AssessmentDisclosure({
       </button>
       <div className="disclosure-body">
         <div className="disclosure-body-inner">
+          {intro}
           {blocks.map((block, i) =>
             block.startsWith("## ") ? (
               <h4 key={i} className="disclosure-heading">
@@ -50,6 +59,7 @@ export function AssessmentDisclosure({
               <p key={i}>{block}</p>
             )
           )}
+          {children}
         </div>
       </div>
     </div>

@@ -743,11 +743,15 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
 }
 
 /* Quick Facts sidebar */
+/* Scrolls with the page: the main column and the sidebar move together, rather
+   than the sidebar pinning itself and waiting for the article to run out. The
+   panel is now short enough to read in one pass, so it needs neither sticky
+   positioning nor a scrollbar of its own. */
 .quick-facts {
   background: var(--white);
   border: 1px solid var(--rule); border-radius: var(--radius-lg);
-  overflow: hidden;
-  position: sticky; top: 80px;
+  overflow-x: hidden;
+  align-self: start;
   margin-top: -120px; /* Overlap the hero */
   box-shadow: var(--shadow-lg);
 }
@@ -1001,6 +1005,23 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
 }
 .findings-list p { font-size: 15px; color: var(--slate); line-height: 1.6; }
 .findings-list strong { color: var(--navy); }
+.finding-body { flex: 1; }
+.finding-pillar {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+  color: var(--teal); letter-spacing: 1.5px; text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.findings-scope-note {
+  font-size: 14px; color: var(--muted); line-height: 1.65;
+  margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--surface);
+}
+
+/* Policy assessed line, under the detail byline */
+.detail-policy-line {
+  font-size: 13px; color: rgba(255,255,255,0.45);
+  margin-top: 10px; line-height: 1.5;
+}
+.detail-policy-line strong { color: rgba(255,255,255,0.7); font-weight: 600; }
 
 /* Chart placeholder */
 .chart-placeholder {
@@ -1896,7 +1917,8 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   .assessments-grid, .results-grid { grid-template-columns: 1fr 1fr; }
   .logo-grid { grid-template-columns: 1fr 1fr; }
   .detail-main { grid-template-columns: 1fr; }
-  .quick-facts { position: static; margin-top: 32px; }
+  /* Stacked under the article: no pinning, no height cap, no inner scroll. */
+  .quick-facts { margin-top: 32px; }
   .comparison-table { grid-template-columns: 1fr; }
   .timeline-track { grid-template-columns: 1fr; }
   .timeline-track::before { display: none; }
@@ -1977,6 +1999,29 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   color: var(--navy); margin: 18px 0 0;
 }
 .disclosure-heading:first-child { margin-top: 12px; }
+.disclosure-list {
+  list-style: disc; padding-left: 20px; margin: 10px 0 0;
+  font-size: 14.5px; line-height: 1.7; color: var(--text-body);
+}
+.disclosure-list li { margin-top: 6px; }
+.disclosure-list strong { color: var(--navy); }
+.disclosure-links a { color: var(--teal); text-decoration: underline; }
+.disclosure-links span { color: var(--muted); }
+.disclosure-footer-links {
+  display: flex; flex-wrap: wrap; gap: 18px;
+  margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--rule);
+}
+.disclosure-footer-links a {
+  font-size: 14px; font-weight: 600; color: var(--teal);
+}
+.disclosure-footer-links a:hover { text-decoration: underline; }
+
+/* Shareable anchor on the Methodology page Baseline section */
+.baseline-permalink {
+  color: var(--rule); font-weight: 400; text-decoration: none;
+  transition: color 220ms cubic-bezier(0.4,0,0.2,1);
+}
+.baseline-permalink:hover { color: var(--teal); }
 
 .limitations-heading {
   font-family: var(--font-body); font-size: 14px; font-weight: 700;

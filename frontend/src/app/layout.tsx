@@ -24,7 +24,7 @@ const dmMono = DM_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Energy Policy Monitor — Open Insights",
+    default: "Energy Policy Monitor: Open Insights",
     template: "%s | Energy Policy Monitor",
   },
   description:

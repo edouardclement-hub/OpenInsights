@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Team",
-  description: "Who produces the EPM — Open Insights team, EPM leadership, and the steering committee.",
+  description: "Who produces the EPM: the Open Insights team and the model development leads.",
 };
 
 type Member = {
@@ -25,33 +25,57 @@ const OPEN_INSIGHTS_TEAM: Member[] = [
   },
   {
     name: "Dr. Madeleine McPherson",
-    role: "Principal Investigator, SESIT Group — Associate Professor, University of Victoria",
+    role: "Principal Investigator, SESIT Group, Associate Professor, University of Victoria",
     bio: "Leads the EPM initiative, overseeing various phases of the EPM analysis and validation process.",
     photo: "/team/dr-madeleine-mcpherson.jpg",
-    href: "https://www.uvic.ca/ecs/civil/people/home/faculty-profiles/mcpherson-madeleine.php",
+    href: "https://www.linkedin.com/in/madeleine-mcpherson-01b36719/",
   },
   {
-    name: "Aaron Hoyle",
-    role: "Director of EPM",
+    name: "Dr. Aaron Hoyle",
+    role: "Project Director, Energy Policy Monitor",
     bio: "Leads the EPM initiative, overseeing various phases of the EPM process and technical framework.",
     photo: "/team/dr-aaron-hoyle.jpg",
     href: "https://www.linkedin.com/in/aaron-hoyle-19312494/",
   },
 ];
 
-const STEERING_COMMITTEE: Member[] = [
+const MODEL_DEVELOPMENT_LEADS: Member[] = [
   {
-    name: "Michael Bernstein",
-    role: "Executive Director, Clean Prosperity Foundation",
-    photo: "/team/michael-bernstein.jpg",
-    href: "https://cleanprosperity.ca/team/michael-bernstein/",
+    name: "Dr. Aaron Hoyle",
+    role: "Demand-Side Lead",
+    photo: "/team/dr-aaron-hoyle.jpg",
+    href: "https://www.linkedin.com/in/aaron-hoyle-19312494/",
+  },
+  {
+    name: "Dr. Madeleine Seatle",
+    role: "Power Systems Lead",
+    photo: "/team/dr-madeleine-seatle.jpg",
+    href: "https://www.linkedin.com/in/madeleine-seatle-19b35614a/",
+  },
+  {
+    name: "Dr. Esmaeil Izadi",
+    role: "Macroeconomic Lead",
+    photo: "/team/dr-esmaeil-izadi.jpg",
+    href: "https://www.linkedin.com/in/esiz/",
+  },
+  {
+    name: "Bipasa Agrawal",
+    role: "Probabilistic Resource Adequacy Suite (PRAS) Lead",
+    photo: "/team/bipasa-agrawal.jpg",
+    href: "https://www.linkedin.com/in/bipasa-agrawal-6230521b8/",
+  },
+  {
+    name: "Jonas Kraasch",
+    role: "Uncertainty Analysis Lead",
+    photo: "/team/jonas-kraasch.jpg",
+    href: "https://www.linkedin.com/in/jonas-kraasch-5716a7166/",
   },
 ];
 
 function TeamCard({ m }: { m: Member }) {
   return (
     <article className="team-card">
-      <a href={m.href} target="_blank" rel="noopener" className="team-card-link" aria-label={`${m.name} — LinkedIn profile`}>
+      <a href={m.href} target="_blank" rel="noopener" className="team-card-link" aria-label={`${m.name}, LinkedIn profile`}>
         <div className="team-avatar">
           <Image src={m.photo} alt={m.name} width={120} height={120} />
         </div>
@@ -71,8 +95,7 @@ export default function TeamPage() {
           <div className="section-label">The people</div>
           <h1>Who produces the EPM</h1>
           <p>
-            A collaboration between the Open Insights team, the Energy Modelling Hub, and
-            university research partners.
+            A collaboration between the Open Insights team and university research partners.
           </p>
         </div>
       </div>
@@ -88,7 +111,7 @@ export default function TeamPage() {
             </svg>
             Open Insights Team
           </div>
-          <div className="team-group-desc">Project leadership and strategic communications.</div>
+          <div className="team-group-desc">Project leadership and delivery</div>
           <div className="team-grid">
             {OPEN_INSIGHTS_TEAM.map((m) => <TeamCard key={m.name} m={m} />)}
           </div>
@@ -101,11 +124,13 @@ export default function TeamPage() {
               <line x1="8" y1="21" x2="16" y2="21" />
               <line x1="12" y1="17" x2="12" y2="21" />
             </svg>
-            Steering Committee
+            Model Development Leads
           </div>
-          <div className="team-group-desc">Institutional leadership and strategic oversight.</div>
+          <div className="team-group-desc">
+            Academic leads developing the energy system models and the M3 Platform.
+          </div>
           <div className="team-grid">
-            {STEERING_COMMITTEE.map((m) => <TeamCard key={m.name} m={m} />)}
+            {MODEL_DEVELOPMENT_LEADS.map((m) => <TeamCard key={m.name} m={m} />)}
           </div>
         </div>
 

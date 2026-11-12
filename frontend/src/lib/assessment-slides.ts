@@ -70,7 +70,7 @@ export const ASSESSMENT_SLIDES: Record<string, AssessmentSlide[]> = {
     {
       image: `/assessments/${SLUG_CONSERVATIVE}/slides/page-04.png`,
       title: "Emissions trajectory",
-      description: "Emissions fall 2% by 2025 and 6% by 2030 versus reference scenario.",
+      description: "Emissions fall 2% by 2025 and 6% by 2030 versus baseline.",
     },
     {
       image: `/assessments/${SLUG_CONSERVATIVE}/slides/page-05.png`,

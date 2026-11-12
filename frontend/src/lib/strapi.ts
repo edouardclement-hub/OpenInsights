@@ -60,27 +60,46 @@ export async function getTeamMembers() {
   }, 3600);
 }
 
+/**
+ * The assessments the site publishes. Strapi still holds the retired demo
+ * records, so every read is filtered through this allowlist: the listing, the
+ * search index, the homepage row, the sitemap and generateStaticParams all go
+ * through these helpers. Add a slug here when a new assessment goes live.
+ */
+export const PUBLISHED_ASSESSMENT_SLUGS = [
+  "powering-canada-strong-financing-the-build",
+  "conservative-party-federal-election-platform-2021-energy-climate",
+] as const;
+
+function onlyPublished(res: StrapiResponse<StrapiAssessment[]>) {
+  return {
+    ...res,
+    data: res.data.filter((a) =>
+      (PUBLISHED_ASSESSMENT_SLUGS as readonly string[]).includes(a.slug)
+    ),
+  };
+}
+
 export async function getAssessments() {
-  return fetchStrapi<StrapiAssessment[]>("/assessments", {
+  const res = await fetchStrapi<StrapiAssessment[]>("/assessments", {
     populate: "*",
     "sort[0]": "publishedDate:desc",
     "pagination[pageSize]": "100",
   });
+  return onlyPublished(res);
 }
 
 export async function getFeaturedAssessments(limit = 3) {
-  return fetchStrapi<StrapiAssessment[]>("/assessments", {
-    populate: "*",
-    "sort[0]": "publishedDate:desc",
-    "pagination[pageSize]": String(limit),
-  });
+  const res = await getAssessments();
+  return { ...res, data: res.data.slice(0, limit) };
 }
 
 export async function getAssessmentBySlug(slug: string) {
-  return fetchStrapi<StrapiAssessment[]>("/assessments", {
+  const res = await fetchStrapi<StrapiAssessment[]>("/assessments", {
     "filters[slug][$eq]": slug,
     populate: "*",
   });
+  return onlyPublished(res);
 }
 
 export async function getFaqs(category?: string) {
@@ -98,14 +117,6 @@ export function getStrapiMediaUrl(url: string | undefined): string {
 }
 
 const ASSESSMENT_LOCAL_IMAGES: Record<string, string> = {
-  "alberta-emissions-reduction-and-energy-development-plan":
-    "/assessments/alberta-emissions-reduction-and-energy-development-plan.png",
-  "bc-building-electrification-standard-2026-implementation":
-    "/assessments/bc-building-electrification-standard-2026-implementation.png",
-  "federal-clean-electricity-regulations-draft-framework":
-    "/assessments/federal-clean-electricity-regulations-draft-framework.png",
-  "ndp-federal-election-platform-energy-climate-chapter":
-    "/assessments/ndp-federal-election-platform-energy-climate-chapter.jpg",
   "conservative-party-federal-election-platform-2021-energy-climate":
     "/assessments/conservative-party-federal-election-platform-2021-energy-climate.png",
   "powering-canada-strong-financing-the-build":

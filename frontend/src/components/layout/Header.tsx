@@ -10,6 +10,7 @@ const navLinks = [
   { href: "/methodology", label: "Methodology", match: (p: string) => p.startsWith("/methodology") },
   { href: "/team", label: "Team", match: (p: string) => p.startsWith("/team") },
   { href: "/about", label: "About", match: (p: string) => p.startsWith("/about") },
+  { href: "/contact", label: "Contact", match: (p: string) => p.startsWith("/contact") },
 ];
 
 function WaveformLogo() {
@@ -54,15 +55,6 @@ export function Header() {
               </Link>
             </li>
           ))}
-          <li>
-            <Link
-              href="/contact"
-              className={`nav-cta${pathname.startsWith("/contact") ? " active" : ""}`}
-              onClick={() => setMobileOpen(false)}
-            >
-              Contact
-            </Link>
-          </li>
         </ul>
 
         <button

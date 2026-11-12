@@ -100,6 +100,8 @@ export type AssessmentAccent = "default" | "gold" | "slate";
 
 export interface AssessmentFinding {
   text: string;
+  /** "Environment" | "Economy" | "Infrastructure". Untagged findings render as a plain list. */
+  pillar?: string;
 }
 
 export interface StrapiAssessment {
@@ -148,6 +150,11 @@ export interface StrapiAssessment {
   codersUrl?: string | null;            // F31
   modelReposUrl?: string | null;        // F32
   fullAssumptionsUrl?: string | null;   // F33
+
+  /** Official name of the policy assessed, shown under the byline. */
+  policyAssessed?: string | null;
+  /** Opening paragraph of the Methodology summary dropdown. */
+  methodologyIntro?: string | null;
 }
 
 export interface StrapiFaq {

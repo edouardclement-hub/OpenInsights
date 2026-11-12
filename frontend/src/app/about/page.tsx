@@ -6,7 +6,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "About",
   description:
-    "About the Energy Policy Monitor — independent assessment infrastructure for Canadian energy and climate policy.",
+    "About the Energy Policy Monitor: independent modelling of Canadian energy and climate policy.",
 };
 
 // FAQs are owned by this file, not the CMS. Edit them here.
@@ -58,41 +58,33 @@ export default function AboutPage() {
         <div className="page-header-inner">
           <div className="section-label">About EPM</div>
           <h1>About the Energy Policy Monitor</h1>
-          <p>Independent assessment infrastructure for Canadian energy and climate policy.</p>
+          <p>Independent modelling of Canadian energy and climate policy.</p>
         </div>
       </div>
 
       <div className="about-content">
         <div className="about-main">
-          <h2>What is Open Insights?</h2>
+          <h2>How EPM works</h2>
           <p>
-            The Energy Policy Monitor (EPM) is an{" "}
+            The Energy Policy Monitor (EPM) assesses major Canadian energy and climate policies
+            using{" "}
             <a href="https://www.openinsights.ca/" target="_blank" rel="noopener" style={{ color: "var(--teal)" }}>
               Open Insights
             </a>
-            {" "}initiative, led by{" "}
+            , a shared framework for transparent energy modelling developed at{" "}
             <a href="https://sesit.cive.uvic.ca/" target="_blank" rel="noreferrer" style={{ color: "var(--teal)" }}>
-              SESIT-UVic
+              SESIT
             </a>
-            {" "}and enabled by{" "}
-            <a href="https://cme-emh.ca/en/" target="_blank" rel="noreferrer" style={{ color: "var(--teal)" }}>
-              Energy Modelling Hub
-            </a>
-            ‘s operational support. Open Insights is a shared framework for transparent energy
-            modelling, providing open-source data and models and publishing outputs in a consistent
-            and accessible way. We welcome model development contributions and collaborations with
-            other academic and non-academic partners.
+            {" "}(University of Victoria).
           </p>
           <p>
-            The EPM is Open Insights' flagship assessment service, providing independent, timely,
-            and credible evaluation of major Canadian energy and climate policy announcements. Every
-            EPM assessment is powered by the{" "}
+            Every EPM assessment uses the{" "}
             <a href="https://m3.cme-emh.ca/" target="_blank" rel="noreferrer" style={{ color: "var(--teal)" }}>
               M3 Platform
             </a>
-            , developed by{" "}
+            , an open-source suite of linked energy and economy models developed at{" "}
             <a href="https://sesit.cive.uvic.ca/" target="_blank" rel="noreferrer" style={{ color: "var(--teal)" }}>
-              SESIT-UVic
+              SESIT
             </a>
             {" "}and maintained by the{" "}
             <a href="https://cme-emh.ca/en/" target="_blank" rel="noreferrer" style={{ color: "var(--teal)" }}>
@@ -173,7 +165,7 @@ export default function AboutPage() {
             </div>
             <div className="institution-equals" />
             <div className="institution-result">
-              Open Insights publishes transparent assessments and documentation for the public.
+              EPM publishes the assessments, with full documentation, for the public.
             </div>
           </div>
         </aside>

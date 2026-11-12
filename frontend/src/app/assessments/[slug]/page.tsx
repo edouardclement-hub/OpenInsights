@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import {
   getAssessmentBySlug,
   getAssessments,
   formatAssessmentDate,
-  getAssessmentImage,
 } from "@/lib/strapi";
 import { CopyCitation } from "@/components/blocks/CopyCitation";
 import { AssessmentSlideshow } from "@/components/blocks/AssessmentSlideshow";
@@ -17,6 +15,66 @@ export const revalidate = 60;
 
 interface Params {
   slug: string;
+}
+
+/**
+ * The three pillars every assessment reports against, in the order they are
+ * shown. A finding carries its pillar in the `findings` JSON; findings without
+ * one render as a plain list, as they did before.
+ */
+const PILLAR_ORDER = ["Environment", "Economy", "Infrastructure"] as const;
+
+/**
+ * The "Data and code" row inside every Methodology summary. Plain text links,
+ * not buttons: a row with no URL yet still names what will be published.
+ */
+const DATA_AND_CODE: Array<{ label: string; field: string }> = [
+  { label: "Policy encoding sheet", field: "policyEncodingUrl" },
+  { label: "Source code", field: "githubUrl" },
+  { label: "Assumptions", field: "assumptionsUrl" },
+  { label: "CODERS data list", field: "codersUrl" },
+  { label: "Results dataset", field: "datasetUrl" },
+];
+
+const WHAT_WE_MEASURE: Array<{ pillar: string; text: string }> = [
+  {
+    pillar: "Environment",
+    text: "Greenhouse gas emissions. Reported in every assessment.",
+  },
+  {
+    pillar: "Economy",
+    text:
+      "Household energy costs or economic growth (GDP). Energy costs cover all household energy, not just electricity.",
+  },
+  {
+    pillar: "Infrastructure",
+    text:
+      "Depends on the policy, for example the electricity generation mix for electricity policy.",
+  },
+];
+
+/**
+ * Links the first mention of the platform name inside the methodology intro,
+ * the way the homepage links "Open Insights" inside its hero copy. Keeps the
+ * paragraph itself a single plain string in the CMS.
+ */
+function linkPlatform(text: string, platformName?: string | null) {
+  const name = platformName || "M3 Platform";
+  const i = text.indexOf(name);
+  if (i === -1) return text;
+  return [
+    text.slice(0, i),
+    <a
+      key="platform"
+      href="https://m3.cme-emh.ca/"
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{ color: "var(--teal)", fontWeight: 600 }}
+    >
+      {name}
+    </a>,
+    text.slice(i + name.length),
+  ];
 }
 
 export async function generateMetadata({
@@ -64,7 +122,19 @@ export default async function AssessmentDetailPage({
 
   if (!a) notFound();
 
-  const detailImg = getAssessmentImage(a, "detail");
+  const slides = getAssessmentSlides(a.slug);
+
+  // Findings are shown one per pillar, in PILLAR_ORDER. An assessment whose
+  // findings are not pillar-tagged keeps its original list and order.
+  const taggedFindings = (a.findings || []).filter((f) => f.pillar);
+  const orderedFindings =
+    taggedFindings.length > 0
+      ? [...(a.findings || [])].sort(
+          (x, y) =>
+            PILLAR_ORDER.indexOf(x.pillar as (typeof PILLAR_ORDER)[number]) -
+            PILLAR_ORDER.indexOf(y.pillar as (typeof PILLAR_ORDER)[number])
+        )
+      : a.findings || [];
 
   return (
     <>
@@ -96,26 +166,18 @@ export default async function AssessmentDetailPage({
               Lead: <strong>{a.lead || "Open Insights"}</strong>
             </span>
           </div>
-          <div className="detail-trust-badges">
-            <div className="trust-badge">
-              <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-              </svg>
-              QAQC validated
+          {a.policyAssessed && (
+            <div className="detail-policy-line">
+              Policy assessed: <strong>{a.policyAssessed}</strong>
             </div>
+          )}
+          <div className="detail-trust-badges">
             <div className="trust-badge">
               <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
                 <polyline points="16 18 22 12 16 6" />
                 <polyline points="8 6 2 12 8 18" />
               </svg>
               Open source
-            </div>
-            <div className="trust-badge">
-              <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                <polyline points="22,6 12,13 2,6" />
-              </svg>
-              Zenodo citable
             </div>
           </div>
         </div>
@@ -131,18 +193,14 @@ export default async function AssessmentDetailPage({
               </p>
             </div>
           )}
-          {detailImg ? (
-            <div className="detail-photo">
-              <Image
-                src={detailImg}
-                alt={a.detailImage?.alternativeText || a.title}
-                width={1200}
-                height={480}
-                style={{ width: "100%", height: "auto", borderRadius: "14px" }}
-              />
-            </div>
+
+          {slides ? (
+            <AssessmentSlideshow slides={slides} />
           ) : (
-            <div className="detail-photo-placeholder" />
+            <div className="charts-placeholder" aria-label="Charts and visualizations placeholder">
+              <div className="charts-placeholder-label">Charts &amp; visualizations</div>
+              <div className="charts-placeholder-sublabel">Reserved for upcoming slides &middot; 16:9</div>
+            </div>
           )}
 
           {a.execSummary && (
@@ -152,43 +210,71 @@ export default async function AssessmentDetailPage({
             </div>
           )}
 
-          {(a.methodologySummary || a.assumptionsSummary) && (
-            <div className="detail-section">
-              <h2>Summaries</h2>
-              {a.methodologySummary && (
-                <AssessmentDisclosure title="Methodology summary" body={a.methodologySummary} />
-              )}
-              {a.assumptionsSummary && (
-                <AssessmentDisclosure title="Assumptions summary" body={a.assumptionsSummary} />
-              )}
-            </div>
-          )}
-
-          {(() => {
-            const slides = getAssessmentSlides(a.slug);
-            return slides ? (
-              <AssessmentSlideshow slides={slides} />
-            ) : (
-              <div className="charts-placeholder" aria-label="Charts and visualizations placeholder">
-                <div className="charts-placeholder-label">Charts &amp; visualizations</div>
-                <div className="charts-placeholder-sublabel">Reserved for upcoming slides &middot; 16:9</div>
-              </div>
-            );
-          })()}
-
-          {a.findings && a.findings.length > 0 && (
+          {orderedFindings.length > 0 && (
             <div className="detail-section">
               <h2>Key findings</h2>
               <ul className="findings-list">
-                {a.findings.map((f, i) => (
+                {orderedFindings.map((f, i) => (
                   <li key={i}>
                     <div className="finding-dot" />
-                    <p dangerouslySetInnerHTML={{ __html: f.text }} />
+                    <div className="finding-body">
+                      {f.pillar && <div className="finding-pillar">{f.pillar}</div>}
+                      <p dangerouslySetInnerHTML={{ __html: f.text }} />
+                    </div>
                   </li>
                 ))}
               </ul>
+              <p className="findings-scope-note">
+                This page shows headline results for the areas we measure: environment, economy,
+                and infrastructure. The full set of modelled results is in the interactive
+                dashboard.
+              </p>
             </div>
           )}
+
+          <div className="detail-section">
+            <AssessmentDisclosure
+              title="Assumptions summary"
+              body={a.assumptionsSummary || "[COPY TO COME]"}
+            />
+            <AssessmentDisclosure
+              title="Methodology summary"
+              body={a.methodologySummary || undefined}
+              intro={a.methodologyIntro ? <p>{linkPlatform(a.methodologyIntro, a.platformName)}</p> : null}
+            >
+              <h4 className="disclosure-heading">What we measure</h4>
+              <ul className="disclosure-list">
+                {WHAT_WE_MEASURE.map((m) => (
+                  <li key={m.pillar}>
+                    <strong>{m.pillar}:</strong> {m.text}
+                  </li>
+                ))}
+              </ul>
+
+              <h4 className="disclosure-heading">Data and code</h4>
+              <ul className="disclosure-list disclosure-links">
+                {DATA_AND_CODE.map((d) => {
+                  const href = (a as unknown as Record<string, string | undefined>)[d.field];
+                  return (
+                    <li key={d.label}>
+                      {href ? (
+                        <a href={href} target="_blank" rel="noreferrer">
+                          {d.label}
+                        </a>
+                      ) : (
+                        <span>{d.label}</span>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+
+              <p className="disclosure-footer-links">
+                <Link href="/methodology#baseline">Baseline: November 2026</Link>
+                <Link href="/methodology">View full methodology →</Link>
+              </p>
+            </AssessmentDisclosure>
+          </div>
 
           {a.limitations && (
             <div className="detail-section limitations-section">
@@ -231,31 +317,6 @@ export default async function AssessmentDetailPage({
               <p>An academic partner has published an interpretive brief on this assessment.</p>
             </div>
           )}
-
-          <div className="detail-section">
-            <h2>Methodology</h2>
-            <p style={{ fontSize: 15, color: "var(--slate)", lineHeight: 1.7, marginBottom: 16 }}>
-              This assessment was produced using the{" "}
-              <a
-                href="https://m3.cme-emh.ca/"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "var(--teal)", fontWeight: 600 }}
-              >
-                {a.platformName || "M3 Platform"}
-              </a>
-              , a suite of energy-economy models maintained by the Energy Modelling Hub and
-              supported by Open Insights and academic partners. Policy measures were encoded using
-              the standardized EPM Policy Encoding framework, run against the EMH Assumptions
-              Database baseline, and validated through independent QAQC review.
-            </p>
-            <Link
-              href="/methodology"
-              style={{ fontSize: 14, fontWeight: 600, color: "var(--teal)" }}
-            >
-              View full methodology →
-            </Link>
-          </div>
         </div>
 
         <aside className="quick-facts">
@@ -270,7 +331,7 @@ export default async function AssessmentDetailPage({
               </figure>
             )}
             <div className="qf-row">
-              <div className="qf-label">Emissions claim</div>
+              <div className="qf-label">Announced claim</div>
               <div className="qf-value highlight">{a.claim}</div>
             </div>
             {a.modelledValue && (
@@ -298,8 +359,7 @@ export default async function AssessmentDetailPage({
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                     <polyline points="14 2 14 8 20 8" />
                   </svg>
-                  <span>Zenodo 2-page brief</span>
-                  <span className="download-tag-primary">PDF</span>
+                  <span>Download the brief (PDF)</span>
                 </a>
               ) : (
                 <button
@@ -307,132 +367,19 @@ export default async function AssessmentDetailPage({
                   disabled
                   style={{ opacity: 0.5 }}
                 >
-                  <span>Zenodo brief - not available</span>
+                  <span>Download the brief (PDF)</span>
                 </button>
               )}
             </div>
             {a.ideaUrl && (
               <div className="qf-row">
-                <a href={a.ideaUrl} target="_blank" rel="noreferrer" className="download-btn-primary">
+                <a href={a.ideaUrl} target="_blank" rel="noreferrer" className="download-btn">
                   <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
                     <path d="M3 3v18h18" />
                     <path d="M7 14l4-4 3 3 5-6" />
                   </svg>
-                  <span>IDEA dashboard</span>
-                  <span className="download-tag-primary">INTERACTIVE</span>
+                  <span>Explore the interactive results (IDEA)</span>
                 </a>
-              </div>
-            )}
-            <div className="qf-row">
-              <div className="download-btn-wrap">
-                {a.datasetUrl ? (
-                  <a href={a.datasetUrl} target="_blank" rel="noreferrer" className="download-btn">
-                    <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
-                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                      <polyline points="7 10 12 15 17 10" />
-                      <line x1="12" y1="15" x2="12" y2="3" />
-                    </svg>
-                    <span>Results dataset</span>
-                  </a>
-                ) : (
-                  <button className="download-btn" disabled style={{ opacity: 0.5, cursor: "not-allowed" }}>
-                    <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
-                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                      <polyline points="7 10 12 15 17 10" />
-                      <line x1="12" y1="15" x2="12" y2="3" />
-                    </svg>
-                    <span>Results dataset — coming soon</span>
-                  </button>
-                )}
-                <span className="download-tooltip">Technical modelling expertise required to replicate results.</span>
-              </div>
-            </div>
-            <div className="qf-row">
-              <div className="download-btn-wrap">
-                {a.policyEncodingUrl ? (
-                  <a
-                    href={a.policyEncodingUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="download-btn"
-                  >
-                    <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                      <polyline points="14 2 14 8 20 8" />
-                    </svg>
-                    <span>Policy encoding sheet</span>
-                  </a>
-                ) : (
-                  <button className="download-btn" disabled style={{ opacity: 0.5, cursor: "not-allowed" }}>
-                    <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                      <polyline points="14 2 14 8 20 8" />
-                    </svg>
-                    <span>Policy encoding sheet — coming soon</span>
-                  </button>
-                )}
-                <span className="download-tooltip">Technical modelling expertise required to replicate results.</span>
-              </div>
-            </div>
-            <div className="qf-row">
-              <div className="download-btn-wrap">
-                {a.githubUrl ? (
-                  <a href={a.githubUrl} target="_blank" rel="noreferrer" className="download-btn">
-                    <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
-                      <polyline points="16 18 22 12 16 6" />
-                      <polyline points="8 6 2 12 8 18" />
-                    </svg>
-                    <span>View source code</span>
-                    <span className="download-tag">↗</span>
-                  </a>
-                ) : (
-                  <button className="download-btn" disabled style={{ opacity: 0.5, cursor: "not-allowed" }}>
-                    <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
-                      <polyline points="16 18 22 12 16 6" />
-                      <polyline points="8 6 2 12 8 18" />
-                    </svg>
-                    <span>View source code — coming soon</span>
-                  </button>
-                )}
-                <span className="download-tooltip">Technical modelling expertise required to replicate results.</span>
-              </div>
-            </div>
-            <div className="qf-row">
-              <div className="download-btn-wrap">
-                {a.assumptionsUrl ? (
-                  <a href={a.assumptionsUrl} target="_blank" rel="noreferrer" className="download-btn">
-                    <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
-                      <rect x="3" y="3" width="18" height="18" rx="2" />
-                      <line x1="3" y1="9" x2="21" y2="9" />
-                      <line x1="9" y1="3" x2="9" y2="21" />
-                    </svg>
-                    <span>Assumptions</span>
-                    <span className="download-tag">↗</span>
-                  </a>
-                ) : (
-                  <button className="download-btn" disabled style={{ opacity: 0.5, cursor: "not-allowed" }}>
-                    <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
-                      <rect x="3" y="3" width="18" height="18" rx="2" />
-                      <line x1="3" y1="9" x2="21" y2="9" />
-                      <line x1="9" y1="3" x2="9" y2="21" />
-                    </svg>
-                    <span>Assumptions — coming soon</span>
-                  </button>
-                )}
-                <span className="download-tooltip">Technical modelling expertise required to replicate results.</span>
-              </div>
-            </div>
-            {a.codersUrl && (
-              <div className="qf-row">
-                <div className="download-btn-wrap">
-                  <a href={a.codersUrl} target="_blank" rel="noreferrer" className="download-btn">
-                    <span>CODERS data list</span>
-                    <span className="download-tag">↗</span>
-                  </a>
-                  <span className="download-tooltip">
-                    Historical Canadian capacity, demand, and renewable-resource data used by COPPER.
-                  </span>
-                </div>
               </div>
             )}
           </div>
