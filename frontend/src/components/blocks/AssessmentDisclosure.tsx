@@ -16,12 +16,15 @@ import { useState } from "react";
  */
 export function AssessmentDisclosure({
   title,
+  openTitle,
   body,
   intro,
   children,
   defaultOpen = false,
 }: {
   title: string;
+  /** Trigger label while open, when it differs from the closed one. */
+  openTitle?: string;
   body?: string;
   intro?: React.ReactNode;
   children?: React.ReactNode;
@@ -42,7 +45,7 @@ export function AssessmentDisclosure({
         onClick={() => setOpen(!open)}
         aria-expanded={open}
       >
-        {title}
+        {open && openTitle ? openTitle : title}
         <svg className="disclosure-chevron" viewBox="0 0 24 24" fill="none" strokeWidth="2">
           <polyline points="6 9 12 15 18 9" />
         </svg>

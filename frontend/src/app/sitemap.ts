@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getAssessments } from "@/lib/strapi";
+import { BASELINES, baselinePath } from "@/lib/baselines";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:4000";
 
@@ -11,6 +12,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/team`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE_URL}/assessments`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
     { url: `${SITE_URL}/contact`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.5 },
+    ...BASELINES.map((b) => ({
+      url: `${SITE_URL}${baselinePath(b.id)}`,
+      lastModified: new Date(b.dateSet),
+      changeFrequency: "yearly" as const,
+      priority: 0.6,
+    })),
   ];
 
   let assessmentUrls: MetadataRoute.Sitemap = [];

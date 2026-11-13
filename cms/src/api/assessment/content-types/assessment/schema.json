@@ -208,6 +208,9 @@
     },
     "methodologyIntro": {
       "type": "text"
+    },
+    "baselineVersion": {
+      "type": "string"
     }
   }
 }

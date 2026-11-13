@@ -50,49 +50,6 @@ const SAMPLE_FAQS: any[] = [
   },
 ];
 
-const CONSERVATIVE_2021: any = {
-  title: 'Conservative Party of Canada: 2021 Federal Election Platform Energy and Climate Policy Assessment',
-  slug: 'conservative-party-federal-election-platform-2021-energy-climate',
-  publishedDate: '2021-08-01',
-  publishedDateLabel: 'Summer 2021',
-  jurisdiction: 'Federal',
-  party: 'Conservative',
-  status: 'Completed',
-  policyStatus: 'Proposed',
-  sector: 'Election Platform',
-  isExample: false,
-  lead: 'Open Insights',
-  tags: ['Election Platform', 'federal'],
-  claim:
-    "Under the proposed platform, Canada's total emissions are projected to hit 440 Mt CO₂e by 2030, representing a 35% fall from current levels.",
-  finding:
-    "We estimate modest emissions reductions under the Conservative Party of Canada's 2021 platform: an estimated 6% decline from current levels by 2030, versus the 35% decrease by 2030 the Paris Agreement target requires.",
-  claimedValue: '633 Mt CO₂e by 2030',
-  modelledValue: 'We estimate that emissions will fall by about 6% from current levels to 2030.',
-  execSummary:
-    "The Conservative Party of Canada's 2021 federal election platform, which repeals the federal carbon tax and Clean Fuel Regulations while introducing measures like a $5B carbon capture tax credit and a 30% ZEV mandate, is projected to reduce Canada's emissions by approximately 6% from 2021 levels by 2030, short of the 35% reduction required under Canada's Paris Agreement commitments. Emissions reductions in oil and gas and transportation are partly offset by increases in the electricity and industry sectors. By 2050, the platform delivers roughly 50 Mt CO₂e in annual reductions, driven largely by transportation decarbonization and growth in hydrogen and clean fuels.",
-  findings: [
-    { text: 'Proposed policies modestly reduce emissions. However, our analysis does not support the claim that Canada will be on track to our Paris climate commitments by 2030.' },
-    { text: 'We estimate that emissions will fall by about 6% from current levels to 2030, versus the Paris target (35% decrease).' },
-    { text: 'By 2050, proposed policies reduce emissions by ~50 Mt CO₂e per year.' },
-    { text: 'Emissions reductions in oil and gas and transport are partly offset by increases in industry and electricity generation.' },
-    { text: 'The economy grows, on aggregate, but with sectoral winners and losers.' },
-    { text: 'Demand for gasoline and diesel declines, while natural gas and clean fuels rise.' },
-    { text: 'Electric vehicle adoption accelerates load growth, while natural gas and onshore wind compete for new electricity generation capacity.' },
-  ],
-  epmPlus: false,
-  accentClass: 'default',
-  citation:
-    'Open Insights. (2026). Conservative Party of Canada: Federal Election Platform 2021 Report. Zenodo. https://doi.org/10.5281/zenodo.20530225',
-  zenodoUrl: 'https://zenodo.org/records/20530225',
-  ideaUrl: 'https://ideajs.sesit.ca/dashboard/f5aefbc3-7ce7-43c8-a0a4-7f0f4891239b',
-  datasetUrl: 'https://gitlab.com/sesit/cims-models-fork/-/tree/SFU_update/results?ref_type=heads',
-  policyEncodingUrl: 'https://gitlab.com/cme-emh/energy-policy-monitor/-/tree/SFU_clean/scenarios?ref_type=heads',
-  githubUrl: 'https://gitlab.com/cme-emh/energy-policy-monitor/-/tree/SFU_clean/scenarios?ref_type=heads',
-  assumptionsUrl: 'https://docs.google.com/spreadsheets/d/1FUpjCgCP1ZL2-c4-6uC89z1IXV8Ti8wy/edit?gid=810528026#gid=810528026',
-  publishedAt: new Date().toISOString(),
-};
-
 // Budget 2026 dry-run assessment. Source of truth: epm intake.md (Part A, F1-F36).
 // isExample stays TRUE: the assessed Budget chapter is a simulated document, so the
 // example banner and the "do not cite" line must remain until that changes.
@@ -103,6 +60,9 @@ const BUDGET_2026: any = {
   slug: 'powering-canada-strong-financing-the-build',
   // Keeps the official chapter name on the page now that the H1 is shorter.
   policyAssessed: 'Budget 2026, Chapter 2, Powering Canada Strong: Financing the Build',
+  // The Baseline version this assessment was run against. Drives the byline
+  // link and the "Assessments using this Baseline" list on the version page.
+  baselineVersion: '2026-11',
   publishedDate: '2026-09-01',
   publishedDateLabel: 'September 2026',
   jurisdiction: 'Federal',
@@ -181,41 +141,6 @@ const BUDGET_2026: any = {
 };
 
 async function seedIfEmpty(strapi: Core.Strapi) {
-  // Upsert the Conservative 2021 assessment (real, non-example) by slug.
-  const conservativeExisting = await strapi.documents('api::assessment.assessment').findMany({
-    filters: { slug: { $eq: CONSERVATIVE_2021.slug } },
-    limit: 1,
-  });
-  if (conservativeExisting.length === 0) {
-    await strapi.documents('api::assessment.assessment').create({ data: CONSERVATIVE_2021, status: 'published' });
-    strapi.log.info('[EPM seed] Created Conservative 2021 assessment.');
-  } else {
-    // Keep the canonical content fields in sync with this file.
-    // Edits to these fields via Strapi admin will be overwritten on next boot —
-    // the seed file is the source of truth for the Conservative 2021 entry.
-    const SYNCED_FIELDS = [
-      'title', 'publishedDate', 'publishedDateLabel', 'jurisdiction', 'party', 'status', 'policyStatus',
-      'sector', 'lead', 'tags', 'claim', 'finding', 'claimedValue', 'modelledValue',
-      'execSummary', 'findings', 'citation', 'zenodoUrl', 'ideaUrl', 'datasetUrl',
-      'policyEncodingUrl', 'githubUrl', 'assumptionsUrl',
-    ] as const;
-    const current = conservativeExisting[0] as any;
-    const patch: Record<string, unknown> = {};
-    for (const field of SYNCED_FIELDS) {
-      if (JSON.stringify(current[field]) !== JSON.stringify(CONSERVATIVE_2021[field])) {
-        patch[field] = CONSERVATIVE_2021[field];
-      }
-    }
-    if (Object.keys(patch).length > 0) {
-      await strapi.documents('api::assessment.assessment').update({
-        documentId: conservativeExisting[0].documentId,
-        data: patch as any,
-        status: 'published',
-      });
-      strapi.log.info(`[EPM seed] Patched Conservative 2021 fields: ${Object.keys(patch).join(', ')}.`);
-    }
-  }
-
   // Seed homepage singleton
   const hp = await strapi.documents('api::homepage.homepage').findFirst();
   if (!hp) {
@@ -233,9 +158,8 @@ async function seedIfEmpty(strapi: Core.Strapi) {
   }
 }
 
-// Upsert the Budget 2026 dry-run assessment by slug, on the same pattern as
-// CONSERVATIVE_2021: this file is the source of truth, so admin edits to these
-// fields are overwritten on the next boot.
+// Upsert the Budget 2026 dry-run assessment by slug. This file is the source of
+// truth, so admin edits to these fields are overwritten on the next boot.
 async function seedBudget2026(strapi: Core.Strapi) {
   strapi.log.info(`[EPM seed] Budget 2026: checking for slug ${BUDGET_2026.slug}`);
   const existing = await strapi.documents('api::assessment.assessment').findMany({
@@ -254,7 +178,7 @@ async function seedBudget2026(strapi: Core.Strapi) {
     'limitations', 'methodologySummary',
     'assumptionsSummary', 'quote', 'quoteAttribution', 'platformName', 'epmPlus', 'citation',
     'zenodoUrl', 'ideaUrl', 'datasetUrl', 'policyEncodingUrl', 'githubUrl', 'assumptionsUrl',
-    'codersUrl', 'modelReposUrl', 'fullAssumptionsUrl',
+    'codersUrl', 'modelReposUrl', 'fullAssumptionsUrl', 'baselineVersion',
   ] as const;
   const current = existing[0] as any;
   const patch: Record<string, unknown> = {};

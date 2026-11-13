@@ -1241,45 +1241,6 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   font-size: 16px; color: var(--slate); line-height: 1.75;
 }
 
-/* Process timeline */
-.timeline { margin-bottom: 64px; }
-.timeline-title {
-  font-family: var(--font-display);
-  font-size: 24px; color: var(--navy); font-weight: 700; margin-bottom: 36px;
-}
-.timeline-track {
-  display: grid; grid-template-columns: repeat(5,1fr);
-  gap: 0; position: relative;
-}
-.timeline-track::before {
-  content: '';
-  position: absolute; top: 24px; left: 8%; right: 8%;
-  height: 2px; background: linear-gradient(90deg, var(--teal), var(--teal-bright));
-  z-index: 0;
-}
-.timeline-step { text-align: center; position: relative; z-index: 1; }
-.timeline-dot {
-  width: 48px; height: 48px; border-radius: 50%;
-  background: var(--white); border: 2px solid var(--teal);
-  display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 14px;
-  font-family: var(--font-mono); font-size: 13px;
-  font-weight: 600; color: var(--teal);
-  box-shadow: 0 0 0 4px rgba(12,122,122,0.1);
-}
-.timeline-step-title {
-  font-size: 12.5px; font-weight: 700; color: var(--navy);
-  margin-bottom: 6px;
-}
-.timeline-step-days {
-  font-family: var(--font-mono); font-size: 11px; color: var(--muted);
-  margin-bottom: 6px;
-}
-.timeline-step-desc {
-  font-size: 12px; color: var(--slate); line-height: 1.5;
-  padding: 0 4px;
-}
-
 /* EPM vs EPM+ comparison */
 .comparison-table {
   display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
@@ -1920,8 +1881,6 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   /* Stacked under the article: no pinning, no height cap, no inner scroll. */
   .quick-facts { margin-top: 32px; }
   .comparison-table { grid-template-columns: 1fr; }
-  .timeline-track { grid-template-columns: 1fr; }
-  .timeline-track::before { display: none; }
   .about-content { grid-template-columns: 1fr; }
   .contact-content { grid-template-columns: 1fr; }
   .footer-top { grid-template-columns: 1fr 1fr; }
@@ -2015,13 +1974,6 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   font-size: 14px; font-weight: 600; color: var(--teal);
 }
 .disclosure-footer-links a:hover { text-decoration: underline; }
-
-/* Shareable anchor on the Methodology page Baseline section */
-.baseline-permalink {
-  color: var(--rule); font-weight: 400; text-decoration: none;
-  transition: color 220ms cubic-bezier(0.4,0,0.2,1);
-}
-.baseline-permalink:hover { color: var(--teal); }
 
 .limitations-heading {
   font-family: var(--font-body); font-size: 14px; font-weight: 700;
@@ -2173,4 +2125,289 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
 /* The breadcrumb carries the full assessment title, so let it wrap. */
 .detail-breadcrumb { flex-wrap: wrap; }
 
-</style>
+
+/* ── METHODOLOGY: SECTIONS, PROCESS LIST, BASELINE ────────────────────
+   The process steps and their links are the page's navigation, so there
+   is no side menu, no cards and no extra colours here. */
+
+.method-section { scroll-margin-top: 120px; margin-bottom: 72px; }
+.method-section:last-child { margin-bottom: 0; }
+.method-section > h2 { scroll-margin-top: 120px; }
+
+.method-section-head {
+  display: flex; align-items: center; gap: 6px;
+  margin-bottom: 20px;
+}
+.method-section-title {
+  font-family: var(--font-display);
+  font-size: 24px; color: var(--navy); font-weight: 700;
+  margin: 0; letter-spacing: normal; text-transform: none;
+}
+.method-prose { max-width: 680px; }
+.method-prose p {
+  font-size: 15.5px; color: var(--slate); line-height: 1.75;
+  margin-bottom: 12px;
+}
+.method-prose p:last-child { margin-bottom: 0; }
+
+/* Copy-link button beside a heading or a version */
+.copy-link { display: inline-flex; align-items: center; gap: 8px; }
+.copy-link-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; padding: 0;
+  border: 0; border-radius: var(--radius-sm);
+  background: none; cursor: pointer;
+  color: var(--muted);
+  transition: color var(--transition), background var(--transition);
+}
+.copy-link-btn svg { width: 17px; height: 17px; }
+.copy-link-btn:hover { color: var(--teal); background: var(--teal-dim); }
+.copy-link-btn:focus-visible { outline: 2px solid var(--teal); outline-offset: 1px; }
+.copy-link-flash {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em;
+  color: var(--teal); white-space: nowrap;
+}
+
+/* Vertical process list */
+.process-steps { list-style: none; margin: 0; padding: 0; max-width: 680px; }
+.process-step { display: flex; gap: 20px; }
+.process-step-rail { display: flex; flex-direction: column; align-items: center; }
+.process-dot {
+  width: 40px; height: 40px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex: 0 0 auto;
+  background: var(--white); border: 1.5px solid var(--teal);
+  font-family: var(--font-mono); font-size: 13px; font-weight: 600;
+  color: var(--teal);
+}
+.process-dot.is-filled { background: var(--teal); border-color: var(--teal); color: var(--white); }
+.process-line { width: 1.5px; flex: 1 1 auto; background: var(--rule); }
+.process-step-body { padding-bottom: 28px; }
+.process-step:last-child .process-step-body { padding-bottom: 0; }
+.process-step-title {
+  font-size: 16.5px; font-weight: 700; color: var(--navy); margin-top: 8px;
+}
+.process-step-desc {
+  font-size: 14.5px; color: var(--slate); line-height: 1.65; margin: 4px 0 0;
+}
+.process-step-link {
+  display: inline-block; margin-top: 6px;
+  font-size: 14px; font-weight: 600; color: var(--teal);
+}
+.process-step-link:hover { text-decoration: underline; }
+
+/* Current-version row inside the Baseline section */
+.baseline-version-row {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px;
+  max-width: 680px; margin-top: 28px;
+  padding: 16px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+}
+.baseline-version-name { flex: 1 1 240px; font-size: 16px; color: var(--navy); }
+.baseline-version-state {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--slate-mid); margin-left: 8px;
+}
+.baseline-version-link { font-size: 15px; font-weight: 600; color: var(--teal); }
+.baseline-version-link:hover { text-decoration: underline; }
+
+.baseline-version-list { list-style: none; margin: 0; padding: 0; }
+.baseline-version-list li {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 0; border-bottom: 1px solid var(--rule);
+  font-size: 14.5px;
+}
+.baseline-version-list li:last-child { border-bottom: none; }
+.baseline-version-list a { color: var(--teal); font-weight: 600; }
+.baseline-version-list a:hover { text-decoration: underline; }
+
+/* Milestone rail. Same dot and line vocabulary as the process steps. */
+.baseline-rail { position: relative; max-width: 680px; margin-top: 32px; }
+.baseline-rail-line {
+  position: absolute; top: 6px; left: 7px; right: 7px;
+  height: 1.5px; background: var(--rule);
+}
+.baseline-rail-points {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: 12px; position: relative;
+}
+.baseline-rail-point { min-width: 0; }
+.baseline-rail-dot {
+  width: 14px; height: 14px; border-radius: 50%; box-sizing: border-box;
+  background: var(--white); border: 1.5px solid var(--muted);
+}
+.baseline-rail-dot.is-current { background: var(--teal); border-color: var(--teal); }
+.baseline-rail-label {
+  display: inline-block; margin-top: 10px;
+  font-size: 14px; font-weight: 600; color: var(--navy);
+}
+.baseline-rail-label:hover { color: var(--teal); text-decoration: underline; }
+.baseline-rail-headline { font-size: 13px; color: var(--slate); line-height: 1.5; }
+
+/* Three pillars, as short columns */
+.method-pillars-intro {
+  font-size: 15.5px; color: var(--slate); line-height: 1.75;
+  max-width: 680px; margin: 28px 0 16px;
+}
+.method-pillars {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px;
+  max-width: 820px;
+}
+.method-pillar-name { font-size: 16px; font-weight: 700; color: var(--navy); }
+.method-pillar-desc { font-size: 14px; color: var(--slate); line-height: 1.6; margin-top: 4px; }
+
+
+/* ── BASELINE VERSION PAGE ────────────────────────────────────────── */
+
+.baseline-page { max-width: 1100px; margin: 0 auto; padding: 32px 32px 80px; }
+
+.baseline-breadcrumb {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  font-size: 13.5px; color: var(--slate-mid);
+}
+.baseline-breadcrumb a { color: var(--slate-mid); }
+.baseline-breadcrumb a:hover { color: var(--teal); }
+.baseline-breadcrumb span { color: var(--muted); }
+.baseline-breadcrumb-current { color: var(--slate); }
+
+.baseline-earlier-banner {
+  margin-top: 16px; padding: 12px 16px;
+  background: var(--gold-pale); border: 1px solid rgba(201,150,59,0.35);
+  border-radius: var(--radius);
+  font-size: 14.5px; color: var(--text-body); line-height: 1.6;
+}
+.baseline-earlier-banner a { color: var(--teal); font-weight: 600; }
+.baseline-earlier-banner a:hover { text-decoration: underline; }
+
+.baseline-correction {
+  margin-top: 16px; padding: 12px 16px;
+  background: var(--surface); border-left: 3px solid var(--teal);
+  border-radius: var(--radius-sm);
+  font-size: 14.5px; color: var(--text-body); line-height: 1.6;
+}
+.baseline-correction strong { color: var(--navy); }
+
+.baseline-title-row {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 16px;
+}
+.baseline-title {
+  font-family: var(--font-display);
+  font-size: 36px; font-weight: 700; color: var(--navy);
+  margin: 0; letter-spacing: -0.01em;
+}
+.baseline-state {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--slate-mid);
+}
+.baseline-state.is-current { color: var(--teal); }
+
+.baseline-doi { font-size: 15px; color: var(--slate); margin-top: 16px; }
+.baseline-doi a { color: var(--teal); text-decoration: underline; }
+.baseline-placeholder { color: var(--slate); }
+
+.baseline-layout {
+  display: flex; flex-wrap: wrap; gap: 48px;
+  margin-top: 40px; align-items: flex-start;
+}
+.baseline-main { flex: 999 1 560px; min-width: 0; }
+.baseline-section { margin-bottom: 40px; }
+.baseline-section:last-child { margin-bottom: 0; }
+.baseline-section h2 {
+  font-family: var(--font-display);
+  font-size: 23px; font-weight: 700; color: var(--navy); margin: 0 0 12px;
+}
+.baseline-section > p {
+  font-size: 15.5px; color: var(--text-body); line-height: 1.75; margin: 0 0 12px;
+}
+.baseline-section > p:last-child { margin-bottom: 0; }
+.baseline-section strong { color: var(--navy); }
+
+.baseline-input-cards { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
+.baseline-input-card {
+  border: 1px solid var(--rule); border-radius: var(--radius-lg);
+  padding: 20px 22px; background: var(--white);
+}
+.baseline-input-card h3 {
+  font-size: 17px; font-weight: 700; color: var(--navy); margin: 0 0 8px;
+}
+.baseline-input-card p {
+  font-size: 15px; color: var(--text-body); line-height: 1.75; margin: 0 0 10px;
+}
+.baseline-input-card p:last-child { margin-bottom: 0; }
+.baseline-input-card a { color: var(--teal); text-decoration: underline; }
+.baseline-list-lead { margin-bottom: 4px !important; }
+.baseline-list {
+  list-style: disc; padding-left: 22px; margin: 0 0 10px;
+  font-size: 15px; color: var(--text-body); line-height: 1.75;
+}
+.baseline-list li { margin-top: 4px; }
+.baseline-list strong { color: var(--navy); }
+
+.baseline-assessment-list { list-style: none; margin: 0; padding: 0; }
+.baseline-assessment-list a {
+  display: block; padding: 16px 18px;
+  border: 1px solid var(--rule); border-radius: var(--radius);
+  text-decoration: none; transition: border-color var(--transition), box-shadow var(--transition);
+}
+.baseline-assessment-list a:hover { border-color: var(--teal); box-shadow: var(--shadow-sm); }
+.baseline-assessment-title {
+  display: block; font-size: 16px; font-weight: 600; color: var(--navy);
+}
+.baseline-assessment-date {
+  display: block; font-size: 13.5px; color: var(--slate-mid); margin-top: 4px;
+}
+
+.baseline-sidebar {
+  flex: 1 1 260px; max-width: 320px;
+  display: flex; flex-direction: column; gap: 12px;
+  position: sticky; top: 96px;
+}
+.baseline-card {
+  border: 1px solid var(--rule); border-radius: var(--radius-lg);
+  padding: 20px; background: var(--white);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.baseline-card-title { font-size: 15px; font-weight: 700; color: var(--navy); }
+.baseline-card-versions { list-style: none; margin: 0; padding: 0; }
+.baseline-card-versions li {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  font-size: 14px; padding: 4px 0;
+}
+.baseline-card-versions a { color: var(--teal); font-weight: 600; }
+.baseline-card-versions a:hover { text-decoration: underline; }
+.baseline-card-versions a.is-active { color: var(--navy); }
+.baseline-card-note { font-size: 13.5px; color: var(--slate-mid); line-height: 1.5; }
+.baseline-card-url {
+  font-family: var(--font-mono); font-size: 12px; color: var(--slate-mid);
+  line-height: 1.5; word-break: break-all;
+}
+.baseline-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  width: 100%; padding: 11px 12px;
+  font-family: var(--font-body); font-size: 14px; font-weight: 600;
+  color: var(--white); background: var(--teal);
+  border: 1px solid var(--teal); border-radius: var(--radius);
+  cursor: pointer; text-decoration: none;
+  transition: background var(--transition), color var(--transition);
+}
+.baseline-btn:hover { background: var(--teal-bright); border-color: var(--teal-bright); }
+.baseline-btn.is-secondary { color: var(--teal); background: var(--white); }
+.baseline-btn.is-secondary:hover { background: var(--teal-pale); border-color: var(--teal); }
+.baseline-btn svg { width: 13px; height: 13px; }
+
+/* The Baseline link in the assessment byline: a link, not a tag or badge. */
+.detail-byline a { color: var(--teal-bright); text-decoration: underline; }
+.detail-byline a:hover { color: var(--white); }
+
+@media (max-width: 900px) {
+  .method-pillars { grid-template-columns: 1fr; gap: 16px; }
+  .baseline-sidebar { position: static; max-width: none; flex-basis: 100%; }
+  .baseline-layout { gap: 32px; }
+  .baseline-title { font-size: 30px; }
+}
+
+@media (max-width: 600px) {
+  .baseline-page { padding: 24px 20px 64px; }
+  .baseline-rail-points { grid-template-columns: 1fr !important; }
+  .baseline-rail-line { display: none; }
+}

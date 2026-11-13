@@ -7,6 +7,7 @@ import {
   formatAssessmentDate,
 } from "@/lib/strapi";
 import { CopyCitation } from "@/components/blocks/CopyCitation";
+import { assessmentBaselineId, baselinePath, getBaseline } from "@/lib/baselines";
 import { AssessmentSlideshow } from "@/components/blocks/AssessmentSlideshow";
 import { AssessmentDisclosure } from "@/components/blocks/AssessmentDisclosure";
 import { getAssessmentSlides } from "@/lib/assessment-slides";
@@ -54,27 +55,59 @@ const WHAT_WE_MEASURE: Array<{ pillar: string; text: string }> = [
 ];
 
 /**
- * Links the first mention of the platform name inside the methodology intro,
- * the way the homepage links "Open Insights" inside its hero copy. Keeps the
- * paragraph itself a single plain string in the CMS.
+ * Links the first mention of each phrase inside the methodology intro, the way
+ * the homepage links "Open Insights" inside its hero copy. Keeps the paragraph
+ * itself a single plain string in the CMS.
+ *
+ * The platform name goes to the M3 Platform site; the Baseline label goes to
+ * the dated version page, so an assessment keeps pointing at the version it
+ * used after the Baseline is updated.
  */
-function linkPlatform(text: string, platformName?: string | null) {
-  const name = platformName || "M3 Platform";
-  const i = text.indexOf(name);
-  if (i === -1) return text;
-  return [
-    text.slice(0, i),
-    <a
-      key="platform"
-      href="https://m3.cme-emh.ca/"
-      target="_blank"
-      rel="noopener noreferrer"
-      style={{ color: "var(--teal)", fontWeight: 600 }}
-    >
-      {name}
-    </a>,
-    text.slice(i + name.length),
-  ];
+function linkPhrases(
+  text: string,
+  links: Array<{ phrase: string; href: string; external?: boolean }>
+): React.ReactNode[] {
+  let nodes: React.ReactNode[] = [text];
+
+  links.forEach(({ phrase, href, external }, li) => {
+    if (!phrase) return;
+    const next: React.ReactNode[] = [];
+    let linked = false;
+    for (const node of nodes) {
+      if (linked || typeof node !== "string") {
+        next.push(node);
+        continue;
+      }
+      const i = node.indexOf(phrase);
+      if (i === -1) {
+        next.push(node);
+        continue;
+      }
+      next.push(node.slice(0, i));
+      next.push(
+        external ? (
+          <a
+            key={`link-${li}`}
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "var(--teal)", fontWeight: 600 }}
+          >
+            {phrase}
+          </a>
+        ) : (
+          <Link key={`link-${li}`} href={href} style={{ color: "var(--teal)", fontWeight: 600 }}>
+            {phrase}
+          </Link>
+        )
+      );
+      next.push(node.slice(i + phrase.length));
+      linked = true;
+    }
+    nodes = next;
+  });
+
+  return nodes;
 }
 
 export async function generateMetadata({
@@ -124,6 +157,10 @@ export default async function AssessmentDetailPage({
 
   const slides = getAssessmentSlides(a.slug);
 
+  // The Baseline version this assessment was run against, if it records one.
+  const baselineId = assessmentBaselineId(a);
+  const baseline = baselineId ? getBaseline(baselineId) : null;
+
   // Findings are shown one per pillar, in PILLAR_ORDER. An assessment whose
   // findings are not pillar-tagged keeps its original list and order.
   const taggedFindings = (a.findings || []).filter((f) => f.pillar);
@@ -165,6 +202,12 @@ export default async function AssessmentDetailPage({
             <span>
               Lead: <strong>{a.lead || "Open Insights"}</strong>
             </span>
+            {baseline && (
+              <>
+                <span>·</span>
+                <Link href={baselinePath(baseline.id)}>{baseline.label}</Link>
+              </>
+            )}
           </div>
           {a.policyAssessed && (
             <div className="detail-policy-line">
@@ -240,7 +283,22 @@ export default async function AssessmentDetailPage({
             <AssessmentDisclosure
               title="Methodology summary"
               body={a.methodologySummary || undefined}
-              intro={a.methodologyIntro ? <p>{linkPlatform(a.methodologyIntro, a.platformName)}</p> : null}
+              intro={
+                a.methodologyIntro ? (
+                  <p>
+                    {linkPhrases(a.methodologyIntro, [
+                      {
+                        phrase: a.platformName || "M3 Platform",
+                        href: "https://m3.cme-emh.ca/",
+                        external: true,
+                      },
+                      ...(baseline
+                        ? [{ phrase: baseline.label, href: baselinePath(baseline.id) }]
+                        : []),
+                    ])}
+                  </p>
+                ) : null
+              }
             >
               <h4 className="disclosure-heading">What we measure</h4>
               <ul className="disclosure-list">
@@ -270,7 +328,11 @@ export default async function AssessmentDetailPage({
               </ul>
 
               <p className="disclosure-footer-links">
-                <Link href="/methodology#baseline">Baseline: November 2026</Link>
+                {baseline ? (
+                  <Link href={baselinePath(baseline.id)}>{baseline.label}</Link>
+                ) : (
+                  <Link href="/methodology#baseline">About the Baseline</Link>
+                )}
                 <Link href="/methodology">View full methodology →</Link>
               </p>
             </AssessmentDisclosure>

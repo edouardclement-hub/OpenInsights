@@ -138,7 +138,7 @@ export interface StrapiAssessment {
   lead: string | null;
 
   // Intake Part A fields added for the Budget 2026 assessment. All optional, so
-  // assessments that predate them (e.g. Conservative 2021) render unchanged.
+  // assessments that predate them render unchanged.
   shortName?: string | null;            // F1B
   instrumentType?: string[] | null;     // F6
   limitations?: string | null;          // F21
@@ -155,6 +155,12 @@ export interface StrapiAssessment {
   policyAssessed?: string | null;
   /** Opening paragraph of the Methodology summary dropdown. */
   methodologyIntro?: string | null;
+  /**
+   * Id of the Baseline version this assessment was run against ("2026-11").
+   * Resolved through `assessmentBaselineId()`, which keeps older assessments
+   * pointing at the version they used after the Baseline is updated.
+   */
+  baselineVersion?: string | null;
 }
 
 export interface StrapiFaq {

@@ -68,7 +68,6 @@ export async function getTeamMembers() {
  */
 export const PUBLISHED_ASSESSMENT_SLUGS = [
   "powering-canada-strong-financing-the-build",
-  "conservative-party-federal-election-platform-2021-energy-climate",
 ] as const;
 
 function onlyPublished(res: StrapiResponse<StrapiAssessment[]>) {
@@ -117,8 +116,6 @@ export function getStrapiMediaUrl(url: string | undefined): string {
 }
 
 const ASSESSMENT_LOCAL_IMAGES: Record<string, string> = {
-  "conservative-party-federal-election-platform-2021-energy-climate":
-    "/assessments/conservative-party-federal-election-platform-2021-energy-climate.png",
   "powering-canada-strong-financing-the-build":
     "/assessments/powering-canada-strong-financing-the-build.jpg",
 };
