@@ -140,7 +140,8 @@ export default function MethodologyPage() {
           <div className="method-prose">
             <p>
               The Baseline represents the energy and climate policies currently in law in
-              Canada. It does not include announced, proposed, or expected measures.
+              Canada, in addition to some proposed policies that we believe are especially
+              likely to soon be implemented.
             </p>
             <p>
               The Baseline is a reference point, not a forecast. It shows how Canada&rsquo;s

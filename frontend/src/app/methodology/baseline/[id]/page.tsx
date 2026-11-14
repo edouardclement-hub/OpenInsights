@@ -39,7 +39,7 @@ export async function generateMetadata({
   return {
     title: baseline.label,
     description:
-      "The energy and climate policies already law in Canada that every EPM assessment is compared against.",
+      "The energy and climate policies that every EPM assessment is compared against.",
   };
 }
 
@@ -125,7 +125,8 @@ export default async function BaselineVersionPage({
             </p>
             <p>
               In our context, a Baseline scenario captures how Canada&rsquo;s energy system
-              could evolve under currently legislated policies.
+              could evolve under currently legislated policies, together with a small set of
+              proposed policies that we believe are especially likely to soon be implemented.
             </p>
           </section>
 
@@ -137,14 +138,15 @@ export default async function BaselineVersionPage({
               that we believe are especially likely to soon be implemented.
             </p>
             <p>
-              Restricting the Baseline to enacted policy avoids speculating about which
-              announced measures will proceed, and grounds each comparison in a clear,
-              verifiable reference point.
+              Holding the Baseline to legislated measures, and to the small set of proposed
+              ones we believe are especially likely to soon be implemented, limits speculation
+              about which announced measures will proceed and grounds each comparison in a
+              clear, verifiable reference point.
             </p>
             <p>
               For example, a measure announced in a federal budget but not yet passed is
-              excluded from the Baseline. It is incorporated in the first update after it
-              becomes law.
+              normally excluded from the Baseline, unless we believe it is especially likely to
+              soon be implemented. It is incorporated in the first update after it becomes law.
             </p>
             <p>
               The Baseline is a reference point, not a forecast. It does not attempt to predict
@@ -256,8 +258,8 @@ export default async function BaselineVersionPage({
           <section className="baseline-section">
             <h2>Which Baseline Is Current?</h2>
             <p>
-              The Baseline is a living record of energy and climate policy enacted in Canada. As
-              new measures become law, we update the Baseline and publish a new version,
+              The Baseline is a living record of energy and climate policy in Canada. As new
+              measures become law, we update the Baseline and publish a new version,
               identified by the date on which it was set (for example,
               &ldquo;Baseline: November 2026&rdquo;). The most recent version appears first on
               this page and is marked &ldquo;Current.&rdquo;
