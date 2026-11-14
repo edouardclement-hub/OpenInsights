@@ -11,8 +11,10 @@ import {
   getCurrentBaseline,
   isCurrentBaseline,
   assessmentBaselineId,
+  assertBaselineVersions,
+  BaselineVersionError,
 } from "@/lib/baselines";
-import { getAssessments } from "@/lib/strapi";
+import { formatAssessmentDate, getAssessments } from "@/lib/strapi";
 
 export const revalidate = 60;
 
@@ -58,13 +60,25 @@ export default async function BaselineVersionPage({
     ? `Open Insights. (${baseline.id.slice(0, 4)}). ${baseline.label}. Energy Policy Monitor. https://doi.org/${baseline.zenodoDoi}`
     : `Open Insights. (${baseline.id.slice(0, 4)}). ${baseline.label}. Energy Policy Monitor. ${pageUrl}`;
 
-  // Listed automatically from each assessment's Baseline version field.
-  let assessments: Array<{ slug: string; title: string; publishedDateLabel?: string | null }> = [];
+  // Listed automatically from each assessment's Baseline version field: nothing
+  // here is hard-coded, so a new assessment appears as soon as it names this
+  // version. Newest first.
+  let assessments: Array<{
+    slug: string;
+    title: string;
+    publishedDate: string;
+    publishedDateLabel?: string | null;
+  }> = [];
   try {
     const res = await getAssessments();
-    assessments = res.data.filter((a) => assessmentBaselineId(a) === baseline.id);
-  } catch {
-    // Strapi not reachable: the rest of the page still stands on its own.
+    assertBaselineVersions(res.data);
+    assessments = res.data
+      .filter((a) => assessmentBaselineId(a) === baseline.id)
+      .sort((x, y) => y.publishedDate.localeCompare(x.publishedDate));
+  } catch (err) {
+    // A failed Baseline version check must stop the build, not be swallowed
+    // along with a Strapi outage: the rest of the page stands on its own.
+    if (err instanceof BaselineVersionError) throw err;
   }
 
   return (
@@ -100,17 +114,6 @@ export default async function BaselineVersionPage({
         </div>
       )}
 
-      <div className="baseline-doi">
-        Zenodo DOI:{" "}
-        {baseline.zenodoDoi ? (
-          <a href={`https://doi.org/${baseline.zenodoDoi}`} target="_blank" rel="noreferrer">
-            {baseline.zenodoDoi}
-          </a>
-        ) : (
-          <span className="baseline-placeholder">[DOI to come]</span>
-        )}
-      </div>
-
       <div className="baseline-layout">
         <div className="baseline-main">
           <section className="baseline-section">
@@ -130,8 +133,8 @@ export default async function BaselineVersionPage({
             <h2>What Is a Baseline?</h2>
             <p>
               The Baseline includes the energy and climate policies that are already law in
-              Canada as of <strong>{monthYear}</strong>. It does not include announced,
-              proposed, or expected measures.
+              Canada as of <strong>{monthYear}</strong>, in addition to some proposed policies
+              that we believe are especially likely to soon be implemented.
             </p>
             <p>
               Restricting the Baseline to enacted policy avoids speculating about which
@@ -158,8 +161,9 @@ export default async function BaselineVersionPage({
           <section className="baseline-section">
             <h2>What Is In this Specific Baseline?</h2>
             <p>
-              The Baseline is built from the following inputs: energy and climate policy, the
-              economy and energy markets, energy infrastructure, and technology.
+              The Baseline is built from information about the energy system and the economy.
+              We consider factors such as energy and climate policy, energy markets and
+              infrastructure, and how technology is expected to change over time.
             </p>
 
             <div className="baseline-input-cards">
@@ -167,17 +171,19 @@ export default async function BaselineVersionPage({
                 <h3>Energy and Climate Policy</h3>
                 <p>
                   We represent federal and provincial laws, regulations, and programs that
-                  influence how Canada&rsquo;s energy system evolves. The Baseline includes only
-                  measures that are legislated or in force. We document how each policy is
-                  represented in our policy assumptions database.
+                  influence how Canada&rsquo;s energy system evolves. The Baseline includes
+                  measures that are legislated or in force, in addition to a small set of
+                  proposed policies that we believe are especially likely to soon be
+                  implemented. We document how each policy is represented in our policy
+                  assumptions database.
                 </p>
               </div>
 
               <div className="baseline-input-card">
-                <h3>The Economy and Energy Markets</h3>
+                <h3>The Macroeconomy and Energy Markets</h3>
                 <p>
-                  We use an in-house model to estimate how the economy could respond to energy
-                  policy. It represents economic growth, the labour market, household and
+                  We use open-source models to estimate how the economy could respond to energy
+                  policy. We consider economic growth, the labour market, household and
                   government spending, and inflation.
                 </p>
                 <p className="baseline-list-lead">
@@ -263,50 +269,24 @@ export default async function BaselineVersionPage({
             </p>
           </section>
 
-          <section className="baseline-section">
-            <h2>What Each Assessment Reports</h2>
-            <p>Every assessment reports results under three pillars:</p>
-            <ul className="baseline-list">
-              <li>
-                <strong>Environment:</strong> greenhouse gas emissions, reported in every
-                assessment
-              </li>
-              <li>
-                <strong>Economy:</strong> household energy costs or GDP, depending on the policy
-              </li>
-              <li>
-                <strong>Infrastructure:</strong> measures relevant to the policy, such as the
-                electricity generation mix
-              </li>
-            </ul>
-            <p>
-              For each assessment, we report the difference between the policy scenario and the
-              Baseline in absolute terms (for example, megatonnes of emissions). Where possible,
-              we also express this difference as a percentage to provide additional context.
-            </p>
-          </section>
-
-          <section className="baseline-section">
-            <h2>Assessments using this Baseline</h2>
-            {assessments.length > 0 ? (
+          {/* Hidden entirely, heading included, until an assessment uses this version. */}
+          {assessments.length > 0 && (
+            <section className="baseline-section">
+              <h2>Assessments using this Baseline</h2>
               <ul className="baseline-assessment-list">
                 {assessments.map((a) => (
                   <li key={a.slug}>
                     <Link href={`/assessments/${a.slug}`}>
                       <span className="baseline-assessment-title">{a.title}</span>
-                      {a.publishedDateLabel && (
-                        <span className="baseline-assessment-date">{a.publishedDateLabel}</span>
-                      )}
+                      <span className="baseline-assessment-date">
+                        {a.publishedDateLabel || formatAssessmentDate(a.publishedDate)}
+                      </span>
                     </Link>
                   </li>
                 ))}
               </ul>
-            ) : (
-              <p className="baseline-placeholder">
-                No assessments have been published against this Baseline yet.
-              </p>
-            )}
-          </section>
+            </section>
+          )}
         </div>
 
         <aside className="baseline-sidebar">
@@ -335,7 +315,7 @@ export default async function BaselineVersionPage({
           </div>
 
           <div className="baseline-card">
-            <div className="baseline-card-title">Use this version</div>
+            <div className="baseline-card-title">Share or cite this Baseline</div>
             <CopyLinkButton
               target={baselinePath(baseline.id)}
               label={`Copy link to ${baseline.label}`}

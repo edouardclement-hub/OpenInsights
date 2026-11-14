@@ -4,14 +4,51 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const navLinks = [
+type NavLink = {
+  href: string;
+  label: string;
+  match: (p: string) => boolean;
+  children?: Array<{ href: string; label: string; match: (p: string) => boolean }>;
+};
+
+const navLinks: NavLink[] = [
   { href: "/", label: "Home", match: (p: string) => p === "/" },
   { href: "/assessments", label: "Assessments", match: (p: string) => p.startsWith("/assessments") },
-  { href: "/methodology", label: "Methodology", match: (p: string) => p.startsWith("/methodology") },
+  {
+    href: "/methodology",
+    label: "Methodology",
+    // Also highlighted on every Baseline version page.
+    match: (p: string) => p.startsWith("/methodology"),
+    children: [
+      {
+        // Always the undated redirect, so the link survives a Baseline update.
+        href: "/methodology/baseline/current",
+        label: "Baseline",
+        match: (p: string) => p.startsWith("/methodology/baseline"),
+      },
+    ],
+  },
   { href: "/team", label: "Team", match: (p: string) => p.startsWith("/team") },
   { href: "/about", label: "About", match: (p: string) => p.startsWith("/about") },
   { href: "/contact", label: "Contact", match: (p: string) => p.startsWith("/contact") },
 ];
+
+function Caret() {
+  return (
+    <svg
+      className="nav-caret"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <polyline points="6 9 12 15 18 9" />
+    </svg>
+  );
+}
 
 function WaveformLogo() {
   return (
@@ -45,14 +82,30 @@ export function Header() {
 
         <ul className="nav-links">
           {navLinks.map((link) => (
-            <li key={link.href}>
+            <li key={link.href} className={link.children ? "nav-item-has-menu" : undefined}>
               <Link
                 href={link.href}
                 className={link.match(pathname) ? "active" : ""}
                 onClick={() => setMobileOpen(false)}
               >
                 {link.label}
+                {link.children && <Caret />}
               </Link>
+              {link.children && (
+                <ul className="nav-submenu">
+                  {link.children.map((child) => (
+                    <li key={child.href}>
+                      <Link
+                        href={child.href}
+                        className={child.match(pathname) ? "active" : ""}
+                        onClick={() => setMobileOpen(false)}
+                      >
+                        {child.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </li>
           ))}
         </ul>

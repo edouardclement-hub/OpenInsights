@@ -75,11 +75,23 @@ const PILLARS = [
   },
 ];
 
-function SectionHead({ id, title }: { id: string; title: string }) {
+/**
+ * Only "The Baseline" carries a copy-link button: it is the one section readers
+ * are asked to link to. The others are plain headings.
+ */
+function SectionHead({
+  id,
+  title,
+  copyLink = false,
+}: {
+  id: string;
+  title: string;
+  copyLink?: boolean;
+}) {
   return (
     <div className="method-section-head">
       <h2 className="section-title method-section-title">{title}</h2>
-      <CopyLinkButton target={`#${id}`} />
+      {copyLink && <CopyLinkButton target={`#${id}`} />}
     </div>
   );
 }
@@ -124,7 +136,7 @@ export default function MethodologyPage() {
 
         <section id="baseline" className="method-section">
           <div className="section-label">Step 02</div>
-          <SectionHead id="baseline" title="The Baseline" />
+          <SectionHead id="baseline" title="The Baseline" copyLink />
           <div className="method-prose">
             <p>
               The Baseline represents the energy and climate policies currently in law in

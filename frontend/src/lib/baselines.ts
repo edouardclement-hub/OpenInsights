@@ -99,28 +99,68 @@ export function baselineShortLabel(id: string): string {
 }
 
 /**
- * Slugs whose Baseline version is known here rather than in Strapi.
- *
- * `baselineVersion` is a new field on the assessment content type. Until the
- * CMS instance holding the live records has been redeployed with it, records
- * come back without the field, and these entries stand in. An assessment that
- * carries the field always wins, so this map can be emptied once every live
- * record has one.
- */
-const BASELINE_VERSION_FALLBACK: Record<string, string> = {
-  "powering-canada-strong-financing-the-build": "2026-11",
-};
-
-/**
  * The Baseline version an assessment was run against, or null if it records
  * none. Returns the id only when a version page for it actually exists.
+ *
+ * Every published assessment is required to carry the field: there is no
+ * fallback here on purpose, so a missing one shows up in the build check below
+ * rather than being papered over.
  */
 export function assessmentBaselineId(a: {
   slug: string;
   baselineVersion?: string | null;
 }): string | null {
-  const id = a.baselineVersion || BASELINE_VERSION_FALLBACK[a.slug] || null;
+  const id = a.baselineVersion || null;
   return id && getBaseline(id) ? id : null;
+}
+
+/** Thrown by assertBaselineVersions so callers can let it through a catch. */
+export class BaselineVersionError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "BaselineVersionError";
+  }
+}
+
+/**
+ * Build-time guard: every published assessment must name a Baseline version
+ * that actually exists. A missing or mistyped value fails the build instead of
+ * silently dropping the assessment off its Baseline page.
+ *
+ * It runs during `next build` only, so a Strapi record edited after a deploy
+ * can never take the live site down; `npm run build` sets the env var, and
+ * NEXT_PHASE covers a bare `next build`.
+ */
+export function assertBaselineVersions(
+  assessments: Array<{ slug: string; title?: string; baselineVersion?: string | null }>
+): void {
+  const building =
+    process.env.EPM_CHECK_BASELINE_VERSIONS === "1" ||
+    process.env.NEXT_PHASE === "phase-production-build";
+  if (!building) return;
+
+  const problems: string[] = [];
+  for (const a of assessments) {
+    const name = a.title ? `"${a.title}" (${a.slug})` : a.slug;
+    if (!a.baselineVersion) {
+      problems.push(`${name} has no baselineVersion.`);
+    } else if (!getBaseline(a.baselineVersion)) {
+      problems.push(
+        `${name} has baselineVersion "${a.baselineVersion}", which is not a published Baseline version.`
+      );
+    }
+  }
+
+  if (problems.length > 0) {
+    throw new BaselineVersionError(
+      [
+        "Baseline version check failed.",
+        ...problems.map((p) => `  - ${p}`),
+        `  Published Baseline versions: ${BASELINES.map((b) => b.id).join(", ")}.`,
+        "  Set baselineVersion on the assessment in cms/src/index.ts and redeploy the CMS.",
+      ].join("\n")
+    );
+  }
 }
 
 /** "2026-11" -> "November 2026", for breadcrumbs and banner text. */

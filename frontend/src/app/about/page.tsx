@@ -49,6 +49,14 @@ const FAQS: FaqItem[] = [
   },
 ];
 
+/** The "At a glance" card beside "How EPM works". */
+const GLANCE_ROWS = [
+  { label: "Framework", value: "Open Insights" },
+  { label: "Academic home", value: "SESIT, University of Victoria" },
+  { label: "Models", value: "M3 Platform (open source)" },
+  { label: "Every assessment", value: "Published with full documentation" },
+];
+
 export default function AboutPage() {
   const faqs: FaqItem[] = FAQS;
 
@@ -71,7 +79,7 @@ export default function AboutPage() {
             <a href="https://www.openinsights.ca/" target="_blank" rel="noopener" style={{ color: "var(--teal)" }}>
               Open Insights
             </a>
-            , a shared framework for transparent energy modelling developed at{" "}
+            , a framework for transparent energy modelling developed at{" "}
             <a href="https://sesit.cive.uvic.ca/" target="_blank" rel="noreferrer" style={{ color: "var(--teal)" }}>
               SESIT
             </a>
@@ -82,15 +90,16 @@ export default function AboutPage() {
             <a href="https://m3.cme-emh.ca/" target="_blank" rel="noreferrer" style={{ color: "var(--teal)" }}>
               M3 Platform
             </a>
-            , an open-source suite of linked energy and economy models developed at{" "}
-            <a href="https://sesit.cive.uvic.ca/" target="_blank" rel="noreferrer" style={{ color: "var(--teal)" }}>
-              SESIT
-            </a>
-            {" "}and maintained by the{" "}
+            , an open-source suite of linked energy and economy models developed at SESIT. We
+            publish the inputs, assumptions and results for each assessment so others can check
+            the work.
+          </p>
+          <p>
+            The M3 Platform is hosted and maintained by the{" "}
             <a href="https://cme-emh.ca/en/" target="_blank" rel="noreferrer" style={{ color: "var(--teal)" }}>
               Energy Modelling Hub
             </a>
-            .
+            , which provides technical infrastructure for EPM.
           </p>
 
           <h2>Our commitment</h2>
@@ -151,22 +160,15 @@ export default function AboutPage() {
 
         <aside className="about-sidebar">
           <div className="institution-diagram">
-            <h3>Institutional structure</h3>
-            <div className="institution-node">
-              <div className="institution-node-name">Academic partners</div>
-              <div className="institution-node-role">Build open-source modelling tools.</div>
-            </div>
-            <div className="institution-plus">+</div>
-            <div className="institution-node">
-              <div className="institution-node-name">Energy Modelling Hub</div>
-              <div className="institution-node-role">
-                Operates and hosts the open-source infrastructure that EPM relies on.
-              </div>
-            </div>
-            <div className="institution-equals" />
-            <div className="institution-result">
-              EPM publishes the assessments, with full documentation, for the public.
-            </div>
+            <h3>At a glance</h3>
+            <dl className="glance-list">
+              {GLANCE_ROWS.map((row) => (
+                <div className="glance-row" key={row.label}>
+                  <dt>{row.label}</dt>
+                  <dd>{row.value}</dd>
+                </div>
+              ))}
+            </dl>
           </div>
         </aside>
       </div>

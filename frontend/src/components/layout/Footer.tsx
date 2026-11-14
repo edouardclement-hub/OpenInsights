@@ -40,6 +40,7 @@ export function Footer() {
               <li><Link href="/about">About</Link></li>
               <li><Link href="/team">Team</Link></li>
               <li><Link href="/contact">Contact</Link></li>
+              <li><Link href="/brand-use-policy">Brand &amp; Use Policy</Link></li>
             </ul>
           </div>
 
