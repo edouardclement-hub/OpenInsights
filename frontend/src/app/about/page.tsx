@@ -49,11 +49,41 @@ const FAQS: FaqItem[] = [
   },
 ];
 
-/** The "At a glance" card beside "How EPM works". */
-const GLANCE_ROWS = [
-  { label: "Framework", value: "Open Insights" },
-  { label: "Academic home", value: "SESIT, University of Victoria" },
-  { label: "Models", value: "M3 Platform (open source)" },
+/**
+ * The "At a glance" card beside "How EPM works". Each organisation is linked
+ * on the word that names it, not across the whole row.
+ */
+const GLANCE_ROWS: Array<{ label: string; value: React.ReactNode }> = [
+  {
+    label: "Framework",
+    value: (
+      <a href="https://www.openinsights.ca/" target="_blank" rel="noopener">
+        Open Insights
+      </a>
+    ),
+  },
+  {
+    label: "Academic home",
+    value: (
+      <>
+        <a href="https://sesit.cive.uvic.ca/" target="_blank" rel="noreferrer">
+          SESIT
+        </a>
+        , University of Victoria
+      </>
+    ),
+  },
+  {
+    label: "Models",
+    value: (
+      <>
+        <a href="https://m3.cme-emh.ca/" target="_blank" rel="noreferrer">
+          M3 Platform
+        </a>
+        {" "}(open-source)
+      </>
+    ),
+  },
   { label: "Every assessment", value: "Published with full documentation" },
 ];
 
@@ -74,8 +104,8 @@ export default function AboutPage() {
         <div className="about-main">
           <h2>How EPM works</h2>
           <p>
-            The Energy Policy Monitor (EPM) assesses major Canadian energy and climate policies
-            using{" "}
+            The Energy Policy Monitor (EPM) evaluates major Canadian energy and climate policies
+            within{" "}
             <a href="https://www.openinsights.ca/" target="_blank" rel="noopener" style={{ color: "var(--teal)" }}>
               Open Insights
             </a>
@@ -86,20 +116,17 @@ export default function AboutPage() {
             {" "}(University of Victoria).
           </p>
           <p>
-            Every EPM assessment uses the{" "}
+            Each EPM assessment draws on the{" "}
             <a href="https://m3.cme-emh.ca/" target="_blank" rel="noreferrer" style={{ color: "var(--teal)" }}>
               M3 Platform
             </a>
-            , an open-source suite of linked energy and economy models developed at SESIT. We
-            publish the inputs, assumptions and results for each assessment so others can check
-            the work.
-          </p>
-          <p>
-            The M3 Platform is hosted and maintained by the{" "}
+            , an open-source suite of linked energy and economic models developed at SESIT and
+            maintained by the{" "}
             <a href="https://cme-emh.ca/en/" target="_blank" rel="noreferrer" style={{ color: "var(--teal)" }}>
               Energy Modelling Hub
             </a>
-            , which provides technical infrastructure for EPM.
+            . For every assessment, we publish the inputs, assumptions, and results, so that the
+            analysis can be independently reviewed and reproduced.
           </p>
 
           <h2>Our commitment</h2>

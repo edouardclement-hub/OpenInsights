@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Brand & Use Policy",
@@ -25,9 +24,16 @@ export default function BrandUsePolicyPage() {
 
           <div className="method-prose">
             <p>
-              The models, code, data and assumptions behind Open Insights analysis are
-              open-source and published through the M3 Platform. We encourage anyone to use
-              them. Using them does not make the results an Open Insights product.
+              The models, code, data and assumptions behind{" "}
+              <a href="https://www.openinsights.ca/" target="_blank" rel="noopener noreferrer">
+                Open Insights
+              </a>{" "}
+              analysis are open-source and published through the{" "}
+              <a href="https://m3.cme-emh.ca/" target="_blank" rel="noopener noreferrer">
+                M3 Platform
+              </a>
+              . We encourage anyone to use them. Using them does not make the results an Open
+              Insights product.
             </p>
             <p>
               Only analysis published by Open Insights, through the Energy Policy Monitor or a
@@ -41,8 +47,9 @@ export default function BrandUsePolicyPage() {
             <p>
               When describing such work, you may say that it{" "}
               <strong>used the M3 Platform</strong> or a named component model (for example,
-              COPPER or MacroABM-CA). You may not:
+              COPPER or MacroABM-CA).
             </p>
+            <p>You may not:</p>
             <ul className="baseline-list">
               <li>
                 Attribute findings, results or conclusions to Open Insights or the Energy Policy
@@ -65,7 +72,9 @@ export default function BrandUsePolicyPage() {
             </p>
             <p>
               If you are citing a{" "}
-              <Link href="/assessments">published Open Insights assessment</Link>, please cite it
+              <a href="https://www.openinsights.ca/" target="_blank" rel="noopener noreferrer">
+                published Open Insights assessment
+              </a>, please cite it
               directly and do not present new or modified results as part of it. See the{" "}
               <a
                 href="https://sesit.gitlab.io/m3-linkages"
