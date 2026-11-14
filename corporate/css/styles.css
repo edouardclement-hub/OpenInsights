@@ -398,12 +398,14 @@ a.service-tag--link:hover {
 
 /* In-text links in body copy follow the site palette, not the browser default. */
 .service-card p a,
-.research-card a:not(.research-link) {
+.research-card a:not(.research-link),
+.policy-body a {
   color: var(--sage); text-decoration: underline; text-underline-offset: 2px;
   transition: color 0.2s;
 }
 .service-card p a:hover,
-.research-card a:not(.research-link):hover { color: var(--sage-light); }
+.research-card a:not(.research-link):hover,
+.policy-body a:hover { color: var(--sage-light); }
 
 /* Program pills — sage for EPM, amber for Custom Scenario Analysis. */
 .research-tag {
@@ -490,8 +492,10 @@ a.service-tag--link:hover {
 }
 /* Steering Committee: cards stretch to a common height rather than sizing to
    their own content, and the role reserves two lines, so the three stay
-   identical whether the grid is three columns, two, or one. */
-.team-grid--equal { align-items: stretch; }
+   identical whether the grid is three columns, two, or one. grid-auto-rows
+   makes every row as tall as the tallest card, so a title that wraps to a third
+   line does not leave its row standing taller than the row above it. */
+.team-grid--equal { align-items: stretch; grid-auto-rows: 1fr; }
 .team-grid--equal .team-role { min-height: 3.2em; }
 
 .team-card {
@@ -624,6 +628,54 @@ footer { background: var(--ink); color: var(--paper); padding: 3rem 0 2rem; }
   color: rgba(245,242,235,0.3); letter-spacing: 0.06em;
 }
 
+/* ── BRAND & USE POLICY PAGE ─────────────────────────────────── */
+/* A quiet, text-only page. The nav is fixed, so the section carries its own
+   top padding the way .hero does. */
+.policy-section { background: var(--paper); padding: 8rem 0 5rem; }
+
+/* Semantically the page's h1, sized to the section-heading scale instead of the
+   hero scale, which would overpower a text-only page. */
+.policy-title { font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 400; }
+
+.policy-updated {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem; letter-spacing: 0.04em;
+  color: var(--mid); margin-top: 0.75rem;
+}
+
+/* Holds the body to a reading column so the panels below do not stretch to the
+   full 1200px container. */
+.policy-body { max-width: 860px; margin-top: 2.5rem; }
+
+.policy-subhead {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.25rem; font-weight: 700; color: var(--ink);
+  margin-bottom: 1.25rem;
+}
+
+.policy-body p { line-height: 1.75; }
+.policy-body p + p { margin-top: 1.25rem; }
+
+/* Borders only, no fill, so the page stays quiet. */
+.policy-panels {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem; margin-top: 2.5rem; align-items: start;
+}
+.policy-panel { border: 1px solid var(--rule); padding: 1.75rem; }
+.policy-panel p { max-width: none; }
+.policy-panel-icon {
+  width: 1.5rem; height: 1.5rem; flex-shrink: 0; background: var(--mist);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1rem;
+}
+.policy-panel-icon svg { width: 14px; height: 14px; stroke: var(--sage); fill: none; stroke-width: 2; }
+
+.policy-list { margin-top: 0.75rem; padding-left: 1.1rem; }
+.policy-list li { font-size: 1rem; line-height: 1.75; color: var(--ink); margin-bottom: 0.6rem; }
+.policy-list li:last-child { margin-bottom: 0; }
+
+.policy-divider { border-top: 1px solid var(--rule); margin-top: 2.5rem; padding-top: 2rem; }
+
 /* ── ANIMATIONS ──────────────────────────────────────────────── */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(24px); }
@@ -651,6 +703,7 @@ footer { background: var(--ink); color: var(--paper); padding: 3rem 0 2rem; }
   .nav-cta { order: 2; margin-left: auto; font-size: 0.7rem; padding: 0.45rem 1rem; }
   .nav-links { order: 3; width: 100%; gap: 1.4rem; }
   .nav-links a { font-size: 0.8rem; }
+  .policy-panels { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 960px) {
