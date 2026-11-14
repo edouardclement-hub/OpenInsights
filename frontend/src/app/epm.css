@@ -2443,6 +2443,10 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   color: var(--teal-bright);
   background: rgba(255,255,255,0.07);
 }
+/* The underline stays white like the top-level items, rather than following
+   the item's teal text the way text-decoration-color otherwise would. */
+.nav-submenu a:hover,
+.nav-submenu a:focus-visible { text-decoration-color: var(--white); }
 .nav-submenu a:focus-visible { outline: 2px solid var(--teal-bright); outline-offset: 1px; }
 
 /* ── Mobile menu ── */
