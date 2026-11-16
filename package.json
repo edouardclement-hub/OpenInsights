@@ -11,7 +11,9 @@
     "dev:cms": "npm run dev -w cms",
     "dev:frontend": "npm run dev -w frontend",
     "build:cms": "npm run build -w cms",
-    "build:frontend": "npm run build -w frontend"
+    "build:frontend": "npm run build -w frontend",
+    "copy-deck": "bash tools/copy-deck/run.sh",
+    "copy-deck:pdf": "bash tools/copy-deck/render.sh"
   },
   "devDependencies": {
     "concurrently": "^9.0.0"

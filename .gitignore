@@ -29,3 +29,11 @@ Old EPM Site version with the team page.html
 
 # OS
 .DS_Store
+
+# Copy deck (generated for team review, not part of the site)
+EPM_Website_Copy_Deck.docx
+EPM_Website_Copy_Deck.pdf
+
+# Copy deck generator's local Python environment
+tools/copy-deck/.venv/
+tools/copy-deck/__pycache__/
