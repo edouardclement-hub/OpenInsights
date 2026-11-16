@@ -5,6 +5,7 @@
  * 2. Active nav link highlight on scroll
  * 3. Newsletter signup handler (stub — wire up to email provider)
  * 4. Smooth nav height offset for anchor links
+ * 5. Fragment jump for visitors arriving from another page
  */
 
 (function initScrollReveal() {
@@ -77,5 +78,33 @@ if (newsletterBtn) {
       const top = target.getBoundingClientRect().top + window.scrollY - navHeight();
       window.scrollTo({ top, behavior: 'smooth' });
     });
+  });
+})();
+
+(function initLandingHash() {
+  /* A cross-page link such as /#team arrives with the fragment already set.
+     html { scroll-behavior: smooth } turns the browser's own jump into an
+     animation, and the lazy images and JS-rendered research cards above the
+     fold shift the layout while it runs, which cancels it and leaves the
+     visitor at the top of the page. Repeat the jump once everything has
+     loaded and the height is final, with the animation switched off. */
+  if (!window.location.hash) return;
+  let target;
+  try {
+    target = document.querySelector(window.location.hash);
+  } catch (err) {
+    return; /* a hash that is not a valid selector */
+  }
+  if (!target) return;
+
+  window.addEventListener('load', function () {
+    const navEl = document.querySelector('nav');
+    const navHeight = navEl ? navEl.getBoundingClientRect().height : 72;
+    const top = target.getBoundingClientRect().top + window.scrollY - navHeight;
+    const root = document.documentElement;
+    const previous = root.style.scrollBehavior;
+    root.style.scrollBehavior = 'auto';
+    window.scrollTo(0, top);
+    root.style.scrollBehavior = previous;
   });
 })();
