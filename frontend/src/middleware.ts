@@ -1,22 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
+import { isEmbargoed } from "@/lib/embargo";
 
 /**
  * Scoped password gate.
  *
  * The site-wide gate is gone: every page is public except the assessments
- * index and the assessment detail pages, and even those open on their own at
- * the embargo lift below.
- *
- * GATE_LIFT_AT is an absolute instant, not a local wall-clock time. Middleware
- * runs on Vercel edge nodes in UTC while the embargo is quoted in Eastern, so
- * the offset is written into the string rather than inferred from the runtime:
- *
- *   2026-11-25T09:00:00-05:00  (Wed Nov 25, 2026, 9:00 AM EST)
- *   === 2026-11-25T14:00:00Z
- *
- * Once that instant passes the gate is a no-op for everyone, wherever they are.
+ * index and the assessment detail pages, and even those open on their own when
+ * the embargo lifts. The lift instant lives in @/lib/embargo, shared with the
+ * homepage and the sitemap so that all three hide the same thing at the same
+ * moment.
  */
-const GATE_LIFT_AT = Date.parse("2026-11-25T09:00:00-05:00");
 
 // The only gated paths: the assessments index and every assessment detail page.
 const GATED_PREFIXES = ["/assessments"];
@@ -37,8 +30,8 @@ async function sha256Hex(input: string): Promise<string> {
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // Scheduled unlock. After this instant nothing on the site is gated.
-  if (Date.now() >= GATE_LIFT_AT) return NextResponse.next();
+  // Scheduled unlock. Once the embargo lifts nothing on the site is gated.
+  if (!isEmbargoed()) return NextResponse.next();
 
   // If no password is configured, leave the gate fully open (dev / not-yet-protected).
   const sitePassword = process.env.SITE_PASSWORD;

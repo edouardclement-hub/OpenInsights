@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { AssessmentCard } from "@/components/blocks/AssessmentCard";
 import { getFeaturedAssessments } from "@/lib/strapi";
+import { isEmbargoed } from "@/lib/embargo";
 import type { StrapiAssessment, StrapiHomepage } from "@/types/strapi";
 
 export const revalidate = 60;
@@ -28,11 +29,19 @@ export default async function HomePage() {
   const homepage: Partial<StrapiHomepage> = HOMEPAGE;
   let featured: StrapiAssessment[] = [];
 
-  try {
-    // Assessments still come from Strapi; the copy above does not.
-    featured = (await getFeaturedAssessments(3)).data;
-  } catch {
-    // Strapi unreachable — render the page without the featured row
+  // The homepage is public, so it must respect the assessments embargo too —
+  // gating /assessments while this row showed the title, the finding and the
+  // artwork would publish the very thing the gate holds back. Nothing is
+  // fetched before the lift, so the copy cannot reach the HTML at all.
+  const embargoed = isEmbargoed();
+
+  if (!embargoed) {
+    try {
+      // Assessments still come from Strapi; the copy above does not.
+      featured = (await getFeaturedAssessments(3)).data;
+    } catch {
+      // Strapi unreachable — render the page without the featured row
+    }
   }
 
   return (
@@ -171,6 +180,7 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {!embargoed && (
       <section className="assessments-section">
         <div className="assessments-inner">
           <div className="section-header">
@@ -201,6 +211,7 @@ export default async function HomePage() {
           )}
         </div>
       </section>
+      )}
     </>
   );
 }

@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getAssessments } from "@/lib/strapi";
 import { BASELINES, baselinePath } from "@/lib/baselines";
+import { isEmbargoed } from "@/lib/embargo";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:4000";
 
@@ -21,17 +22,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
   ];
 
+  // Detail URLs are withheld while the embargo holds: they redirect to /login
+  // anyway, and listing them hands out the slugs of unpublished assessments.
+  // /assessments itself stays, so the section is already known when it opens.
   let assessmentUrls: MetadataRoute.Sitemap = [];
-  try {
-    const res = await getAssessments();
-    assessmentUrls = res.data.map((a) => ({
-      url: `${SITE_URL}/assessments/${a.slug}`,
-      lastModified: new Date(a.publishedDate),
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
-    }));
-  } catch {
-    // Strapi not available
+  if (!isEmbargoed()) {
+    try {
+      const res = await getAssessments();
+      assessmentUrls = res.data.map((a) => ({
+        url: `${SITE_URL}/assessments/${a.slug}`,
+        lastModified: new Date(a.publishedDate),
+        changeFrequency: "monthly" as const,
+        priority: 0.7,
+      }));
+    } catch {
+      // Strapi not available
+    }
   }
 
   return [...staticPages, ...assessmentUrls];
