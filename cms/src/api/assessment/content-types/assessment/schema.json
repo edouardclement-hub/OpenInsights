@@ -73,6 +73,7 @@
       "type": "enumeration",
       "enum": [
         "Proposed",
+        "Announced",
         "Enacted",
         "Election Platform",
         "Repealed"

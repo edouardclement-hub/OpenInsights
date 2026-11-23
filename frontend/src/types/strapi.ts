@@ -86,7 +86,12 @@ export type AssessmentJurisdiction =
   | "Nunavut";
 
 export type AssessmentStatus = "Completed" | "In Progress";
-export type AssessmentPolicyStatus = "Proposed" | "Enacted" | "Election Platform" | "Repealed";
+export type AssessmentPolicyStatus =
+  | "Proposed"
+  | "Announced"
+  | "Enacted"
+  | "Election Platform"
+  | "Repealed";
 export type AssessmentSector =
   | "Electricity"
   | "Oil & Gas"

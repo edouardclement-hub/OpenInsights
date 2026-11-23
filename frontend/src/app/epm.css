@@ -1673,6 +1673,7 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
 .badge-policy-proposed   { background: #EEF2FF; color: #4F6BD4; }
 .badge-policy-enacted    { background: #ECFDF5; color: #166534; }
 .badge-policy-platform   { background: #FDF3E4; color: #A06B1A; }
+.badge-policy-announced  { background: var(--teal-pale); color: var(--teal); }
 
 /* ── Compare mode ────────────────────────────────────────── */
 .compare-bar {

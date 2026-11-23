@@ -50,12 +50,13 @@ const SAMPLE_FAQS: any[] = [
   },
 ];
 
-// Budget 2026 dry-run assessment. Source of truth: epm intake.md (Part A, F1-F36).
-// isExample stays TRUE: the assessed Budget chapter is a simulated document, so the
-// example banner and the "do not cite" line must remain until that changes.
+// Budget 2026 assessment. Source of truth: epm intake.md (Part A, F1-F36).
+// isExample is FALSE: this is published as a real assessment, so the example
+// banner, the example notice on the detail page and the "do not cite" line are
+// all suppressed. Flip it back to true only if it returns to dry-run status.
 // [TO CONFIRM: ...] strings are deliberate visible placeholders, not oversights.
 const BUDGET_2026: any = {
-  title: 'Budget 2026 and the Goal to Double Canada’s Electricity Supply',
+  title: 'Powering Canada Strong: What Four Federal Measures Change on the Grid',
   shortName: 'Budget 2026',
   slug: 'powering-canada-strong-financing-the-build',
   // Keeps the official chapter name on the page now that the H1 is shorter.
@@ -63,16 +64,16 @@ const BUDGET_2026: any = {
   // The Baseline version this assessment was run against. Drives the byline
   // link and the "Assessments using this Baseline" list on the version page.
   baselineVersion: '2026-11',
-  publishedDate: '2026-09-01',
-  publishedDateLabel: 'September 2026',
+  publishedDate: '2026-11-01',
+  publishedDateLabel: 'November 2026',
   jurisdiction: 'Federal',
   status: 'Completed',
-  policyStatus: 'Proposed',
+  policyStatus: 'Announced',
   // F5 names two sectors (electricity grid; buildings/heating). `sector` is a
   // single-value enum, so neither is named here; the tag row that used to
   // carry them has been removed.
   sector: 'Cross-cutting',
-  isExample: true,
+  isExample: false,
   lead: 'Open Insights',
   // Cleared at the team's request: no tag row on this assessment's card.
   // The card hides the row entirely when this is empty.
@@ -87,7 +88,7 @@ const BUDGET_2026: any = {
     'Budget 2026 cites the objective, set out in Powering Canada Strong, of building the infrastructure required to double Canada’s electricity supply by 2050.',
   // F17 short form - assessments index card
   finding:
-    'The modelled measures mainly change when capacity is built, not the size of the grid in 2050.',
+    'Modelled measures add 1% (12 TWh) to electricity generation in 2050 and shift the mix toward low-carbon sources.',
   // F17 full form - detail page quick facts
   modelledValue:
     'A doubling of Canada’s 2025 generating capacity would be approximately 325 GW. In the Budget Scenario, national capacity is estimated at 287 GW in 2050, 1.8 times its 2025 level and 3 GW lower than the Baseline (290 GW). The modelled measures mainly change when capacity is built, not the size of the grid in 2050.',

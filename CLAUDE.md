@@ -45,13 +45,19 @@ follow, so keep the corporate site product-agnostic.
 ### The one exception: assessment records
 
 `/assessments` and `/assessments/[slug]` fetch their records from Strapi via
-`frontend/src/lib/strapi.ts`. Five exist: four are `isExample: true` placeholders that
-render with an "Example" banner, and one is real.
+`frontend/src/lib/strapi.ts`. Five exist; the ones still marked `isExample: true`
+render with an "Example" banner. `BUDGET_2026` (slug
+`powering-canada-strong-financing-the-build`) is now `isExample: false`, so it renders
+as a real assessment with no banner and no "do not cite" line.
 
 That real one is still edited **in code**. `seedIfEmpty()` in `cms/src/index.ts`
 re-syncs its fields from the file on every Strapi boot, so editing it in the Strapi
 admin looks like it works and then reverts on the next restart. Add a new real
 assessment by following the `CONSERVATIVE_2021` pattern in that file.
+
+**Editing `cms/src/index.ts` does not change the live site by itself.** `seedBudget2026()`
+only runs on Strapi boot, and pushing this repo does not deploy Strapi — redeploy or
+restart the Railway service, then `POST /api/revalidate` to flush the ISR cache.
 
 Strapi remains installed and running for future use, but no routine content work needs
 it. Everything else is a file in this repo.
@@ -117,9 +123,15 @@ into a file, a commit message, or an issue.
 
 ## Things that surprise people
 
-- **The EPM site is password-gated.** `frontend/src/middleware.ts` gates everything
-  behind `SITE_PASSWORD` when that env var is set. It is set in Vercel prod but not
-  locally, so the gate is open in dev and closed on the live site.
+- **Only the assessments routes are password-gated, and only until Nov 25, 2026.**
+  `frontend/src/middleware.ts` gates `/assessments` and `/assessments/[slug]` behind
+  `SITE_PASSWORD` when that env var is set; every other page is public. The gate also
+  lifts on its own at `GATE_LIFT_AT` (`2026-11-25T09:00:00-05:00`, i.e. 9:00 AM EST
+  Wed Nov 25, 2026) — after that instant the middleware is a no-op regardless of
+  `SITE_PASSWORD`. `SITE_PASSWORD` is set in Vercel prod but not locally, so the gate
+  is open in dev and closed on the live site. The unlock cookie (`epm-auth`, httpOnly,
+  30 days, path `/`) is still issued by `POST /api/login`, so one prompt covers the
+  index and every detail page.
 - **`isExample`** marks placeholder assessments — real and sample content coexist.
 - **Content changes need a revalidation ping.** Pages are ISR-cached (60s for
   assessments, 3600s for global/team/about). `POST /api/revalidate` with the

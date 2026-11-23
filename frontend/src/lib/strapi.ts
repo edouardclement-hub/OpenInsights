@@ -115,9 +115,13 @@ export function getStrapiMediaUrl(url: string | undefined): string {
   return `${STRAPI_URL}${url}`;
 }
 
+// Keyed by slug. The filename carries a version suffix (the assessment's
+// publication month) so that replacing the artwork changes the URL: browser and
+// CDN caches key on the path, and a same-name swap can keep serving the old
+// photo to anyone who already loaded the page.
 const ASSESSMENT_LOCAL_IMAGES: Record<string, string> = {
   "powering-canada-strong-financing-the-build":
-    "/assessments/powering-canada-strong-financing-the-build.jpg",
+    "/assessments/powering-canada-strong-financing-the-build-2026-11.jpg",
 };
 
 export function getAssessmentImage(

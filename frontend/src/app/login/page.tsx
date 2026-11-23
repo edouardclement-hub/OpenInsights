@@ -40,9 +40,11 @@ function LoginForm() {
   return (
     <div className="login-card">
       <div className="login-eyebrow">Energy Policy Monitor</div>
-      <h1>Site under preview</h1>
+      <h1>Preview access</h1>
       <p>
-        This site is in private review. Enter the access password to continue.
+        The first EPM assessment goes live at 9:00 AM EST on Wednesday,
+        November 25, 2026. Until then, please enter the shared password to view
+        it.
       </p>
       <form onSubmit={onSubmit}>
         <label htmlFor="pw" className="visually-hidden">

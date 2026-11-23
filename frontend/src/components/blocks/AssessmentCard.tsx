@@ -9,6 +9,8 @@ function PolicyStatusBadge({ status }: { status: StrapiAssessment["policyStatus"
       ? "badge-policy-enacted"
       : status === "Election Platform"
       ? "badge-policy-platform"
+      : status === "Announced"
+      ? "badge-policy-announced"
       : "badge-policy-proposed";
   return <span className={`badge ${cls}`}>{status}</span>;
 }

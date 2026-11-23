@@ -8,8 +8,9 @@ Claude, and publish it.
 ## Before you start — what to ask Edouard for
 
 1. A **GitHub** collaborator invite on `edouardclement-hub/OpenInsights`
-2. The **site password** for epm.openinsights.ca (the live site is gated — you only
-   need this to view it in a browser, not to develop)
+2. The **site password** for the EPM assessments pages (`/assessments` on the live
+   site is gated until 9:00 AM EST on Wed Nov 25, 2026; every other page is public,
+   and you do not need the password to develop)
 3. A **Strapi admin** account, if you will be editing site content
 
 You do **not** need any secrets or API keys to run the site locally.
