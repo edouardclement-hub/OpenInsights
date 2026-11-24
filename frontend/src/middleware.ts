@@ -2,19 +2,25 @@ import { NextRequest, NextResponse } from "next/server";
 import { isEmbargoed } from "@/lib/embargo";
 
 /**
- * Scoped password gate.
+ * Site-wide password gate.
  *
- * The site-wide gate is gone: every page is public except the assessments
- * index and the assessment detail pages, and even those open on their own when
- * the embargo lifts. The lift instant lives in @/lib/embargo, shared with the
- * homepage and the sitemap so that all three hide the same thing at the same
- * moment.
+ * Every page is behind SITE_PASSWORD while the embargo holds; only the login
+ * flow and the SEO essentials below are reachable without it. The gate still
+ * lifts on its own when the embargo does — see @/lib/embargo, which the
+ * homepage and the sitemap share — so the whole site opens at that instant
+ * without anyone having to deploy.
  */
 
-// The only gated paths: the assessments index and every assessment detail page.
-const GATED_PREFIXES = ["/assessments"];
+// Paths that bypass the password gate (login flow + SEO essentials).
+const PUBLIC_PATHS = [
+  "/login",
+  "/api/login",
+  "/favicon.ico",
+  "/robots.txt",
+  "/sitemap.xml",
+];
 
-// Static assets under /assessments/ (slide PNGs etc) — same-origin, no sensitive info.
+// Static assets (PNG/JPG/etc) — same-origin, no sensitive info.
 const STATIC_ASSET_EXT = /\.(png|jpe?g|webp|svg|gif|ico|css|js|map|woff2?)$/i;
 
 const COOKIE_NAME = "epm-auth";
@@ -37,17 +43,18 @@ export async function middleware(req: NextRequest) {
   const sitePassword = process.env.SITE_PASSWORD;
   if (!sitePassword) return NextResponse.next();
 
-  // Anything outside the gated prefixes is public.
-  const isGated = GATED_PREFIXES.some((p) => pathname === p || pathname.startsWith(p + "/"));
-  if (!isGated) return NextResponse.next();
+  // Public paths
+  if (PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(p + "/"))) {
+    return NextResponse.next();
+  }
 
   // Static assets passthrough
   if (STATIC_ASSET_EXT.test(pathname)) {
     return NextResponse.next();
   }
 
-  // Already unlocked in this browser — the /api/login cookie is the session, and
-  // it is scoped to the whole site so one prompt covers index and detail pages.
+  // Already unlocked in this browser — the /api/login cookie is the session,
+  // scoped to the whole site so one prompt covers every page.
   const expected = await sha256Hex(sitePassword);
   const cookie = req.cookies.get(COOKIE_NAME)?.value;
   if (cookie === expected) return NextResponse.next();
@@ -60,7 +67,6 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  // Only the assessments routes reach this middleware at all; every other page
-  // is served without a gate check.
-  matcher: ["/assessments", "/assessments/:path*"],
+  // Exclude Next.js internals; everything else is gated by the logic above.
+  matcher: ["/((?!_next/static|_next/image).*)"],
 };

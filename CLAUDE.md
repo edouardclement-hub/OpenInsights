@@ -123,15 +123,24 @@ into a file, a commit message, or an issue.
 
 ## Things that surprise people
 
-- **Only the assessments routes are password-gated, and only until Nov 25, 2026.**
-  `frontend/src/middleware.ts` gates `/assessments` and `/assessments/[slug]` behind
-  `SITE_PASSWORD` when that env var is set; every other page is public. The gate also
-  lifts on its own at `GATE_LIFT_AT` (`2026-11-25T09:00:00-05:00`, i.e. 9:00 AM EST
-  Wed Nov 25, 2026) — after that instant the middleware is a no-op regardless of
-  `SITE_PASSWORD`. `SITE_PASSWORD` is set in Vercel prod but not locally, so the gate
-  is open in dev and closed on the live site. The unlock cookie (`epm-auth`, httpOnly,
-  30 days, path `/`) is still issued by `POST /api/login`, so one prompt covers the
-  index and every detail page.
+- **The whole EPM site is password-gated until Nov 25, 2026.**
+  `frontend/src/middleware.ts` gates every page behind `SITE_PASSWORD` when that env
+  var is set; only the login flow and the SEO essentials (`/login`, `/api/login`,
+  `/favicon.ico`, `/robots.txt`, `/sitemap.xml`) bypass it. The gate lifts on its own
+  when the embargo does — `EMBARGO_LIFTS_AT` in `frontend/src/lib/embargo.ts`
+  (`2026-11-25T09:00:00-05:00`, i.e. 9:00 AM EST Wed Nov 25, 2026). After that instant
+  the middleware is a no-op regardless of `SITE_PASSWORD`, so the site opens with no
+  deploy. `SITE_PASSWORD` is set in Vercel prod but not locally, so the gate is open in
+  dev and closed on the live site. The unlock cookie (`epm-auth`, httpOnly, 30 days,
+  path `/`) is issued by `POST /api/login`, so one prompt covers every page.
+- **`frontend/src/lib/embargo.ts` is the single source for that instant.** The
+  middleware gate and the sitemap read it — change the date there, not in two places.
+  The homepage deliberately does **not**: the gate already keeps the whole site
+  private before the lift, so the featured assessment row always renders and password
+  holders see the card. The sitemap is the exception because it is one of the paths
+  that bypass the gate, so it withholds assessment detail URLs until the lift. It is
+  ISR-cached (`revalidate = 60`) and can therefore trail the lift by up to a minute;
+  the middleware runs per request and does not.
 - **`isExample`** marks placeholder assessments — real and sample content coexist.
 - **Content changes need a revalidation ping.** Pages are ISR-cached (60s for
   assessments, 3600s for global/team/about). `POST /api/revalidate` with the
