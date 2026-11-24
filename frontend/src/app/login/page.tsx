@@ -39,10 +39,10 @@ function LoginForm() {
 
   return (
     <div className="login-card">
-      <div className="login-eyebrow">Energy Policy Monitor</div>
-      <h1>Site under preview</h1>
+      <h1>Coming soon</h1>
       <p>
-        This site is in private review. Enter the access password to continue.
+        EPM opens to the public shortly. Until then, access is limited to the
+        internal team. Enter your password to continue.
       </p>
       <form onSubmit={onSubmit}>
         <label htmlFor="pw" className="visually-hidden">
@@ -63,9 +63,6 @@ function LoginForm() {
         </button>
         {error && <p className="login-error">{error}</p>}
       </form>
-      <p className="login-footer">
-        For access, contact <a href="mailto:deven@openinsights.ca">deven@openinsights.ca</a>.
-      </p>
     </div>
   );
 }
