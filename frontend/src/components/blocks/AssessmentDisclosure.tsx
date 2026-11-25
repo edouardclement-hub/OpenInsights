@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 /**
  * Collapsible block for the long-form intake sections (F22 methodology summary,
@@ -13,6 +13,10 @@ import { useState } from "react";
  * `children` render after the body, for blocks the template owns rather than
  * the CMS (the "What we measure" and "Data and code" blocks, and the closing
  * links on every Methodology summary).
+ *
+ * An open block ends with a Close control. Collapsing from the bottom of a long
+ * block would otherwise leave the reader somewhere further down the page, so it
+ * returns them to the block's own heading.
  */
 export function AssessmentDisclosure({
   title,
@@ -31,6 +35,20 @@ export function AssessmentDisclosure({
   defaultOpen?: boolean;
 }) {
   const [open, setOpen] = useState(defaultOpen);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  // Collapse, then put the heading back under the reader's eye. The scroll
+  // waits a frame so it is measured against the collapsed layout, and focus
+  // moves without a second, competing scroll.
+  const closeFromBottom = () => {
+    setOpen(false);
+    triggerRef.current?.focus({ preventScroll: true });
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        triggerRef.current?.scrollIntoView({ block: "start", behavior: "smooth" });
+      });
+    });
+  };
 
   const blocks = (body || "")
     .split(/\n{2,}/)
@@ -40,6 +58,7 @@ export function AssessmentDisclosure({
   return (
     <div className={`disclosure${open ? " open" : ""}`}>
       <button
+        ref={triggerRef}
         type="button"
         className="disclosure-trigger"
         onClick={() => setOpen(!open)}
@@ -63,6 +82,22 @@ export function AssessmentDisclosure({
             )
           )}
           {children}
+          <div className="disclosure-close-row">
+            <button
+              type="button"
+              className="disclosure-close"
+              onClick={closeFromBottom}
+              // Kept out of the tab order while collapsed: the body is hidden,
+              // so its controls should not be reachable.
+              tabIndex={open ? 0 : -1}
+              aria-hidden={!open}
+            >
+              <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" aria-hidden="true">
+                <polyline points="18 15 12 9 6 15" />
+              </svg>
+              Close {title.toLowerCase()}
+            </button>
+          </div>
         </div>
       </div>
     </div>

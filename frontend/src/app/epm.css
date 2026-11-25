@@ -779,12 +779,26 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
 .qf-row .download-btn-primary { margin-bottom: 0; }
 .qf-label {
   font-size: 10.5px; font-weight: 600; letter-spacing: 1.2px;
-  text-transform: uppercase; color: var(--muted); margin-bottom: 4px;
+  text-transform: uppercase; color: var(--text-body); margin-bottom: 4px;
 }
 .qf-value {
   font-size: 14px; color: var(--navy); font-weight: 600; line-height: 1.35;
 }
 .qf-value.highlight { color: var(--teal); }
+/* "Questions about this assessment": the label itself is the link. */
+.qf-contact .qf-label { margin-bottom: 0; }
+.qf-contact a {
+  color: var(--teal); text-decoration: none;
+  transition: color var(--transition), text-decoration-color var(--transition);
+}
+.qf-contact a:hover,
+.qf-contact a:focus-visible {
+  color: var(--navy);
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.qf-contact a:focus-visible {
+  outline: 2px solid var(--teal); outline-offset: 3px; border-radius: 2px;
+}
 .download-btn {
   display: flex; align-items: center; gap: 10px;
   width: 100%;
@@ -990,7 +1004,21 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
 }
 .detail-exec-summary p {
   font-size: 16px; color: var(--navy); line-height: 1.7;
-  font-weight: 400;
+  font-weight: 400; margin-bottom: 16px;
+}
+.detail-exec-summary p:last-child { margin-bottom: 0; }
+.detail-exec-summary a {
+  color: var(--teal); font-weight: 600;
+  text-decoration: underline; text-underline-offset: 3px;
+  text-decoration-color: rgba(12,122,122,0.4);
+  transition: color var(--transition), text-decoration-color var(--transition);
+}
+.detail-exec-summary a:hover,
+.detail-exec-summary a:focus-visible {
+  color: var(--navy); text-decoration-color: currentColor;
+}
+.detail-exec-summary a:focus-visible {
+  outline: 2px solid var(--teal); outline-offset: 2px; border-radius: 2px;
 }
 .detail-section { margin-bottom: 40px; }
 .detail-section h2 {
@@ -1018,7 +1046,7 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   margin-bottom: 6px;
 }
 .findings-scope-note {
-  font-size: 14px; color: var(--muted); line-height: 1.65;
+  font-size: 14px; color: var(--slate); line-height: 1.65;
   margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--surface);
 }
 
@@ -1966,6 +1994,21 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
 }
 .disclosure-footer-links a:hover { text-decoration: underline; }
 
+.disclosure-close-row {
+  display: flex; justify-content: flex-end;
+  margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--rule);
+}
+.disclosure-close {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 8px 14px; border-radius: var(--radius-sm);
+  background: var(--white); border: 1px solid var(--rule);
+  font-family: inherit; font-size: 13px; font-weight: 600; color: var(--slate);
+  cursor: pointer; transition: all var(--transition);
+}
+.disclosure-close svg { width: 15px; height: 15px; stroke: currentColor; fill: none; }
+.disclosure-close:hover { border-color: var(--teal); color: var(--navy); background: var(--teal-pale); }
+.disclosure-close:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+
 .limitations-heading {
   font-family: var(--font-body); font-size: 14px; font-weight: 700;
   color: var(--navy); margin: 16px 0 0;
@@ -2476,4 +2519,117 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   .mobile-menu-open .nav-submenu a {
     padding: 9px 32px 9px 52px;
   }
+}
+
+
+/* ---------------------------------------------------------------------------
+   Full-screen slideshow toolbar: the deck download sits next to the counter.
+   --------------------------------------------------------------------------- */
+.lightbox-bar-actions { flex: none; display: flex; align-items: center; gap: 10px; }
+.lightbox-download {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 14px; border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.22);
+  color: var(--white); text-decoration: none;
+  font-family: var(--font-body); font-size: 13px; font-weight: 600;
+  white-space: nowrap;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+.lightbox-download svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
+.lightbox-download:hover { background: rgba(255,255,255,0.20); border-color: rgba(255,255,255,0.45); }
+.lightbox-download:focus-visible { outline: 2px solid var(--teal-bright); outline-offset: 2px; }
+
+@media (max-width: 640px) {
+  .lightbox-download { padding: 8px 10px; }
+  .lightbox-download span { display: none; }   /* icon only, the caption needs the room */
+}
+
+/* ---------------------------------------------------------------------------
+   Embedded interactive dashboard, between Key findings and the Assumptions
+   summary. Falls back to a plain link below 768px and when the frame fails.
+   --------------------------------------------------------------------------- */
+.dashboard-section {
+  /* The sticky nav is 64px: keep the dashboard's own top bar clear of it when
+     the section is scrolled or linked to. */
+  scroll-margin-top: 88px;
+}
+.dashboard-head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 16px;
+}
+.dashboard-head h2 { flex: 1; }
+.dashboard-expand {
+  flex: none; margin-top: 2px;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 10px; border-radius: var(--radius-sm);
+  background: rgba(13,27,42,0.78); color: var(--white);
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em;
+  border: 0; cursor: pointer;
+  transition: background var(--transition);
+}
+.dashboard-expand svg { width: 13px; height: 13px; stroke: currentColor; fill: none; }
+.dashboard-expand:hover { background: var(--navy); }
+.dashboard-expand:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+.dashboard-intro {
+  font-size: 15px; color: var(--slate); line-height: 1.65; margin-bottom: 18px;
+}
+.dashboard-embed {
+  position: relative;
+  /* Own stacking context below the nav (z-index 100): an iframe gets its own
+     compositing layer and would otherwise paint over the sticky header. */
+  z-index: 0;
+  width: 100%; overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+.dashboard-embed iframe {
+  display: block; width: 100%; height: 100%; border: 0;
+  position: relative; z-index: 1;
+}
+/* Above 900px the quick-facts column exists; the charts read better when the
+   dashboard uses that width too. 320px column + 40px grid gap. */
+@media (min-width: 901px) {
+  .dashboard-section { margin-right: -360px; }
+}
+.dashboard-placeholder {
+  position: absolute; inset: 0; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 12px; background: var(--surface);
+  font-size: 14px; color: var(--slate);
+}
+.dashboard-spinner {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 2px solid var(--rule); border-top-color: var(--teal);
+  animation: dashboardSpin 900ms linear infinite;
+}
+@keyframes dashboardSpin { to { transform: rotate(360deg); } }
+.dashboard-embed-link { margin-top: 14px; }
+.dashboard-fallback-link {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 11px 18px; border-radius: var(--radius-sm);
+  background: var(--white); border: 1px solid var(--rule);
+  color: var(--teal); font-size: 14px; font-weight: 600; text-decoration: none;
+  transition: var(--transition);
+}
+.dashboard-fallback-link svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
+.dashboard-fallback-link:hover { border-color: var(--teal); background: var(--teal-pale); }
+.dashboard-fallback-link:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+.dashboard-note {
+  font-size: 13px; color: var(--muted); line-height: 1.6; margin-top: 12px;
+}
+
+/* Full-screen dashboard: the slideshow lightbox shell, with the frame as the
+   stage. */
+.dashboard-lightbox .lightbox-caption strong { white-space: normal; }
+.dashboard-lightbox-stage {
+  position: relative; flex: 1 1 auto; min-height: 0;
+  border-radius: var(--radius-lg); overflow: hidden;
+  background: var(--white);
+}
+.dashboard-lightbox-stage iframe {
+  display: block; width: 100%; height: 100%; border: 0;
+}
+
+@media (max-width: 900px) {
+  .dashboard-expand { display: none; }   /* full screen adds nothing at this width */
 }

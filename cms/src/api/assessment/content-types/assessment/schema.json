@@ -54,7 +54,7 @@
         "Liberal",
         "Conservative",
         "NDP",
-        "Bloc Québécois",
+        "Bloc Qu\u00e9b\u00e9cois",
         "Green",
         "Non-partisan",
         "Other"
@@ -98,8 +98,7 @@
       "type": "json"
     },
     "claim": {
-      "type": "text",
-      "required": true
+      "type": "text"
     },
     "finding": {
       "type": "text"
@@ -211,6 +210,18 @@
       "type": "text"
     },
     "baselineVersion": {
+      "type": "string"
+    },
+    "cardTitle": {
+      "type": "string"
+    },
+    "ideaEmbedUrl": {
+      "type": "string"
+    },
+    "modelDocsUrl": {
+      "type": "string"
+    },
+    "contactEmail": {
       "type": "string"
     }
   }

@@ -3,8 +3,16 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
 import type { AssessmentSlide } from "@/lib/assessment-slides";
+import { trackEvent } from "@/lib/analytics";
 
-export function AssessmentSlideshow({ slides }: { slides: AssessmentSlide[] }) {
+export function AssessmentSlideshow({
+  slides,
+  pdf,
+}: {
+  slides: AssessmentSlide[];
+  /** Full deck behind the slides, offered from the full-screen toolbar. */
+  pdf?: { href: string; filename: string };
+}) {
   const [i, setI] = useState(0);
   const [full, setFull] = useState(false);
   const total = slides.length;
@@ -130,18 +138,40 @@ export function AssessmentSlideshow({ slides }: { slides: AssessmentSlide[] }) {
                 {i + 1} / {total}
               </span>
             </div>
-            <button
-              ref={closeRef}
-              type="button"
-              className="lightbox-close"
-              onClick={() => setFull(false)}
-              aria-label="Close full screen (Escape)"
-            >
-              <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            </button>
+            <div className="lightbox-bar-actions">
+              {pdf && (
+                <a
+                  className="lightbox-download"
+                  href={pdf.href}
+                  download={pdf.filename}
+                  onClick={() =>
+                    trackEvent("slideshow_pdf_download", {
+                      file_name: pdf.filename,
+                      slide: i + 1,
+                    })
+                  }
+                >
+                  <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" aria-hidden="true">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                  </svg>
+                  <span>Download PDF</span>
+                </a>
+              )}
+              <button
+                ref={closeRef}
+                type="button"
+                className="lightbox-close"
+                onClick={() => setFull(false)}
+                aria-label="Close full screen (Escape)"
+              >
+                <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
           </div>
 
           <div className="lightbox-stage" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>

@@ -161,6 +161,20 @@ export interface StrapiAssessment {
   /** Opening paragraph of the Methodology summary dropdown. */
   methodologyIntro?: string | null;
   /**
+   * Shorter title for the listing card, when the page H1 is too long to read
+   * well in a card. Falls back to `title`.
+   */
+  cardTitle?: string | null;
+  /**
+   * IDEA dashboard embedded in the page, between the Key findings and the
+   * Assumptions summary. `ideaUrl` is the sidebar button; this is the frame.
+   */
+  ideaEmbedUrl?: string | null;
+  /** Modelling documentation and code for this assessment. */
+  modelDocsUrl?: string | null;
+  /** Address behind the "Questions about this assessment" block in Quick facts. */
+  contactEmail?: string | null;
+  /**
    * Id of the Baseline version this assessment was run against ("2026-11").
    * Resolved through `assessmentBaselineId()`, which keeps older assessments
    * pointing at the version they used after the Baseline is updated.

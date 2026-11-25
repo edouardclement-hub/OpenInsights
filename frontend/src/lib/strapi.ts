@@ -67,7 +67,7 @@ export async function getTeamMembers() {
  * through these helpers. Add a slug here when a new assessment goes live.
  */
 export const PUBLISHED_ASSESSMENT_SLUGS = [
-  "powering-canada-strong-financing-the-build",
+  "powering-canada-strong-from-strategy-to-action",
 ] as const;
 
 function onlyPublished(res: StrapiResponse<StrapiAssessment[]>) {
@@ -120,8 +120,8 @@ export function getStrapiMediaUrl(url: string | undefined): string {
 // CDN caches key on the path, and a same-name swap can keep serving the old
 // photo to anyone who already loaded the page.
 const ASSESSMENT_LOCAL_IMAGES: Record<string, string> = {
-  "powering-canada-strong-financing-the-build":
-    "/assessments/powering-canada-strong-financing-the-build-2026-11.jpg",
+  "powering-canada-strong-from-strategy-to-action":
+    "/assessments/powering-canada-strong-from-strategy-to-action-2026-11.jpg",
 };
 
 export function getAssessmentImage(

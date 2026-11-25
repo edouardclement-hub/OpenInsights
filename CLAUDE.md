@@ -46,16 +46,18 @@ follow, so keep the corporate site product-agnostic.
 
 `/assessments` and `/assessments/[slug]` fetch their records from Strapi via
 `frontend/src/lib/strapi.ts`. Five exist; the ones still marked `isExample: true`
-render with an "Example" banner. `BUDGET_2026` (slug
-`powering-canada-strong-financing-the-build`) is now `isExample: false`, so it renders
-as a real assessment with no banner and no "do not cite" line.
+render with an "Example" banner. `PCS_2026` (slug
+`powering-canada-strong-from-strategy-to-action`) is now `isExample: false`, so it renders
+as a real assessment with no banner and no "do not cite" line. It was published under
+`powering-canada-strong-financing-the-build` until November 2026; that path redirects
+(`frontend/next.config.ts`) and the seed renames the record in place.
 
 That real one is still edited **in code**. `seedIfEmpty()` in `cms/src/index.ts`
 re-syncs its fields from the file on every Strapi boot, so editing it in the Strapi
 admin looks like it works and then reverts on the next restart. Add a new real
 assessment by following the `CONSERVATIVE_2021` pattern in that file.
 
-**Editing `cms/src/index.ts` does not change the live site by itself.** `seedBudget2026()`
+**Editing `cms/src/index.ts` does not change the live site by itself.** `seedPcs2026()`
 only runs on Strapi boot, and pushing this repo does not deploy Strapi — redeploy or
 restart the Railway service, then `POST /api/revalidate` to flush the ISR cache.
 
@@ -69,11 +71,13 @@ Content types live in `cms/src/api/*/content-types/*/schema.json`: `assessment`,
 `team-member`, `faq`, `homepage`, `about-page`, `global`. Only `assessment` is actually
 in use; `about-page`, `global` and `team-member` are empty.
 
-`assessment` key fields: `title`, `slug`, `jurisdiction`, `party`, `status`,
+`assessment` key fields: `title`, `cardTitle`, `slug`, `jurisdiction`, `party`, `status`,
 `policyStatus`, `sector`, `claim`, `finding`, `claimedValue`, `modelledValue`,
 `execSummary`, `findings` (json), `tags` (json), `epmPlus`, `isExample`, plus media
-(`cardImage`, `detailImage`) and link fields (`zenodoUrl`, `ideaUrl`, `githubUrl`,
-`datasetUrl`, `policyEncodingUrl`, `assumptionsUrl`).
+(`cardImage`, `detailImage`) and link fields (`zenodoUrl`, `ideaUrl`, `ideaEmbedUrl`,
+`modelDocsUrl`, `githubUrl`, `datasetUrl`, `policyEncodingUrl`, `assumptionsUrl`).
+`cardTitle` is the listing card's shorter headline; `ideaEmbedUrl` drives the dashboard
+embedded in the page, `ideaUrl` the sidebar button.
 
 ## Deploys — read this before pushing
 
