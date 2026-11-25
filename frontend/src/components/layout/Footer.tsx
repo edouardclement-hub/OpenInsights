@@ -2,12 +2,22 @@ import Link from "next/link";
 import { NewsletterSignup } from "@/components/blocks/NewsletterSignup";
 
 export function Footer() {
+  // Only render the signup when Mailchimp is actually configured. Without the
+  // env vars the API route returns server_config, so an ungated form would
+  // show every visitor "Something went wrong". Add MAILCHIMP_API_KEY and
+  // MAILCHIMP_AUDIENCE_ID in Vercel and redeploy, and the form appears.
+  const newsletterReady = Boolean(
+    process.env.MAILCHIMP_API_KEY && process.env.MAILCHIMP_AUDIENCE_ID,
+  );
+
   return (
     <footer className="footer">
       <div className="footer-inner">
-        <div className="footer-newsletter">
-          <NewsletterSignup />
-        </div>
+        {newsletterReady && (
+          <div className="footer-newsletter">
+            <NewsletterSignup />
+          </div>
+        )}
 
         <div className="footer-top">
           <div className="footer-brand">
