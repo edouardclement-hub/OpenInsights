@@ -1,9 +1,14 @@
 import Link from "next/link";
+import { NewsletterSignup } from "@/components/blocks/NewsletterSignup";
 
 export function Footer() {
   return (
     <footer className="footer">
       <div className="footer-inner">
+        <div className="footer-newsletter">
+          <NewsletterSignup />
+        </div>
+
         <div className="footer-top">
           <div className="footer-brand">
             <div className="footer-brand-logo">

@@ -2668,3 +2668,154 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
 @media (max-width: 900px) {
   .dashboard-expand { display: none; }   /* full screen adds nothing at this width */
 }
+
+/* ═══════════════════════════════════════
+   NEWSLETTER SIGNUP
+   Footer band (on navy) + details dialog (on white). All EPM tokens; the
+   inline field reuses .signup-input / .signup-btn from the signup strip.
+═══════════════════════════════════════ */
+
+/* ── Footer band ──────────────────────────────────────────── */
+.footer-newsletter {
+  padding-bottom: 36px; margin-bottom: 36px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.nl-signup {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 420px);
+  column-gap: 40px;
+  align-items: center;
+}
+.nl-heading {
+  grid-column: 1; grid-row: 1;
+  font-family: var(--font-display); font-size: 20px;
+  color: var(--white); font-weight: 700; margin-bottom: 4px;
+}
+.nl-intro {
+  grid-column: 1; grid-row: 2;
+  font-size: 14px; color: rgba(255,255,255,0.5);
+  line-height: 1.6; max-width: 46ch;
+}
+.nl-inline {
+  grid-column: 2; grid-row: 1 / span 2;
+  display: flex; gap: 10px; flex-wrap: wrap;
+}
+/* Fill the footer column rather than the strip's fixed 220px. */
+.nl-inline-input { flex: 1; min-width: 180px; }
+.nl-error-on-navy {
+  grid-column: 2; grid-row: 3;
+  margin-top: 10px;
+  background: rgba(185,28,28,0.14);
+  border-color: rgba(252,165,165,0.35);
+  color: #FCA5A5;
+}
+@media (max-width: 900px) {
+  .nl-signup { grid-template-columns: 1fr; }
+  .nl-heading, .nl-intro, .nl-inline, .nl-error-on-navy {
+    grid-column: 1; grid-row: auto;
+  }
+  .nl-inline { margin-top: 16px; max-width: 420px; }
+}
+
+/* ── Details dialog ───────────────────────────────────────── */
+.nl-dialog {
+  width: min(32rem, calc(100vw - 32px));
+  /* Tailwind's preflight zeroes margins, which kills the UA stylesheet's
+     `margin: auto` centring for a modal <dialog>. Put it back. */
+  margin: auto;
+  max-height: calc(100dvh - 48px); overflow-y: auto;
+  padding: 0; border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  background: var(--white); color: var(--text-body);
+  box-shadow: var(--shadow-lg);
+}
+.nl-dialog[open] { animation: fadeUp 0.28s ease both; }
+.nl-dialog::backdrop { background: rgba(13,27,42,0.55); }
+.nl-dialog-body {
+  display: flex; flex-direction: column; gap: 14px;
+  padding: 28px;
+}
+.nl-dialog-title {
+  font-family: var(--font-display); font-size: 21px;
+  font-weight: 700; color: var(--navy); line-height: 1.3;
+}
+.nl-dialog-text { font-size: 14px; color: var(--slate); line-height: 1.6; }
+.nl-muted { font-size: 13px; color: var(--slate-mid); font-weight: 400; }
+.nl-email-echo {
+  font-family: var(--font-mono); font-size: 13px;
+  color: var(--navy); word-break: break-all;
+  background: var(--surface); border: 1px solid var(--rule);
+  border-radius: var(--radius-sm); padding: 8px 12px;
+}
+.nl-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.nl-field { display: flex; flex-direction: column; gap: 6px; }
+.nl-field > label {
+  text-transform: uppercase; letter-spacing: 0.8px;
+  font-size: 11px; font-weight: 600; color: var(--slate);
+}
+/* Match the label's own size, or the taller '(optional)' span pushes that
+   field's input out of line with its neighbour in a .nl-row pair. */
+.nl-field > label .nl-muted {
+  text-transform: none; letter-spacing: 0;
+  font-size: inherit; color: var(--muted);
+}
+.nl-input {
+  font-family: var(--font-body);
+  width: 100%; padding: 10px 12px;
+  border: 1px solid var(--rule); border-radius: var(--radius-sm);
+  background: var(--white); font-size: 14px; color: var(--navy);
+  transition: border-color var(--transition);
+}
+.nl-input:focus { outline: none; border-color: var(--teal); }
+.nl-consent {
+  display: flex; gap: 10px; align-items: flex-start;
+  font-size: 13px; line-height: 1.55; color: var(--text-body);
+  cursor: pointer;
+}
+.nl-consent input {
+  margin-top: 3px; flex-shrink: 0;
+  width: 16px; height: 16px; accent-color: var(--teal);
+}
+.nl-sender {
+  margin: -8px 0 0 26px;
+  font-size: 11.5px; line-height: 1.5; color: var(--muted);
+}
+.nl-error {
+  font-size: 13px; color: #B91C1C;
+  background: #FEF2F2; border: 1px solid #FECACA;
+  padding: 8px 12px; border-radius: var(--radius-sm);
+}
+.nl-actions {
+  display: flex; justify-content: flex-end; gap: 10px;
+  margin-top: 4px;
+}
+.nl-actions .btn-primary:disabled {
+  background: var(--muted); cursor: wait;
+  transform: none; box-shadow: none;
+}
+.nl-btn-cancel {
+  background: transparent; color: var(--slate);
+  padding: 12px 22px; border-radius: 6px;
+  font-size: 14px; font-weight: 600; font-family: inherit;
+  border: 1px solid var(--rule); cursor: pointer;
+  transition: background var(--transition), border-color var(--transition);
+}
+.nl-btn-cancel:hover { background: var(--surface); border-color: var(--slate-mid); }
+
+.nl-honeypot {
+  position: absolute; left: -10000px;
+  width: 1px; height: 1px; overflow: hidden;
+}
+.nl-visually-hidden {
+  position: absolute; width: 1px; height: 1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .nl-row { grid-template-columns: 1fr; }
+  .nl-inline { flex-direction: column; }
+  .nl-inline-input { min-width: 0; }
+  .nl-dialog-body { padding: 22px; }
+  .nl-actions { flex-direction: column-reverse; }
+  .nl-actions > * { width: 100%; }
+}
