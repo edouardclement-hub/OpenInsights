@@ -628,6 +628,44 @@ footer { background: var(--ink); color: var(--paper); padding: 3rem 0 2rem; }
   color: rgba(245,242,235,0.3); letter-spacing: 0.06em;
 }
 
+/* ── FOOTER NEWSLETTER BAR ───────────────────────────────────── */
+/* Sits above .footer-inner on every page. Email only — the consent tick
+   lives on /newsletter. */
+.footer-newsletter {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 420px);
+  gap: 2rem; align-items: center;
+  padding-bottom: 2rem; margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.footer-newsletter-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.25rem; font-weight: 700; color: var(--paper);
+  margin-bottom: 0.4rem;
+}
+.footer-newsletter p {
+  font-size: 0.85rem; line-height: 1.6;
+  color: rgba(245,242,235,0.5); max-width: 46ch;
+}
+.footer-newsletter-form { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.footer-newsletter-form .btn-primary { border: none; cursor: pointer; }
+
+.footer-nl-input {
+  flex: 1; min-width: 180px;
+  font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid rgba(245,242,235,0.25);
+  background: rgba(245,242,235,0.06); color: var(--paper);
+  transition: border-color 0.2s;
+}
+.footer-nl-input::placeholder { color: rgba(245,242,235,0.4); }
+.footer-nl-input:focus { outline: none; border-color: var(--sage-light); }
+
+.nl-visually-hidden {
+  position: absolute; width: 1px; height: 1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+
 /* ── BRAND & USE POLICY PAGE ─────────────────────────────────── */
 /* A quiet, text-only page. The nav is fixed, so the section carries its own
    top padding the way .hero does. */
@@ -676,6 +714,78 @@ footer { background: var(--ink); color: var(--paper); padding: 3rem 0 2rem; }
 
 .policy-divider { border-top: 1px solid var(--rule); margin-top: 2.5rem; padding-top: 2rem; }
 
+/* ── NEWSLETTER PAGE ─────────────────────────────────────────── */
+/* Shares .policy-section's quiet, text-only treatment. The form sits in a
+   bordered card like .policy-panel, held to the reading column. */
+.newsletter-intro { margin-top: 1.25rem; line-height: 1.75; }
+
+/* A class-level display beats the UA stylesheet's [hidden] { display: none },
+   so the hidden panel would otherwise render as an empty box. */
+.nl-form[hidden],
+.nl-done[hidden] { display: none; }
+
+.nl-form,
+.nl-done {
+  max-width: 580px; margin-top: 2.5rem;
+  display: flex; flex-direction: column; gap: 1.1rem;
+  border: 1px solid var(--rule); background: var(--white);
+  padding: 2rem;
+}
+.nl-done p { margin-top: 0.75rem; line-height: 1.75; }
+
+.nl-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+.nl-field { display: flex; flex-direction: column; gap: 0.45rem; }
+
+.nl-field > label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--mid);
+}
+/* Keep '(optional)' on the label's own scale so paired fields stay aligned. */
+.nl-field > label .nl-muted {
+  text-transform: none; letter-spacing: 0; font-size: inherit;
+}
+
+.nl-input {
+  font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
+  width: 100%; padding: 0.7rem 0.85rem;
+  border: 1px solid var(--rule); background: var(--paper);
+  color: var(--ink); transition: border-color 0.2s;
+}
+.nl-input:focus { outline: none; border-color: var(--sage); }
+
+.nl-consent {
+  display: flex; gap: 0.7rem; align-items: flex-start;
+  font-size: 0.85rem; line-height: 1.6; color: var(--ink);
+  cursor: pointer;
+}
+.nl-consent input {
+  margin-top: 0.25rem; flex-shrink: 0;
+  width: 16px; height: 16px; accent-color: var(--sage);
+}
+.nl-sender {
+  margin: -0.6rem 0 0 1.6rem;
+  font-size: 0.72rem; line-height: 1.5; color: var(--mid);
+  max-width: none;
+}
+
+.nl-error {
+  font-size: 0.85rem; color: #8c2f2f; max-width: none;
+  background: #f6e9e6; border: 1px solid #e0bfb8;
+  padding: 0.6rem 0.85rem;
+}
+
+.nl-actions { margin-top: 0.3rem; }
+.nl-actions .btn-primary { border: none; cursor: pointer; }
+.nl-actions .btn-primary:disabled {
+  background: var(--mid); cursor: wait; transform: none;
+}
+
+.nl-honeypot {
+  position: absolute; left: -10000px;
+  width: 1px; height: 1px; overflow: hidden;
+}
+
 /* ── ANIMATIONS ──────────────────────────────────────────────── */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(24px); }
@@ -707,6 +817,7 @@ footer { background: var(--ink); color: var(--paper); padding: 3rem 0 2rem; }
 }
 
 @media (max-width: 960px) {
+  .footer-newsletter { grid-template-columns: 1fr; gap: 1.25rem; }
   .hero { grid-template-columns: 1fr; padding-top: 7rem; }
   .commitments-card { display: none; }
   .enabled-intro { grid-template-columns: 1fr; gap: 2rem; }
@@ -720,6 +831,11 @@ footer { background: var(--ink); color: var(--paper); padding: 3rem 0 2rem; }
 }
 
 @media (max-width: 600px) {
+  .footer-newsletter-form { flex-direction: column; }
+  .footer-newsletter-form .btn-primary { width: 100%; }
+  .nl-row { grid-template-columns: 1fr; }
+  .nl-form, .nl-done { padding: 1.5rem; }
+  .nl-actions .btn-primary { display: block; width: 100%; text-align: center; }
   .team-grid { grid-template-columns: 1fr; }
   .research-grid { grid-template-columns: 1fr; }
   .framework-flow-bar { flex-direction: column; align-items: flex-start; gap: 0.5rem; }

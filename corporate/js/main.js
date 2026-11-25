@@ -48,23 +48,6 @@
   sections.forEach(section => observer.observe(section));
 })();
 
-/**
- * Newsletter signup — stub.
- *
- * To wire up, pick an email provider and replace the placeholder block:
- *
- *   Mailchimp   — Audience → Signup Forms → Embedded forms → copy action URL
- *   Buttondown  — https://buttondown.email/api/emails/embed-subscribe/<username>
- *   Formspree   — https://formspree.io/f/<id> (POST JSON {email})
- */
-const newsletterBtn = document.getElementById('newsletter-btn');
-if (newsletterBtn) {
-  newsletterBtn.addEventListener('click', function (e) {
-    e.preventDefault();
-    alert('Newsletter signup coming soon. In the meantime, email deven@openinsights.ca to be added to the list.');
-  });
-}
-
 (function initAnchorOffset() {
   const navEl = document.querySelector('nav');
   const navHeight = () => (navEl ? navEl.getBoundingClientRect().height : 72);

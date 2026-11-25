@@ -371,7 +371,7 @@
         <p>Sign up for the EPM newsletter or reach out directly to discuss collaborative opportunities.</p>
       </div>
       <div class="cta-actions">
-        <a href="#" class="btn-white" id="newsletter-btn">Sign Up for EPM Newsletter</a>
+        <a href="/newsletter" class="btn-white">Sign Up for EPM Newsletter</a>
         <a href="https://www.youtube.com/watch?v=hrm0rSbRhwU&t=622s" class="btn-ghost-white" target="_blank" rel="noopener">Watch Launch Webinar</a>
         <a href="mailto:deven@openinsights.ca" class="btn-ghost-white">Contact the Team</a>
       </div>
@@ -382,6 +382,21 @@
 <!-- FOOTER -->
 <footer>
   <div class="container">
+    <!-- NEWSLETTER BAR: takes the email only. The details and the consent
+         tick happen on /newsletter — CASL means nobody is subscribed from
+         here. Without JS the button is a plain link to that page. -->
+    <div class="footer-newsletter">
+      <div>
+        <h4 class="footer-newsletter-title">Stay informed</h4>
+        <p>Research and updates from Open Insights, including new Energy Policy Monitor assessments.</p>
+      </div>
+      <form class="footer-newsletter-form" id="footer-nl-form" action="/newsletter" method="get" novalidate>
+        <label for="footer-nl-email" class="nl-visually-hidden">Email address</label>
+        <input type="email" id="footer-nl-email" class="footer-nl-input" placeholder="Your email" autocomplete="email" required>
+        <button type="submit" class="btn-primary">Subscribe</button>
+      </form>
+    </div>
+
     <div class="footer-inner">
       <div class="footer-brand">
         <img class="footer-logo" src="assets/logo/open-insights-logo-on-black.svg" alt="Open Insights" width="580" height="247">
@@ -402,6 +417,7 @@
           <li><a href="#how-enabled">How It Works</a></li>
           <li><a href="#team">Team</a></li>
           <li><a href="https://www.youtube.com/watch?v=hrm0rSbRhwU&t=622s" target="_blank" rel="noopener">Launch Webinar</a></li>
+          <li><a href="/newsletter">Subscribe</a></li>
           <li><a href="/brand-policy">Brand &amp; Use Policy</a></li>
           <li><a href="mailto:deven@openinsights.ca">Contact</a></li>
         </ul>
@@ -416,5 +432,6 @@
 
 <script src="js/research.js"></script>
 <script src="js/main.js"></script>
+<script src="js/newsletter.js"></script>
 </body>
 </html>

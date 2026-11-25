@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subscribe to the Newsletter | Open Insights</title>
+  <meta name="description" content="Research and updates from Open Insights, including new Energy Policy Monitor assessments.">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- NAV: anchor targets are absolute so they reach the homepage sections from here -->
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="assets/logo/open-insights-logo-on-white.svg" alt="Open Insights" width="580" height="247">
+  </a>
+  <ul class="nav-links">
+    <li><a href="/#services">Our Programs</a></li>
+    <li><a href="/#research">Our Research</a></li>
+    <li><a href="/#team">Our Team</a></li>
+  </ul>
+  <a href="mailto:deven@openinsights.ca" class="nav-cta">CONTACT US</a>
+</nav>
+
+<!-- NEWSLETTER -->
+<section class="policy-section">
+  <div class="container">
+
+    <p class="section-label">Newsletter</p>
+    <h1 class="policy-title">Subscribe to the Open Insights newsletter</h1>
+    <p class="newsletter-intro">Research and updates from Open Insights, including new Energy Policy Monitor assessments.</p>
+
+    <!-- Swapped for .nl-done by js/newsletter.js once the signup succeeds -->
+    <form class="nl-form" id="nl-form" novalidate>
+
+      <div class="nl-field">
+        <label for="nl-email">Email address</label>
+        <input type="email" id="nl-email" name="email" class="nl-input" autocomplete="email" placeholder="Your email" required>
+      </div>
+
+      <div class="nl-row">
+        <div class="nl-field">
+          <label for="nl-fname">First name</label>
+          <input type="text" id="nl-fname" name="firstName" class="nl-input" autocomplete="given-name">
+        </div>
+        <div class="nl-field">
+          <label for="nl-lname">Last name <span class="nl-muted">(optional)</span></label>
+          <input type="text" id="nl-lname" name="lastName" class="nl-input" autocomplete="family-name">
+        </div>
+      </div>
+
+      <div class="nl-field">
+        <label for="nl-org">Organization <span class="nl-muted">(optional)</span></label>
+        <input type="text" id="nl-org" name="organization" class="nl-input" autocomplete="organization">
+      </div>
+
+      <div class="nl-field">
+        <label for="nl-role">I am a&hellip; <span class="nl-muted">(optional)</span></label>
+        <select id="nl-role" name="role" class="nl-input">
+          <option value="">Select</option>
+          <option value="Researcher / academic">Researcher / academic</option>
+          <option value="Government / policymaker">Government / policymaker</option>
+          <option value="Industry / utility">Industry / utility</option>
+          <option value="Non-profit / advocacy">Non-profit / advocacy</option>
+          <option value="Media">Media</option>
+          <option value="Student">Student</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <!-- Honeypot: hidden from people, tempting to bots -->
+      <div class="nl-honeypot" aria-hidden="true">
+        <label for="nl-website">Website</label>
+        <input type="text" id="nl-website" name="website" tabindex="-1" autocomplete="off">
+      </div>
+
+      <!-- CASL: never pre-ticked -->
+      <label class="nl-consent">
+        <input type="checkbox" id="nl-consent" name="consent" required>
+        <span>I agree to receive the Open Insights newsletter: research, new Energy Policy Monitor assessments and updates, a few times a year. I can unsubscribe at any time using the link in every email.</span>
+      </label>
+      <p class="nl-sender">Open Insights, c/o SESIT, Institute for Integrated Energy Systems, University of Victoria, PO Box 1700 STN CSC, Victoria BC V8W 2Y2, Canada &middot; deven@openinsights.ca</p>
+
+      <p class="nl-error" id="nl-error" role="alert" hidden></p>
+
+      <div class="nl-actions">
+        <button type="submit" class="btn-primary" id="nl-submit">Subscribe</button>
+      </div>
+
+    </form>
+
+    <div class="nl-done" id="nl-done" role="status" hidden>
+      <h2 class="policy-subhead" id="nl-done-title"></h2>
+      <p id="nl-done-body"></p>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <!-- NEWSLETTER BAR: takes the email only. The details and the consent
+         tick happen on /newsletter — CASL means nobody is subscribed from
+         here. Without JS the button is a plain link to that page. -->
+    <div class="footer-newsletter">
+      <div>
+        <h4 class="footer-newsletter-title">Stay informed</h4>
+        <p>Research and updates from Open Insights, including new Energy Policy Monitor assessments.</p>
+      </div>
+      <form class="footer-newsletter-form" id="footer-nl-form" action="/newsletter" method="get" novalidate>
+        <label for="footer-nl-email" class="nl-visually-hidden">Email address</label>
+        <input type="email" id="footer-nl-email" class="footer-nl-input" placeholder="Your email" autocomplete="email" required>
+        <button type="submit" class="btn-primary">Subscribe</button>
+      </form>
+    </div>
+
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img class="footer-logo" src="assets/logo/open-insights-logo-on-black.svg" alt="Open Insights" width="580" height="247">
+        <p>Transparent energy modelling for the Canadian energy and climate policy sector. All code, data, and assumptions are publicly available.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Our Programs</h4>
+        <ul class="footer-links">
+          <li><a href="https://epm.openinsights.ca/" target="_blank" rel="noopener">Energy Policy Monitor</a></li>
+          <li><a href="/#services">Custom Scenario Analysis</a></li>
+          <li><a href="/#research">Our Research</a></li>
+          <li><a href="mailto:deven@openinsights.ca">Collaboration</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul class="footer-links">
+          <li><a href="/#how-enabled">How It Works</a></li>
+          <li><a href="/#team">Team</a></li>
+          <li><a href="https://www.youtube.com/watch?v=hrm0rSbRhwU&t=622s" target="_blank" rel="noopener">Launch Webinar</a></li>
+          <li><a href="/newsletter">Subscribe</a></li>
+          <li><a href="/brand-policy">Brand &amp; Use Policy</a></li>
+          <li><a href="mailto:deven@openinsights.ca">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Open Insights. All models released open-source.</span>
+      <span>Project Director: Deven Azevedo</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/newsletter.js"></script>
+</body>
+</html>
