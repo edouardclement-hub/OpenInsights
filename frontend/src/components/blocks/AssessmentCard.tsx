@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { StrapiAssessment } from "@/types/strapi";
-import { formatAssessmentDate, getAssessmentImage } from "@/lib/strapi";
+import { assessmentLinkTitle, formatAssessmentDate, getAssessmentImage } from "@/lib/strapi";
 
 function PolicyStatusBadge({ status }: { status: StrapiAssessment["policyStatus"] }) {
   const cls =
@@ -43,7 +43,7 @@ export function AssessmentCard({ assessment }: { assessment: StrapiAssessment })
           <PolicyStatusBadge status={a.policyStatus} />
           <span className="card-date">{a.publishedDateLabel || formatAssessmentDate(a.publishedDate)}</span>
         </div>
-        <h3 className="card-title">{a.cardTitle || a.title}</h3>
+        <h3 className="card-title">{assessmentLinkTitle(a)}</h3>
         {a.finding && (
           <div className="card-finding">
             <div className="card-finding-label">EPM Finding</div>

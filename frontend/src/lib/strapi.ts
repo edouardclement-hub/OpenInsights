@@ -133,6 +133,18 @@ export function getAssessmentImage(
   return ASSESSMENT_LOCAL_IMAGES[a.slug] ?? null;
 }
 
+/**
+ * The name to show when an assessment is linked or listed: the breadcrumb, the
+ * listing card, the "Assessments using this Baseline" list. Falls back to the
+ * full title for assessments that do not record a short one.
+ */
+export function assessmentLinkTitle(a: {
+  title: string;
+  cardTitle?: string | null;
+}): string {
+  return a.cardTitle || a.title;
+}
+
 export function formatAssessmentDate(dateStr: string): string {
   const d = new Date(dateStr);
   return d.toLocaleDateString("en-US", { month: "long", year: "numeric" });

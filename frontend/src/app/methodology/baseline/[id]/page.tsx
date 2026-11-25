@@ -14,7 +14,7 @@ import {
   assertBaselineVersions,
   BaselineVersionError,
 } from "@/lib/baselines";
-import { formatAssessmentDate, getAssessments } from "@/lib/strapi";
+import { assessmentLinkTitle, formatAssessmentDate, getAssessments } from "@/lib/strapi";
 
 export const revalidate = 60;
 
@@ -66,6 +66,7 @@ export default async function BaselineVersionPage({
   let assessments: Array<{
     slug: string;
     title: string;
+    cardTitle?: string | null;
     publishedDate: string;
     publishedDateLabel?: string | null;
   }> = [];
@@ -279,7 +280,7 @@ export default async function BaselineVersionPage({
                 {assessments.map((a) => (
                   <li key={a.slug}>
                     <Link href={`/assessments/${a.slug}`}>
-                      <span className="baseline-assessment-title">{a.title}</span>
+                      <span className="baseline-assessment-title">{assessmentLinkTitle(a)}</span>
                       <span className="baseline-assessment-date">
                         {a.publishedDateLabel || formatAssessmentDate(a.publishedDate)}
                       </span>

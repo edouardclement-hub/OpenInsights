@@ -5,6 +5,7 @@ import {
   getAssessmentBySlug,
   getAssessments,
   formatAssessmentDate,
+  assessmentLinkTitle,
 } from "@/lib/strapi";
 import { CopyCitation } from "@/components/blocks/CopyCitation";
 import { assessmentBaselineId, baselinePath, getBaseline } from "@/lib/baselines";
@@ -230,7 +231,7 @@ export default async function AssessmentDetailPage({
             <Link href="/assessments">Assessments</Link>
             <span>›</span>
             <span style={{ color: "rgba(255,255,255,0.55)" }}>
-              {a.title}
+              {assessmentLinkTitle(a)}
             </span>
           </div>
           <div className="detail-meta-top">
