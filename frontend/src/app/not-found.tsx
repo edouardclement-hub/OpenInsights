@@ -6,7 +6,7 @@ export default function NotFound() {
       <div className="page-header-inner" style={{ textAlign: "center" }}>
         <div className="section-label">404</div>
         <h1>Page not found</h1>
-        <p>The page you're looking for doesn't exist or has been moved.</p>
+        <p>The page you&rsquo;re looking for doesn&rsquo;t exist or has been moved.</p>
         <div style={{ marginTop: 24 }}>
           <Link href="/" className="btn-primary">
             Back to home

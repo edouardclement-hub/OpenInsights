@@ -41,7 +41,7 @@ export function ContactForm() {
     return (
       <div className="form-confirmed">
         <h3>Message received.</h3>
-        <p>Thanks, we'll get back to you by email shortly.</p>
+        <p>Thanks, we&rsquo;ll get back to you by email shortly.</p>
       </div>
     );
   }
