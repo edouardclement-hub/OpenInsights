@@ -14,6 +14,15 @@ import { trackEvent } from "@/lib/analytics";
  */
 const MOBILE_BREAKPOINT = 768;
 
+/**
+ * The dashboard keeps drawing itself well after the iframe reports `load`, so
+ * the frame is blank for a few seconds more. The placeholder holds past that
+ * moment rather than handing over to an empty white box.
+ */
+const SETTLE_MS = 6000;
+/** After this long, say so, rather than leaving a spinner turning in silence. */
+const SLOW_MS = 10000;
+
 /** Shared by the inline embed and the full-screen view. */
 function DashboardFrame({
   url,
@@ -24,20 +33,38 @@ function DashboardFrame({
   title: string;
   onFail: () => void;
 }) {
-  const [loaded, setLoaded] = useState(false);
+  const [ready, setReady] = useState(false);
+  const [slow, setSlow] = useState(false);
+  const settle = useRef<number | undefined>(undefined);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setSlow(true), SLOW_MS);
+    return () => {
+      window.clearTimeout(timer);
+      if (settle.current) window.clearTimeout(settle.current);
+    };
+  }, []);
+
   return (
     <>
-      {!loaded && (
-        <div className="dashboard-placeholder" role="status">
+      {!ready && (
+        <div className="dashboard-placeholder" role="status" aria-live="polite">
           <span className="dashboard-spinner" aria-hidden="true" />
           <span>Loading the interactive dashboard…</span>
+          {slow && (
+            <span className="dashboard-placeholder-slow">
+              It is a large dashboard and can take a few moments.
+            </span>
+          )}
         </div>
       )}
       <iframe
         src={url}
         title={title}
         loading="lazy"
-        onLoad={() => setLoaded(true)}
+        onLoad={() => {
+          settle.current = window.setTimeout(() => setReady(true), SETTLE_MS);
+        }}
         onError={onFail}
       />
     </>

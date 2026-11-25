@@ -59,8 +59,7 @@ const PCS_2026: any = {
   title:
     'With latest federal measures, Canada’s electricity grid to grow 43% through 2050, with 89% clean generation; economy-wide emissions remain high',
   // Shorter line for the listing card, where the full H1 does not read well.
-  cardTitle:
-    "With current policies and latest federal measures, Canada's grid grows 43% by 2050, 89% clean; emissions remain high",
+  cardTitle: 'Powering Canada Strong: From Strategy to Action',
   shortName: 'Powering Canada Strong',
   slug: 'powering-canada-strong-from-strategy-to-action',
   policyAssessed: 'Powering Canada Strong: From Strategy to Action',
@@ -87,9 +86,9 @@ const PCS_2026: any = {
   // No announced claim is published for this assessment: the Quick facts row
   // and the meta description fall back to the EPM finding.
   claim: '',
-  // F17 short form - assessments index card
+  // F17 short form - the card's EPM finding and the Quick facts row
   finding:
-    "With the PCS measures, Canada's electricity generation is estimated at 888 TWh in 2050, 12 TWh (1%) above current policies (Baseline), and the low-carbon share rises one percentage point, to 89%.",
+    "With current policies and latest federal measures, Canada's grid grows 43% by 2050, 89% clean; emissions remain high.",
   // F17 full form - detail page quick facts. Not published for this
   // assessment; the EPM finding carries the headline numbers instead.
   modelledValue: '',

@@ -758,8 +758,37 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   border: 1px solid var(--rule); border-radius: var(--radius-lg);
   overflow-x: hidden;
   align-self: start;
-  margin-top: -120px; /* Overlap the hero */
+  margin-top: 72px; /* Top edge level with the deck (40px content padding + 32px deck margin) */
   box-shadow: var(--shadow-lg);
+}
+/* Stays beside the article while it scrolls. The cap keeps the foot of the
+   panel on screen on shorter windows; taller ones never see the scrollbar. */
+@media (min-width: 901px) {
+  .quick-facts {
+    position: sticky; top: 88px;
+    max-height: calc(100vh - 112px);
+    overflow-y: auto;
+    /* The gutter is reserved whether or not the thumb is showing, so revealing
+       it on hover never reflows the panel. */
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+  }
+  /* The thumb is invisible at rest and appears on hover or keyboard focus, so
+     the panel reads as plain content until you reach for it. */
+  .quick-facts:hover,
+  .quick-facts:focus-within { scrollbar-color: var(--muted) transparent; }
+  .quick-facts::-webkit-scrollbar { width: 10px; }
+  .quick-facts::-webkit-scrollbar-track { background: transparent; }
+  .quick-facts::-webkit-scrollbar-thumb {
+    background-color: transparent; background-clip: content-box;
+    border: 3px solid transparent; border-radius: 999px;
+    transition: background-color 160ms ease;
+  }
+  .quick-facts:hover::-webkit-scrollbar-thumb,
+  .quick-facts:focus-within::-webkit-scrollbar-thumb {
+    background-color: var(--muted);
+  }
 }
 .qf-header {
   background: var(--navy); padding: 16px 20px;
@@ -2575,21 +2604,23 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
 }
 .dashboard-embed {
   position: relative;
-  /* Own stacking context below the nav (z-index 100): an iframe gets its own
-     compositing layer and would otherwise paint over the sticky header. */
+  /* Own stacking context below the nav (z-index 100), so the frame can never
+     paint over the sticky header. */
   z-index: 0;
   width: 100%; overflow: hidden;
   border-radius: var(--radius-lg);
   background: var(--surface);
 }
 .dashboard-embed iframe {
-  display: block; width: 100%; height: 100%; border: 0;
+  display: block; width: 100%; border: 0;
   position: relative; z-index: 1;
-}
-/* Above 900px the quick-facts column exists; the charts read better when the
-   dashboard uses that width too. 320px column + 40px grid gap. */
-@media (min-width: 901px) {
-  .dashboard-section { margin-right: -360px; }
+  /* The dashboard's own title bar is exactly 64px tall and currently draws its
+     logo on top of its title, a fault on the IDEA side. Pull the frame up by
+     that much so the inline embed opens at the dashboard's tab row instead.
+     The bar is untouched in the Expand view and in a new tab, so nothing in it
+     becomes unreachable. Drop this block once IDEA fixes the header. */
+  height: calc(100% + 64px);
+  margin-top: -64px;
 }
 .dashboard-placeholder {
   position: absolute; inset: 0; z-index: 2;
@@ -2603,6 +2634,10 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   animation: dashboardSpin 900ms linear infinite;
 }
 @keyframes dashboardSpin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-spinner { animation: none; border-top-color: var(--teal); }
+}
+.dashboard-placeholder-slow { font-size: 13px; color: var(--muted); }
 .dashboard-embed-link { margin-top: 14px; }
 .dashboard-fallback-link {
   display: inline-flex; align-items: center; gap: 9px;

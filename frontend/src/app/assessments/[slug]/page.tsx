@@ -11,6 +11,7 @@ import { assessmentBaselineId, baselinePath, getBaseline } from "@/lib/baselines
 import { AssessmentSlideshow } from "@/components/blocks/AssessmentSlideshow";
 import { AssessmentDisclosure } from "@/components/blocks/AssessmentDisclosure";
 import { AssessmentDashboard } from "@/components/blocks/AssessmentDashboard";
+import { HoverScrollAside } from "@/components/blocks/HoverScrollAside";
 import { getAssessmentSlideshow } from "@/lib/assessment-slides";
 
 export const revalidate = 60;
@@ -441,7 +442,7 @@ export default async function AssessmentDetailPage({
           )}
         </div>
 
-        <aside className="quick-facts">
+        <HoverScrollAside className="quick-facts">
           <div className="qf-header">
             <h3>Quick facts</h3>
           </div>
@@ -538,7 +539,7 @@ export default async function AssessmentDetailPage({
               </div>
             )}
           </div>
-        </aside>
+        </HoverScrollAside>
       </div>
     </>
   );
